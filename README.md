@@ -1,61 +1,52 @@
-y360c - консольный клиент для Yandex 360, который использует штатный API для доступа к соотв. сущностям/действиям в Yandex 360.
+y360c is a command line interface (cli) for Yandex 360, which uses the standard API to access the corresponding entities/actions in Yandex 360.
 
-Установка приложения не требуется, достаточно поместить exe-файл в любое место и начать с ним работать, как и с любым другим консольным приложением.
-При необходимости, можно добавить путь к приложению в PATH.
+There is no need to install the application, just place the exe file anywhere and start working with it, like with any other console application.
+If necessary, you can add the path to the application to PATH.
 
-Перед началом работы потребуется создать приложение с нужными правами доступа в https://oauth.yandex.ru/, а так же получить штатным образом auth токен, который необходим для доступа к данным в Yandex 360.
+Before starting work, you will need to create an application with the necessary access rights in https://oauth.yandex.ru/, as well as obtain an auth token, which is necessary to access data in Yandex360.
 
-Полученный токен можно использовать 2 путями:
-1. Передавать его явно в параметрах команды, используя флаг `--token (-t)`
-2. Сохранить токен для автом. использования в конфигурационном файле приложения, который находится тут: `%USERPROFILE%\y360c.json` (создается автоматически при использовании любой команды, но можно создать принудительно через команду `init` - т.е. `y360c init`).
+The token can be used in 2 ways:
+1. pass it explicitly in command using the flag `--token (-t)`
+2. save the token for automatic use in the application configuration file, which is located here: `%USERPROFILE%\y360c.json` (created automatically when using the command `init` - i.e. `y360c init`).
 
-Кроме токена, для большинства операций требуется параметр "Id организации", который нужно использовать аналогично токену:
-1. Или передавать его явно в параметрах, используя флаг `--orgId (-o)`
-2. Или сохранить его для автомат. использования в конфигурационном файле приложения.
+In addition to the token, most operations require the "Organization Id" parameter, which must be used similarly to the token:
+1. can be passed explicitly in the parameters using the flag `--orgId (-o)`
+2. can be saved for automatic use in the application configuration file.
 
-Т.е. схема работы примерно такая:
+Examples:
 
-1. Выполняем `y360c init`, чтобы отобразить путь к текущему конфиг. файлу, в который можно (если нужно) внести токен и Id организации.
-2. Выполняем `y360c help`, чтобы отобразить список доступных команд.
-3. Выполняем `y360c [команда] help`, чтобы отобразить инфо по конкретной команде.
-4. итд.
+**List of organizations**:
 
-примеры:
+`y360c org ls` (if the token is specified in the config)
 
-**Список организаций**:
+or
 
-`y360c org ls` (если токен задан в конфиге)
+`y360c org ls --token <token>`
 
-или
+**List of departments**:
 
-`y360c org ls --token <токен>`
+`y360c dept ls --orgId <organizaion id> --token <token>`
 
-**Список департаментов**:
+or
 
-`y360c dept ls --orgId <Id организации> --token <токен>`
+`y360c dept ls` (if the token and the organization id are specified in the config)
 
-или
+**List of employees**:
 
-`y360c dept ls` (если токен и Id организации заданы в конфиге)
+`y360c user ls` (if the token and the organization id are specified in the config)
 
-**Список сотрудников**:
+or
 
-`y360c user ls` (если токен и Id организации заданы в конфиге)
+`y360c user ls --orgId <organizaion id> --token <token>`
 
-или
+or (search for a specific employee)
 
-`y360c user ls --orgId <Id организации> --token <токен>`
+`y360c user ls --orgId <organizaion id> --token <token> --id <employee id>`
 
-или (для конкретного сотрудника)
+or (search my email)
 
-`y360c user ls --orgId <Id организации> --token <токен> --id <Id сотрудника>`
+`y360c user ls --orgId <organizaion id> --token <token> --email aaa@vvv.cc`
 
-или (поиск по email)
+or (search by first/middle/last name)
 
-`y360c user ls --orgId <Id организации> --token <токен> --email aaa@vvv.cc`
-
-или (поиск по фио)
-
-`y360c user ls --orgId <Id организации> --token <токен> --name vladimir` - все, у кого в ФИО есть "Vladimir"/"vladimir"/"VlaDimIR".
-
-**TODO**: ФИО в Yandex360 разделено на 3 части First, Last, Middle. Возможно, наряду с флагом --name, который ищет по фамилии и имени, можно добавить поиск по конкретным частям ФИО.
+`y360c user ls --orgId <organizaion id> --token <token> --name vladimir`
