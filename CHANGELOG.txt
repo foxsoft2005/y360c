@@ -1,0 +1,70 @@
+1.0.0.27-beta
+
+    - added new root command "update" (self update functionality)
+    - added new flag "deptId" for the "user ls" subcommand (e.g. "user ls --deptId XXX")
+    - added new subcommands for the "group" command (e.g. "group admin rm --id XX" or "group admin add --id XXX --admin YYY --admin ZZZ")
+    - refactoring
+
+
+1.0.0.25-beta
+
+    - added commands to read domain data (e.g. "domain ls" or "domain info --domain xx.zzz") 
+    - added command to read dns records (e.g. "dns ls -domain xx.zzz")
+    - refactoring
+
+
+1.0.0.23-beta
+
+    - added new command for department management ("dept member ls --id X" - shows department X members)
+    - added whitelist management (e.g. "whitelist add --allow 'XX.XX.XX.XX/YY'")
+    - refactoring + typos
+
+
+1.0.0.21-beta
+
+    - added department management (e.g. "dept add --name XXX")
+    - added department aliases management (e.g. "dept alias rm --id X --alias XXX")
+    - fixed some bugs
+    - refactoring + typos
+
+
+1.0.0.19-beta
+
+    - added group management (e.g. "group add --name XXX")
+    - added group membership management (e.g. "group member add --memberType user --memberId XXX")
+    - technical changes + refactoring + typos are fixed
+
+
+1.0.0.17-beta
+
+    - added export of user list to csv file (e.g. "user ls --csv")
+    - technical changes + refactoring
+
+
+1.0.0.15-beta
+
+    - technical changes + refactoring
+
+
+1.0.0.13-beta
+
+    - added new sub-commands for [user] command:
+            [mail rules] - shows configured autoreplies & forwards for the user
+            [mail senderinfo] - shows sender information (from name, from address, signs, etc) for the user
+    - refactoring + typos are fixed
+
+
+1.0.0.11-beta
+
+    - added http client timeout (60 sec)
+    - case-insensitive search by user name (e.g. "user ls --name aaa" is the same as "user ls --name AaA")
+    - changed the names of some flags:
+        dept info --deptId => dept info --id
+        user info --userId => user info --id
+        etc... (see help command)
+    - refactoring + typos are fixed
+
+
+1.0.0.1-beta
+
+    - initial release
