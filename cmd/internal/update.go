@@ -21,7 +21,7 @@ var UpdateCmd = &cobra.Command{
 	Short: "updates y360c app",
 	Long:  `Use this command to update y360c application to the actual version.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		url := "https://mlgmow01app010.linru.grp/files/y360c.zip"
+		url := "https://github.com/foxsoft2005/y360c/releases/download/latest/y360c.zip"
 
 		client := grab.NewClient()
 		req, _ := grab.NewRequest(".", url)

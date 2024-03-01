@@ -1,4 +1,4 @@
-y360c is a command line interface (cli) for Yandex 360, which uses the standard API to access the corresponding entities/actions in Yandex 360.
+y360c is a command line interface (cli) for Yandex 360, which uses the standard API to access the corresponding entities/actions in Yandex360.
 
 There is no need to install the application, just place the exe file anywhere and start working with it, like with any other console application.
 If necessary, you can add the path to the application to PATH.
@@ -6,8 +6,8 @@ If necessary, you can add the path to the application to PATH.
 Before starting work, you will need to create an application with the necessary access rights in https://oauth.yandex.ru/, as well as obtain an auth token, which is necessary to access data in Yandex360.
 
 The token can be used in 2 ways:
-1. pass it explicitly in command using the flag `--token (-t)`
-2. save the token for automatic use in the application configuration file, which is located here: `%USERPROFILE%\y360c.json` (created automatically when using the command `init` - i.e. `y360c init`).
+1. by passing it explicitly in command using the flag `--token (-t)`
+2. by saving the token for automatic use in the application configuration file, which is located here: `%USERPROFILE%\y360c.json` (created automatically when using the command `init` - i.e. `y360c init`).
 
 In addition to the token, most operations require the "Organization Id" parameter, which must be used similarly to the token:
 1. can be passed explicitly in the parameters using the flag `--orgId (-o)`
@@ -25,7 +25,7 @@ or
 
 **List of departments**:
 
-`y360c dept ls --orgId <organizaion id> --token <token>`
+`y360c dept ls --orgId <organization id> --token <token>`
 
 or
 
@@ -37,16 +37,20 @@ or
 
 or
 
-`y360c user ls --orgId <organizaion id> --token <token>`
+`y360c user ls --orgId <organization id> --token <token>`
+
+or (export to csv-file)
+
+`y360c user ls --orgId <organization id> --token <token> --csv`
 
 or (search for a specific employee)
 
-`y360c user ls --orgId <organizaion id> --token <token> --id <employee id>`
+`y360c user ls --orgId <organization id> --token <token> --id <employee id>`
 
-or (search my email)
+or (search by email)
 
-`y360c user ls --orgId <organizaion id> --token <token> --email aaa@vvv.cc`
+`y360c user ls --orgId <organization id> --token <token> --email aaa@vvv.cc`
 
 or (search by first/middle/last name)
 
-`y360c user ls --orgId <organizaion id> --token <token> --name vladimir`
+`y360c user ls --orgId <organization id> --token <token> --name vladimir`
