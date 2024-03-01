@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 Kirill Chernetsky <kirill.chernetsky@linru.ru>
+Copyright © 2024 Kirill Chernetsky <foxsoft2005@gmail.com>
 */
 package disk
 
@@ -10,10 +10,10 @@ import (
 	"os"
 	"time"
 
+	"github.com/foxsoft2005/y360c/helper"
+	"github.com/foxsoft2005/y360c/model"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/spf13/cobra"
-	"linru.ru/y360c/helper"
-	"linru.ru/y360c/model"
 )
 
 var maxRec int

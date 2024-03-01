@@ -1,12 +1,12 @@
 /*
-Copyright © 2024 Kirill Chernetsky <kirill.chernetsky@linru.ru>
+Copyright © 2024 Kirill Chernetsky <foxsoft2005@gmail.com>
 */
 package group
 
 import (
+	"github.com/foxsoft2005/y360c/cmd/group/admin"
+	"github.com/foxsoft2005/y360c/cmd/group/member"
 	"github.com/spf13/cobra"
-	"linru.ru/y360c/cmd/group/admin"
-	"linru.ru/y360c/cmd/group/member"
 )
 
 var (

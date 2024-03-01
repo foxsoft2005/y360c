@@ -1,12 +1,12 @@
 /*
-Copyright © 2024 Kirill Chernetsky <kirill.chernetsky@linru.ru>
+Copyright © 2024 Kirill Chernetsky <foxsoft2005@gmail.com>
 */
 package dept
 
 import (
+	"github.com/foxsoft2005/y360c/cmd/dept/alias"
+	"github.com/foxsoft2005/y360c/cmd/dept/member"
 	"github.com/spf13/cobra"
-	"linru.ru/y360c/cmd/dept/alias"
-	"linru.ru/y360c/cmd/dept/member"
 )
 
 var (

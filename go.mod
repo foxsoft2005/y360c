@@ -1,4 +1,4 @@
-module linru.ru/y360c
+module github.com/foxsoft2005/y360c
 
 go 1.21.3
 

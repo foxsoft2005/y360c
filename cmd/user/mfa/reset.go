@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/foxsoft2005/y360c/helper"
+	"github.com/foxsoft2005/y360c/model"
 	"github.com/spf13/cobra"
-	"linru.ru/y360c/helper"
-	"linru.ru/y360c/model"
 )
 
 // resetCmd represents the reset command

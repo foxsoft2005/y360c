@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 Kirill Chernetsky <kirill.chernetsky@linru.ru>
+Copyright © 2024 Kirill Chernetsky <foxsoft2005@gmail.com>
 */
 package auth
 
@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/foxsoft2005/y360c/helper"
+	"github.com/foxsoft2005/y360c/model"
 	"github.com/spf13/cobra"
-	"linru.ru/y360c/helper"
-	"linru.ru/y360c/model"
 )
 
 var userId string

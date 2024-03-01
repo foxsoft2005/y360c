@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 Kirill Chernetsky <kirill.chernetsky@linru.ru>
+Copyright © 2024 Kirill Chernetsky <foxsoft2005@gmail.com>
 */
 package cmd
 
@@ -10,17 +10,17 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"linru.ru/y360c/cmd/auth"
-	"linru.ru/y360c/cmd/dept"
-	"linru.ru/y360c/cmd/disk"
-	"linru.ru/y360c/cmd/dns"
-	"linru.ru/y360c/cmd/domain"
-	"linru.ru/y360c/cmd/group"
-	"linru.ru/y360c/cmd/internal"
-	"linru.ru/y360c/cmd/mfa"
-	"linru.ru/y360c/cmd/org"
-	"linru.ru/y360c/cmd/user"
-	"linru.ru/y360c/cmd/whitelist"
+	"github.com/foxsoft2005/y360c/cmd/auth"
+	"github.com/foxsoft2005/y360c/cmd/dept"
+	"github.com/foxsoft2005/y360c/cmd/disk"
+	"github.com/foxsoft2005/y360c/cmd/dns"
+	"github.com/foxsoft2005/y360c/cmd/domain"
+	"github.com/foxsoft2005/y360c/cmd/group"
+	"github.com/foxsoft2005/y360c/cmd/internal"
+	"github.com/foxsoft2005/y360c/cmd/mfa"
+	"github.com/foxsoft2005/y360c/cmd/org"
+	"github.com/foxsoft2005/y360c/cmd/user"
+	"github.com/foxsoft2005/y360c/cmd/whitelist"
 )
 
 var rootCmd = &cobra.Command{

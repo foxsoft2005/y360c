@@ -1,13 +1,13 @@
 /*
-Copyright © 2024 Kirill Chernetsky <kirill.chernetsky@linru.ru>
+Copyright © 2024 Kirill Chernetsky <foxsoft2005@gmail.com>
 */
 package user
 
 import (
+	"github.com/foxsoft2005/y360c/cmd/user/alias"
+	"github.com/foxsoft2005/y360c/cmd/user/mail"
+	"github.com/foxsoft2005/y360c/cmd/user/mfa"
 	"github.com/spf13/cobra"
-	"linru.ru/y360c/cmd/user/alias"
-	"linru.ru/y360c/cmd/user/mail"
-	"linru.ru/y360c/cmd/user/mfa"
 )
 
 var (
