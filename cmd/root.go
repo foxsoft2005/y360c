@@ -27,7 +27,7 @@ var rootCmd = &cobra.Command{
 	Use:     "y360c",
 	Short:   "Yandex360 cli",
 	Long:    `This app allows you to use the Yandex360 API via cli with some useful features.`,
-	Version: "1.0.0.27-beta",
+	Version: "1.0.0.29-beta",
 }
 
 func Execute() {

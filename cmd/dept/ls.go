@@ -81,7 +81,7 @@ var lsCmd = &cobra.Command{
 			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
 				log.Fatalln("Unable to evaluate data:", err)
 			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
 		var data model.DepartmentList
@@ -105,9 +105,9 @@ var lsCmd = &cobra.Command{
 func init() {
 	orderBy = byId
 
-	lsCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	lsCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
-	lsCmd.Flags().IntVar(&maxRec, "max", 100, "Max records to retrieve")
-	lsCmd.Flags().IntVar(&parentId, "parentId", 0, "Parent depratment id")
-	lsCmd.Flags().Var(&orderBy, "orderBy", "Data sorting (id or name)")
+	lsCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	lsCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	lsCmd.Flags().IntVar(&maxRec, "max", 100, "max records to retrieve")
+	lsCmd.Flags().IntVar(&parentId, "parentId", 0, "parent depratment id")
+	lsCmd.Flags().Var(&orderBy, "orderBy", "sort by (id or name)")
 }

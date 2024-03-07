@@ -52,7 +52,7 @@ var rmCmd = &cobra.Command{
 			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
 				log.Fatalln("Unable to evaluate data:", err)
 			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
 		var data model.RmAliasResponse
@@ -70,10 +70,10 @@ var rmCmd = &cobra.Command{
 }
 
 func init() {
-	rmCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	rmCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
-	rmCmd.Flags().IntVar(&deptId, "id", 0, "Department id")
-	rmCmd.Flags().StringVar(&alias, "alias", "", "Alias to be deleted")
+	rmCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	rmCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	rmCmd.Flags().IntVar(&deptId, "id", 0, "department id")
+	rmCmd.Flags().StringVar(&alias, "alias", "", "alias to be deleted")
 
 	rmCmd.MarkFlagRequired("id")
 	rmCmd.MarkFlagRequired("alias")

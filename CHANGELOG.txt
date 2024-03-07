@@ -1,3 +1,9 @@
+1.0.0.29-beta
+
+    - added new subcommands for the "user" command (e.g. "user contact ls --id XXX" or "user contact rm --id XXX" - user's contact info management)
+    - typos
+
+
 1.0.0.27-beta
 
     - added new root command "update" (self update functionality)

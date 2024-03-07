@@ -53,7 +53,7 @@ var senderinfoCmd = &cobra.Command{
 			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
 				log.Fatalln("Unable to evaluate data:", err)
 			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
 		var data model.UserSenderInfo
@@ -82,9 +82,9 @@ var senderinfoCmd = &cobra.Command{
 }
 
 func init() {
-	senderinfoCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	senderinfoCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
-	senderinfoCmd.Flags().StringVar(&userId, "id", "", "User id")
+	senderinfoCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	senderinfoCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	senderinfoCmd.Flags().StringVar(&userId, "id", "", "user id")
 
 	senderinfoCmd.MarkFlagRequired("id")
 

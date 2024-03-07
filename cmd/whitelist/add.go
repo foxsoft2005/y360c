@@ -53,7 +53,7 @@ var addCmd = &cobra.Command{
 			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
 				log.Fatalln("Unable to evaluate data:", err)
 			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
 		var data model.WhiteList
@@ -76,9 +76,9 @@ var addCmd = &cobra.Command{
 }
 
 func init() {
-	addCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	addCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
-	addCmd.Flags().StringArrayVar(&allowed, "allowed", nil, `Allowed IP-address ("77.88.21.249") or CIDR ("77.88.54.0/23")`)
+	addCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	addCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	addCmd.Flags().StringArrayVar(&allowed, "allowed", nil, `allowed IP-address ("77.88.21.249") or CIDR ("77.88.54.0/23")`)
 
 	addCmd.MarkFlagRequired("allowed")
 }

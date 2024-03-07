@@ -6,12 +6,14 @@ package helper
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"time"
 
+	"github.com/foxsoft2005/y360c/model"
 	"github.com/spf13/viper"
 )
 
@@ -68,4 +70,41 @@ func GetOrgId() (int, error) {
 	}
 
 	return orgId, nil
+}
+
+func GetUserById(orgId int, token string, userId string) (*model.User, error) {
+	if userId == "" {
+		return nil, errors.New("user id must be specified")
+	}
+
+	if token == "" {
+		return nil, errors.New("token must be specified")
+	}
+
+	if orgId == 0 {
+		return nil, errors.New("organization id must be specified")
+	}
+
+	var url = fmt.Sprintf("%s/directory/v1/org/%d/users/%s", BaseUrl, orgId, userId)
+
+	resp, err := MakeRequest(url, "GET", token, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.HttpCode != 200 {
+		var error model.ErrorResponse
+		if err := json.Unmarshal(resp.Body, &error); err != nil {
+			return nil, err
+		}
+
+		return nil, fmt.Errorf("http %d: [%d] %s", resp.HttpCode, error.Code, error.Message)
+	}
+
+	var user model.User
+	if err := json.Unmarshal(resp.Body, &user); err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }

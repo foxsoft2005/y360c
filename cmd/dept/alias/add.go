@@ -54,7 +54,7 @@ var addCmd = &cobra.Command{
 			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
 				log.Fatalln("Unable to evaluate data:", err)
 			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
 		var data model.Department
@@ -75,10 +75,10 @@ var addCmd = &cobra.Command{
 }
 
 func init() {
-	addCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	addCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
-	addCmd.Flags().IntVar(&deptId, "id", 0, "Department id")
-	addCmd.Flags().StringVar(&alias, "alias", "", "Department alias")
+	addCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	addCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	addCmd.Flags().IntVar(&deptId, "id", 0, "department id")
+	addCmd.Flags().StringVar(&alias, "alias", "", "department alias")
 
 	addCmd.MarkFlagRequired("id")
 	addCmd.MarkFlagRequired("alias")

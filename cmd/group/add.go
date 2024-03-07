@@ -54,7 +54,7 @@ var addCmd = &cobra.Command{
 			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
 				log.Fatalln("Unable to evaluate data:", err)
 			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
 		var data model.Group
@@ -84,13 +84,13 @@ var addCmd = &cobra.Command{
 }
 
 func init() {
-	addCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	addCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
-	addCmd.Flags().StringVar(&name, "name", "", "Group name")
-	addCmd.Flags().StringVar(&label, "label", "", "Group label")
-	addCmd.Flags().StringVar(&description, "description", "", "Group description")
-	addCmd.Flags().StringVar(&externalId, "externalId", "", "External id")
-	addCmd.Flags().StringArrayVar(&admins, "admin", nil, "Group administrators ids")
+	addCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	addCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	addCmd.Flags().StringVar(&name, "name", "", "group name")
+	addCmd.Flags().StringVar(&label, "label", "", "group label")
+	addCmd.Flags().StringVar(&description, "description", "", "group description")
+	addCmd.Flags().StringVar(&externalId, "externalId", "", "external id")
+	addCmd.Flags().StringArrayVar(&admins, "admin", nil, "group administrator ids")
 
 	addCmd.MarkFlagRequired("name")
 }

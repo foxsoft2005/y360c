@@ -52,7 +52,7 @@ var disableCmd = &cobra.Command{
 			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
 				log.Fatalln("Unable to evaluate data:", err)
 			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
 		var data model.MfaSetup
@@ -72,6 +72,6 @@ var disableCmd = &cobra.Command{
 }
 
 func init() {
-	disableCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	disableCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
+	disableCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	disableCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 }

@@ -55,7 +55,7 @@ var logCmd = &cobra.Command{
 			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
 				log.Fatalln("Unable to evaluate data:", err)
 			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
 		var data model.DiskAuditLog
@@ -77,7 +77,7 @@ var logCmd = &cobra.Command{
 }
 
 func init() {
-	logCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	logCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
-	logCmd.Flags().IntVar(&maxRec, "max", 100, "Max records to retrieve")
+	logCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	logCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	logCmd.Flags().IntVar(&maxRec, "max", 100, "max records to retrieve")
 }

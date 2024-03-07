@@ -56,7 +56,7 @@ var changeCmd = &cobra.Command{
 			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
 				log.Fatalln("Unable to evaluate data:", err)
 			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
 		var data model.Department
@@ -84,15 +84,15 @@ var changeCmd = &cobra.Command{
 }
 
 func init() {
-	changeCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	changeCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
-	changeCmd.Flags().IntVar(&deptId, "id", 0, "Department id")
-	changeCmd.Flags().StringVar(&name, "name", "", "Department name")
-	changeCmd.Flags().StringVar(&label, "label", "", "Department label")
-	changeCmd.Flags().StringVar(&description, "description", "", "Department description")
-	changeCmd.Flags().IntVar(&parentId, "parentId", 1, "Parent department id")
-	changeCmd.Flags().StringVar(&externalId, "externalId", "", "External department id")
-	changeCmd.Flags().StringVar(&headId, "headId", "", "Department head id")
+	changeCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	changeCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	changeCmd.Flags().IntVar(&deptId, "id", 0, "department id")
+	changeCmd.Flags().StringVar(&name, "name", "", "department name")
+	changeCmd.Flags().StringVar(&label, "label", "", "department label")
+	changeCmd.Flags().StringVar(&description, "description", "", "department description")
+	changeCmd.Flags().IntVar(&parentId, "parentId", 1, "parent department id")
+	changeCmd.Flags().StringVar(&externalId, "externalId", "", "external department id")
+	changeCmd.Flags().StringVar(&headId, "headId", "", "department head id")
 
 	addCmd.MarkFlagRequired("id")
 }

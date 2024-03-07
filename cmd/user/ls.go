@@ -62,7 +62,7 @@ var listCmd = &cobra.Command{
 			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
 				log.Fatalln("Unable to evaluate data:", err)
 			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
 		var data model.UserList
@@ -178,14 +178,14 @@ var listCmd = &cobra.Command{
 }
 
 func init() {
-	listCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	listCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
-	listCmd.Flags().IntVar(&maxRec, "max", 1000, "Max records to retrieve")
-	listCmd.Flags().StringVar(&userId, "id", "", "Retrieve user by id")
-	listCmd.Flags().StringVar(&email, "email", "", "Retrieve user by email")
-	listCmd.Flags().StringVar(&userName, "name", "", "Retrieve user(s) by name")
-	listCmd.Flags().BoolVar(&asCsv, "csv", false, "Export data to csv-file")
-	listCmd.Flags().IntVar(&deptId, "deptId", 0, "Department id")
+	listCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	listCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	listCmd.Flags().IntVar(&maxRec, "max", 1000, "max records to retrieve")
+	listCmd.Flags().StringVar(&userId, "id", "", "find user by id")
+	listCmd.Flags().StringVar(&email, "email", "", "find user by email")
+	listCmd.Flags().StringVar(&userName, "name", "", "find user(s) by name")
+	listCmd.Flags().BoolVar(&asCsv, "csv", false, "export data to csv-file")
+	listCmd.Flags().IntVar(&deptId, "deptId", 0, "department id")
 
 	listCmd.MarkFlagsMutuallyExclusive("id", "email", "name", "deptId")
 

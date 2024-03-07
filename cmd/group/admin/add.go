@@ -54,7 +54,7 @@ var addCmd = &cobra.Command{
 			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
 				log.Fatalln("Unable to evaluate data:", err)
 			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
 		var data model.Group
@@ -84,10 +84,10 @@ var addCmd = &cobra.Command{
 }
 
 func init() {
-	addCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	addCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
-	addCmd.Flags().IntVar(&groupId, "id", 0, "Group id")
-	addCmd.Flags().StringArrayVar(&admins, "admin", nil, "Administrator ids (repeatable flag)")
+	addCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	addCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	addCmd.Flags().IntVar(&groupId, "id", 0, "group id")
+	addCmd.Flags().StringArrayVar(&admins, "admin", nil, "administrator ids (repeatable flag)")
 
 	addCmd.MarkFlagRequired("id")
 	addCmd.MarkFlagRequired("admin")

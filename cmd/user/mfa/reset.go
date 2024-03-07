@@ -50,7 +50,7 @@ var resetCmd = &cobra.Command{
 			if err := json.Unmarshal(resp.Body, &errData); err != nil {
 				log.Fatalln("Unable to evaluate error:", err)
 			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errData.Code, errData.Message)
+			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errData.Code, errData.Message)
 		}
 
 		log.Printf("2fa settings for the user %s were successfully cleared", userId)
@@ -58,9 +58,9 @@ var resetCmd = &cobra.Command{
 }
 
 func init() {
-	resetCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	resetCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
-	resetCmd.Flags().StringVar(&userId, "id", "", "User id")
+	resetCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	resetCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	resetCmd.Flags().StringVar(&userId, "id", "", "user id")
 
 	resetCmd.MarkFlagRequired("id")
 }

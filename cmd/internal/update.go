@@ -57,5 +57,5 @@ var UpdateCmd = &cobra.Command{
 }
 
 func init() {
-	UpdateCmd.Flags().BoolVarP(&useBeta, "beta", "b", false, "Use beta version for update")
+	UpdateCmd.Flags().BoolVarP(&useBeta, "beta", "b", false, "use beta version for update")
 }

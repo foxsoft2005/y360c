@@ -4,14 +4,12 @@ Copyright © 2024 Kirill Chernetsky <foxsoft2005@gmail.com>
 package user
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"strings"
 
 	"github.com/foxsoft2005/y360c/helper"
-	"github.com/foxsoft2005/y360c/model"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/spf13/cobra"
 )
@@ -41,24 +39,9 @@ var infoCmd = &cobra.Command{
 			orgId = t
 		}
 
-		var url = fmt.Sprintf("%s/directory/v1/org/%d/users/%s", helper.BaseUrl, orgId, userId)
-
-		resp, err := helper.MakeRequest(url, "GET", token, nil)
+		data, err := helper.GetUserById(orgId, token, userId)
 		if err != nil {
-			log.Fatalln("Unable to make API request:", err)
-		}
-
-		if resp.HttpCode != 200 {
-			var errorData model.ErrorResponse
-			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
-				log.Fatalln("Unable to evaluate data:", err)
-			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
-		}
-
-		var data model.User
-		if err := json.Unmarshal(resp.Body, &data); err != nil {
-			log.Fatalln("Unable to evaluate data:", err)
+			log.Fatalln("Unable to get user:", err)
 		}
 
 		t := table.NewWriter()
@@ -91,9 +74,9 @@ var infoCmd = &cobra.Command{
 }
 
 func init() {
-	infoCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	infoCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
-	infoCmd.Flags().StringVar(&userId, "id", "", "User id")
+	infoCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	infoCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	infoCmd.Flags().StringVar(&userId, "id", "", "user id")
 
 	infoCmd.MarkFlagsOneRequired("id")
 }

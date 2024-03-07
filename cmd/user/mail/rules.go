@@ -52,7 +52,7 @@ var rulesCmd = &cobra.Command{
 			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
 				log.Fatalln("Unable to evaluate data:", err)
 			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
 		var data model.UserMailRules
@@ -83,9 +83,9 @@ var rulesCmd = &cobra.Command{
 }
 
 func init() {
-	rulesCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	rulesCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
-	rulesCmd.Flags().StringVar(&userId, "id", "", "User id")
+	rulesCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	rulesCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	rulesCmd.Flags().StringVar(&userId, "id", "", "user id")
 
 	rulesCmd.MarkFlagRequired("id")
 

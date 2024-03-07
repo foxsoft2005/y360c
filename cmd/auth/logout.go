@@ -51,7 +51,7 @@ var logoutCmd = &cobra.Command{
 			if err := json.Unmarshal(resp.Body, &errData); err != nil {
 				log.Fatalln("Unable to evaluate error:", err)
 			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errData.Code, errData.Message)
+			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errData.Code, errData.Message)
 		}
 
 		log.Printf("User %s was logged out successfully", userId)
@@ -59,9 +59,9 @@ var logoutCmd = &cobra.Command{
 }
 
 func init() {
-	logoutCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	logoutCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
-	logoutCmd.Flags().StringVar(&userId, "userId", "", "User id to log out")
+	logoutCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	logoutCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	logoutCmd.Flags().StringVar(&userId, "userId", "", "user id to log out")
 
 	logoutCmd.MarkFlagRequired("userId")
 }

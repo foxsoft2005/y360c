@@ -53,7 +53,7 @@ var addCmd = &cobra.Command{
 			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
 				log.Fatalln("Unable to evaluate data:", err)
 			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
 		var data model.GroupMemberResponse
@@ -75,11 +75,11 @@ var addCmd = &cobra.Command{
 func init() {
 	memberType = userMember
 
-	addCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	addCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
-	addCmd.Flags().IntVar(&groupId, "id", 0, "Group id")
-	addCmd.Flags().Var(&memberType, "memberType", "Member (user, group or department) to be added")
-	addCmd.Flags().StringVar(&memberId, "memberId", "", "Member id to be added")
+	addCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	addCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	addCmd.Flags().IntVar(&groupId, "id", 0, "group id")
+	addCmd.Flags().Var(&memberType, "memberType", "member (user, group or department) to be added")
+	addCmd.Flags().StringVar(&memberId, "memberId", "", "member id to be added")
 
 	addCmd.MarkFlagRequired("id")
 	addCmd.MarkFlagRequired("memberType")

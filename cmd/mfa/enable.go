@@ -83,7 +83,7 @@ var enableCmd = &cobra.Command{
 			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
 				log.Fatalln("Unable to evaluate data:", err)
 			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
 		var data model.MfaSetup
@@ -105,11 +105,11 @@ var enableCmd = &cobra.Command{
 func init() {
 	validation = smsMethod
 
-	enableCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	enableCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
-	enableCmd.Flags().IntVar(&duration, "duration", 0, "Period (sec.) to postpone MFA setup by user")
-	enableCmd.Flags().BoolVar(&logoutUsers, "logout", false, "Logout all users on MFA activation")
-	enableCmd.Flags().Var(&validation, "validate", "Validation method (sms, phone)")
+	enableCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	enableCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	enableCmd.Flags().IntVar(&duration, "duration", 0, "period (sec.) to postpone MFA setup by user")
+	enableCmd.Flags().BoolVar(&logoutUsers, "logout", false, "logout all users on MFA activation")
+	enableCmd.Flags().Var(&validation, "validate", "validation method (sms, phone)")
 
 	enableCmd.MarkFlagRequired("duration")
 }

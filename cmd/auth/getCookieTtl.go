@@ -51,7 +51,7 @@ var getCookieTtlCmd = &cobra.Command{
 			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
 				log.Fatalln("Unable to evaluate data:", err)
 			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
 		var data model.CookieTTL
@@ -69,6 +69,6 @@ var getCookieTtlCmd = &cobra.Command{
 }
 
 func init() {
-	getCookieTtlCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	getCookieTtlCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
+	getCookieTtlCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	getCookieTtlCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 }

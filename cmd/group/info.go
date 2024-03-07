@@ -53,7 +53,7 @@ var infoCmd = &cobra.Command{
 			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
 				log.Fatalln("Unable to evaluate data:", err)
 			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
 		var data model.Group
@@ -84,9 +84,9 @@ var infoCmd = &cobra.Command{
 }
 
 func init() {
-	infoCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	infoCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
-	infoCmd.Flags().IntVar(&groupId, "id", 0, "Group id")
+	infoCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	infoCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	infoCmd.Flags().IntVar(&groupId, "id", 0, "group id")
 
 	infoCmd.MarkFlagRequired("id")
 }

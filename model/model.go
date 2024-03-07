@@ -86,7 +86,7 @@ type OrganizationList struct {
 	Organizations []Organization `json:"organizations"`
 }
 
-type Contact struct {
+type ContactInfo struct {
 	Alias     bool   `json:"alias"`
 	Label     string `json:"label"`
 	Main      bool   `json:"main"`
@@ -102,29 +102,29 @@ type UserName struct {
 }
 
 type User struct {
-	About        string    `json:"about"`
-	Aliases      []string  `json:"aliases"`
-	AvararId     string    `json:"avatarId"`
-	Birthday     string    `json:"birthday"`
-	Contacts     []Contact `json:"contacts"`
-	CreatedAt    string    `json:"createdAt"`
-	DepartmentId int       `json:"departmentId"`
-	DisplayName  string    `json:"displayName"`
-	Email        string    `json:"email"`
-	ExternalId   string    `json:"externalId"`
-	Gender       string    `json:"gender"`
-	Groups       []int     `json:"groups"`
-	Id           string    `json:"id"`
-	IsAdmin      bool      `json:"isAdmin"`
-	IsDismissed  bool      `json:"isDismissed"`
-	IsEnabled    bool      `json:"isEnabled"`
-	IsRobot      bool      `json:"isRobot"`
-	Language     string    `json:"language"`
-	Name         UserName  `json:"name"`
-	Nickname     string    `json:"nickname"`
-	Position     string    `json:"position"`
-	Timezone     string    `json:"timezone"`
-	UpdatedAt    string    `json:"updatetAt"`
+	About        string        `json:"about"`
+	Aliases      []string      `json:"aliases"`
+	AvararId     string        `json:"avatarId"`
+	Birthday     string        `json:"birthday"`
+	Contacts     []ContactInfo `json:"contacts"`
+	CreatedAt    string        `json:"createdAt"`
+	DepartmentId int           `json:"departmentId"`
+	DisplayName  string        `json:"displayName"`
+	Email        string        `json:"email"`
+	ExternalId   string        `json:"externalId"`
+	Gender       string        `json:"gender"`
+	Groups       []int         `json:"groups"`
+	Id           string        `json:"id"`
+	IsAdmin      bool          `json:"isAdmin"`
+	IsDismissed  bool          `json:"isDismissed"`
+	IsEnabled    bool          `json:"isEnabled"`
+	IsRobot      bool          `json:"isRobot"`
+	Language     string        `json:"language"`
+	Name         UserName      `json:"name"`
+	Nickname     string        `json:"nickname"`
+	Position     string        `json:"position"`
+	Timezone     string        `json:"timezone"`
+	UpdatedAt    string        `json:"updatetAt"`
 }
 
 type UserList struct {
@@ -296,4 +296,8 @@ type DomainList struct {
 
 type AdminList struct {
 	AdminIds []string `json:"adminIds"`
+}
+
+type ContactInfoList struct {
+	Items []ContactInfo `json:"contacts"`
 }

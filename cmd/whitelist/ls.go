@@ -52,7 +52,7 @@ var lsCmd = &cobra.Command{
 			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
 				log.Fatalln("Unable to evaluate data:", err)
 			}
-			log.Fatalf("Response (HTTP %d): [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
 		var data model.WhiteList
@@ -75,6 +75,6 @@ var lsCmd = &cobra.Command{
 }
 
 func init() {
-	lsCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "Organization id")
-	lsCmd.Flags().StringVarP(&token, "token", "t", "", "Access token")
+	lsCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	lsCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 }
