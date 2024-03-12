@@ -4,10 +4,16 @@ Copyright © 2024 Kirill Chernetsky <foxsoft2005@gmail.com>
 package internal
 
 import (
+	"fmt"
+	"io"
 	"log"
-	"time"
+	"net/http"
+	"os"
+	"path/filepath"
+	"runtime"
+	"strings"
 
-	"github.com/cavaliergopher/grab/v3"
+	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
 )
 
@@ -21,38 +27,28 @@ var UpdateCmd = &cobra.Command{
 	Short: "updates y360c app",
 	Long:  `Use this command to update y360c application to the actual version.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		url := "https://github.com/foxsoft2005/y360c/releases/download/latest/y360c.zip"
+		fmt.Println("checking the latest version...")
 
-		client := grab.NewClient()
-		req, _ := grab.NewRequest(".", url)
+		wd, _ := os.Getwd()
+		filename := fmt.Sprintf("y360c-%s-x64.zip", strings.ToLower(runtime.GOOS))
+		url := fmt.Sprintf("https://github.com/foxsoft2005/y360c/releases/latest/download/%s", filename)
 
-		if useBeta {
-			log.Println("Downloading the beta version...")
-		} else {
-			log.Println("Downloading the actual version...")
+		req, _ := http.NewRequest("GET", url, nil)
+		resp, err := http.DefaultClient.Do(req)
+		if err != nil {
+			log.Fatalln("unable to get update:", err)
 		}
+		defer resp.Body.Close()
 
-		resp := client.Do(req)
-		log.Printf("  %v", resp.HTTPResponse.Status)
+		f, _ := os.OpenFile(filepath.Join(wd, filename), os.O_CREATE|os.O_WRONLY, 0644)
+		defer f.Close()
 
-		t := time.NewTicker(200 * time.Millisecond)
-		defer t.Stop()
-
-	Loop:
-		for {
-			select {
-			case <-t.C:
-				log.Printf("  transferred %v / %v bytes (%.2f%%)", resp.BytesComplete(), resp.Size(), 100*resp.Progress())
-			case <-resp.Done:
-				break Loop
-			}
-		}
-
-		if err := resp.Err(); err != nil {
-			log.Fatalln("Download failed:", err)
-		}
-
-		log.Printf("Update saved to ./%v, please extract it over the existing version manually", resp.Filename)
+		bar := progressbar.DefaultBytes(
+			resp.ContentLength,
+			"downloading",
+		)
+		io.Copy(io.MultiWriter(f, bar), resp.Body)
+		fmt.Printf("update downloaded to %v, extract it manually", filepath.Join(wd, filename))
 	},
 }
 
