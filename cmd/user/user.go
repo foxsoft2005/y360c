@@ -15,6 +15,7 @@ var (
 	orgId  int
 	token  string
 	userId string
+	asRaw  bool
 )
 
 var UserCmd = &cobra.Command{

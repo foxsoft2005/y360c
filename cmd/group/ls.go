@@ -15,7 +15,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var maxRec int
+var (
+	maxRec int
+	asRaw  bool
+)
 
 // lsCmd represents the ls command
 var lsCmd = &cobra.Command{
@@ -24,7 +27,9 @@ var lsCmd = &cobra.Command{
 	Long: `Use this command to get a list of Y360 groups.
 "directory:read_groups" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Println("group ls called")
+		if !asRaw {
+			log.Println("group ls called")
+		}
 
 		if token == "" {
 			t, err := helper.GetToken()
@@ -62,14 +67,19 @@ var lsCmd = &cobra.Command{
 			log.Fatalln("Unable to evaluate data:", err)
 		}
 
-		t := table.NewWriter()
-		t.SetOutputMirror(os.Stdout)
-		t.AppendHeader(table.Row{"id", "type", "name", "email", "label", "author id", "members count"})
-		for _, e := range data.Groups {
-			t.AppendRow(table.Row{e.Id, e.Type, e.Name, e.Email, e.Label, e.AuthorId, e.MembersCount})
+		if asRaw {
+			buff, _ := json.MarshalIndent(data.Groups, "", "     ")
+			fmt.Print(string(buff))
+		} else {
+			t := table.NewWriter()
+			t.SetOutputMirror(os.Stdout)
+			t.AppendHeader(table.Row{"id", "type", "name", "email", "label", "author id", "members count"})
+			for _, e := range data.Groups {
+				t.AppendRow(table.Row{e.Id, e.Type, e.Name, e.Email, e.Label, e.AuthorId, e.MembersCount})
+			}
+			t.AppendSeparator()
+			t.Render()
 		}
-		t.AppendSeparator()
-		t.Render()
 	},
 }
 
@@ -77,4 +87,5 @@ func init() {
 	lsCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
 	lsCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	lsCmd.Flags().IntVar(&maxRec, "max", 100, "max records to retrieve")
+	lsCmd.Flags().BoolVar(&asRaw, "raw", false, "export as raw data")
 }

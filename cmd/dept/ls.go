@@ -39,8 +39,12 @@ func (e *sortingMethod) Type() string {
 }
 
 // Command flags & parameters
-var maxRec int
-var orderBy sortingMethod
+
+var (
+	maxRec  int
+	orderBy sortingMethod
+	asRaw   bool
+)
 
 var lsCmd = &cobra.Command{
 	Use:   "ls",
@@ -48,7 +52,9 @@ var lsCmd = &cobra.Command{
 	Long: `Use this command to retrieve a list of departments of selected organization.
 "directory:read_departments" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Print("dept ls called")
+		if !asRaw {
+			log.Print("dept ls called")
+		}
 
 		if token == "" {
 			t, err := helper.GetToken()
@@ -89,15 +95,19 @@ var lsCmd = &cobra.Command{
 			log.Fatalln("Unable to evaluate data:", err)
 		}
 
-		t := table.NewWriter()
-		t.SetOutputMirror(os.Stdout)
-		t.AppendHeader(table.Row{"id", "parent id", "name", "description", "email", "label", "members count"})
-		for _, e := range data.Departments {
-			t.AppendRow(table.Row{e.Id, e.ParentId, e.Name, e.Description, e.Email, e.Label, e.MembersCount})
+		if asRaw {
+			buff, _ := json.MarshalIndent(data.Departments, "", "     ")
+			fmt.Print(string(buff))
+		} else {
+			t := table.NewWriter()
+			t.SetOutputMirror(os.Stdout)
+			t.AppendHeader(table.Row{"id", "parent id", "name", "description", "email", "label", "members count"})
+			for _, e := range data.Departments {
+				t.AppendRow(table.Row{e.Id, e.ParentId, e.Name, e.Description, e.Email, e.Label, e.MembersCount})
+			}
+			t.AppendSeparator()
+			t.Render()
 		}
-
-		t.AppendSeparator()
-		t.Render()
 
 	},
 }
@@ -110,4 +120,5 @@ func init() {
 	lsCmd.Flags().IntVar(&maxRec, "max", 100, "max records to retrieve")
 	lsCmd.Flags().IntVar(&parentId, "parentId", 0, "parent depratment id")
 	lsCmd.Flags().Var(&orderBy, "orderBy", "sort by (id or name)")
+	lsCmd.Flags().BoolVar(&asRaw, "raw", false, "export as raw data")
 }

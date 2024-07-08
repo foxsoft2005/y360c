@@ -27,4 +27,8 @@ Cannot be executed directly, please use one of the available sub-commands.`,
 func init() {
 	MailCmd.AddCommand(rulesCmd)
 	MailCmd.AddCommand(senderinfoCmd)
+	MailCmd.AddCommand(delegateCmd)
+	MailCmd.AddCommand(statusCmd)
+	MailCmd.AddCommand(hasAccessCmd)
+	MailCmd.AddCommand(sharedWithCmd)
 }

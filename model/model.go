@@ -301,3 +301,33 @@ type AdminList struct {
 type ContactInfoList struct {
 	Items []ContactInfo `json:"contacts"`
 }
+
+type MailAccessSettings struct {
+	Items []string `json:"rights"`
+}
+
+type MailAccessResponse struct {
+	TaskId string `json:"taskId"`
+}
+
+type TaskStatusResponse struct {
+	Status string `json:"status"`
+}
+
+type Resource struct {
+	ResourceId string   `json:"resourceId"`
+	Items      []string `json:"rights"`
+}
+
+type ResourceList struct {
+	Items []Resource `json:"resources"`
+}
+
+type Actor struct {
+	ActorId string   `json:"actorId"`
+	Items   []string `json:"rights"`
+}
+
+type ActorList struct {
+	Items []Actor `json:"actors"`
+}

@@ -15,13 +15,19 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	asRaw bool
+)
+
 var listCmd = &cobra.Command{
 	Use:   "ls",
 	Short: "gets a list of the organizations",
 	Long: `Use this command to retrieve a list of Y360 organizations.
 "directory:read_organization" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Print("org ls called")
+		if !asRaw {
+			log.Print("org ls called")
+		}
 
 		if token == "" {
 			t, err := helper.GetToken()
@@ -51,14 +57,19 @@ var listCmd = &cobra.Command{
 			log.Fatalln("Unable to evaluate data:", err)
 		}
 
-		t := table.NewWriter()
-		t.SetOutputMirror(os.Stdout)
-		t.AppendHeader(table.Row{"id", "name", "phone", "fax", "email", "subscription"})
-		for _, e := range data.Organizations {
-			t.AppendRow(table.Row{e.Id, e.Name, e.Phone, e.Fax, e.Email, e.SubsciptionPlan})
+		if asRaw {
+			buff, _ := json.MarshalIndent(data.Organizations, "", "     ")
+			fmt.Print(string(buff))
+		} else {
+			t := table.NewWriter()
+			t.SetOutputMirror(os.Stdout)
+			t.AppendHeader(table.Row{"id", "name", "phone", "fax", "email", "subscription"})
+			for _, e := range data.Organizations {
+				t.AppendRow(table.Row{e.Id, e.Name, e.Phone, e.Fax, e.Email, e.SubsciptionPlan})
+			}
+			t.AppendSeparator()
+			t.Render()
 		}
-		t.AppendSeparator()
-		t.Render()
 
 	},
 }
@@ -66,5 +77,6 @@ var listCmd = &cobra.Command{
 func init() {
 	listCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	listCmd.Flags().IntVarP(&maxRec, "max", "m", 100, "max records to retrieve")
+	listCmd.Flags().BoolVar(&asRaw, "raw", false, "export as raw data")
 
 }

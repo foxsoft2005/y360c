@@ -32,7 +32,9 @@ var listCmd = &cobra.Command{
 	Long: `Use this command to retrieve a list of the users of selected organization.
 "directory:read_users" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Print("user ls called")
+		if !asRaw {
+			log.Print("user ls called")
+		}
 
 		if token == "" {
 			t, err := helper.GetToken()
@@ -70,42 +72,11 @@ var listCmd = &cobra.Command{
 			log.Fatalln("Unable to evaluate data:", err)
 		}
 
+		var users []model.User
 		showAll := (userId == "") && (email == "") && (userName == "") && (deptId == 0)
 		found := false
 
 		r, _ := regexp.Compile(fmt.Sprintf("(?i)%s", userName))
-
-		t := table.NewWriter()
-		if !asCsv {
-			t.SetOutputMirror(os.Stdout)
-			t.AppendHeader(table.Row{"id", "name", "email", "timezone", "enabled", "dismissed", "admin"})
-		} else {
-			t.AppendHeader(
-				table.Row{
-					"Id",
-					"External Id",
-					"Name",
-					"Nickname",
-					"Display Name",
-					"About",
-					"Gender",
-					"Birthday",
-					"Email",
-					"Avatar Id",
-					"Position",
-					"Department",
-					"Timezone",
-					"Aliases",
-					"Groups",
-					"Enabled",
-					"Dismissed",
-					"Admin",
-					"Robot",
-					"Created At",
-					"Updated At",
-				},
-			)
-		}
 
 		for _, e := range data.Users {
 			switch true {
@@ -118,8 +89,48 @@ var listCmd = &cobra.Command{
 			case deptId != 0:
 				found = deptId == e.DepartmentId
 			}
-
 			if found || showAll {
+				users = append(users, e)
+			}
+		}
+
+		if asRaw {
+			buff, _ := json.MarshalIndent(users, "", "     ")
+			fmt.Print(string(buff))
+		} else {
+			t := table.NewWriter()
+			if !asCsv {
+				t.SetOutputMirror(os.Stdout)
+				t.AppendHeader(table.Row{"id", "name", "email", "timezone", "enabled", "dismissed", "admin"})
+			} else {
+				t.AppendHeader(
+					table.Row{
+						"Id",
+						"External Id",
+						"Name",
+						"Nickname",
+						"Display Name",
+						"About",
+						"Gender",
+						"Birthday",
+						"Email",
+						"Avatar Id",
+						"Position",
+						"Department",
+						"Timezone",
+						"Aliases",
+						"Groups",
+						"Enabled",
+						"Dismissed",
+						"Admin",
+						"Robot",
+						"Created At",
+						"Updated At",
+					},
+				)
+			}
+
+			for _, e := range users {
 				if !asCsv {
 					t.AppendRow(
 						table.Row{e.Id, strings.TrimSpace(fmt.Sprintf("%s %s %s", e.Name.Last, e.Name.First, e.Name.Middle)), e.Email, e.Timezone, e.IsEnabled, e.IsDismissed, e.IsAdmin},
@@ -151,28 +162,27 @@ var listCmd = &cobra.Command{
 						},
 					)
 				}
-
 			}
-		}
-		t.AppendSeparator()
-		if asCsv {
-			path, _ := os.Getwd()
-			fileName := filepath.Join(path, fmt.Sprintf("users_%d.csv", orgId))
+			t.AppendSeparator()
+			if asCsv {
+				path, _ := os.Getwd()
+				fileName := filepath.Join(path, fmt.Sprintf("users_%d.csv", orgId))
 
-			f, err := os.Create(fileName)
-			if err != nil {
-				log.Fatalln("Unable to create csv file:", err)
+				f, err := os.Create(fileName)
+				if err != nil {
+					log.Fatalln("Unable to create csv file:", err)
+				}
+				defer f.Close()
+
+				_, err1 := f.WriteString(t.RenderCSV())
+				if err1 != nil {
+					log.Fatalln("Unable to write to csv file:", err1)
+				}
+
+				log.Printf("The users where successfully exported to %s", fileName)
+			} else {
+				t.Render()
 			}
-			defer f.Close()
-
-			_, err1 := f.WriteString(t.RenderCSV())
-			if err1 != nil {
-				log.Fatalln("Unable to write to csv file:", err1)
-			}
-
-			log.Printf("The users where successfully exported to %s", fileName)
-		} else {
-			t.Render()
 		}
 	},
 }
@@ -185,8 +195,10 @@ func init() {
 	listCmd.Flags().StringVar(&email, "email", "", "find user by email")
 	listCmd.Flags().StringVar(&userName, "name", "", "find user(s) by name")
 	listCmd.Flags().BoolVar(&asCsv, "csv", false, "export data to csv-file")
-	listCmd.Flags().IntVar(&deptId, "deptId", 0, "department id")
+	listCmd.Flags().IntVar(&deptId, "deptId", 0, "find user(s) by department id")
+	listCmd.Flags().BoolVar(&asRaw, "raw", false, "export as raw data")
 
 	listCmd.MarkFlagsMutuallyExclusive("id", "email", "name", "deptId")
+	listCmd.MarkFlagsMutuallyExclusive("csv", "raw")
 
 }
