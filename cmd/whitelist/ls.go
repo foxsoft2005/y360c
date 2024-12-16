@@ -18,7 +18,7 @@ import (
 // lsCmd represents the ls command
 var lsCmd = &cobra.Command{
 	Use:   "ls",
-	Short: "gets a list of the allowed IPs and CIDRs",
+	Short: "Gets a list of the allowed IPs and CIDRs",
 	Long: `Use this command to retrieve a list of the allowed IP addresses and CIDRs.
 "ya360_admin:mail_read_antispam_settings" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

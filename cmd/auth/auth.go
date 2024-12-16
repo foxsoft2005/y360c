@@ -15,7 +15,7 @@ var (
 // command definition
 var AuthCmd = &cobra.Command{
 	Use:   "auth",
-	Short: "manage Y360 auth settings",
+	Short: "Manage Y360 auth settings",
 	Long: `The command provides access to Y360 auth settings.
 Cannot be executed directly, use one of the available sub-commands.`,
 	//	Run: func(cmd *cobra.Command, args []string) {

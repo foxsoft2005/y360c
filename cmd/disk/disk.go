@@ -14,7 +14,7 @@ var (
 
 var DiskCmd = &cobra.Command{
 	Use:   "disk",
-	Short: "manage Y360 disk settings",
+	Short: "Manage Y360 disk settings",
 	Long: `The command provides access to Y360 disk settings.
 Cannot be executed directly, use one of the available sub-commands.`,
 	//	Run: func(cmd *cobra.Command, args []string) {

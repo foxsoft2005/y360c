@@ -17,6 +17,7 @@ import (
 	"github.com/foxsoft2005/y360c/cmd/domain"
 	"github.com/foxsoft2005/y360c/cmd/group"
 	"github.com/foxsoft2005/y360c/cmd/internal"
+	"github.com/foxsoft2005/y360c/cmd/mailbox"
 	"github.com/foxsoft2005/y360c/cmd/mfa"
 	"github.com/foxsoft2005/y360c/cmd/org"
 	"github.com/foxsoft2005/y360c/cmd/user"
@@ -27,7 +28,7 @@ var rootCmd = &cobra.Command{
 	Use:     "y360c",
 	Short:   "Yandex360 cli",
 	Long:    `This app allows you to use the Yandex360 API via cli with some useful features.`,
-	Version: "1.0.0-beta.33",
+	Version: "1.0.0-beta.35",
 }
 
 func Execute() {
@@ -52,6 +53,7 @@ func init() {
 	rootCmd.AddCommand(dns.DnsCmd)
 	rootCmd.AddCommand(domain.DomainCmd)
 	rootCmd.AddCommand(internal.UpdateCmd)
+	rootCmd.AddCommand(mailbox.MailboxCmd)
 }
 
 func initConfig() {

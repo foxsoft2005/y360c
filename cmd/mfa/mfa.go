@@ -15,7 +15,7 @@ var (
 // mfaCmd represents the mfa command
 var MfaCmd = &cobra.Command{
 	Use:   "mfa",
-	Short: "manage Y360 2FA settings",
+	Short: "Manage Y360 2FA settings",
 	Long: `The command provides access to Y360 two-factor auth (2FA) settings.
 Cannot be executed directly, use one of the available sub-commands.`,
 	//	Run: func(cmd *cobra.Command, args []string) {

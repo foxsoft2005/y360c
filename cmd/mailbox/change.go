@@ -1,7 +1,8 @@
 /*
 Copyright © 2024 Kirill Chernetsky <foxsoft2005@gmail.com>
 */
-package mail
+
+package mailbox
 
 import (
 	"encoding/json"
@@ -15,19 +16,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	taskId string
-)
-
-// statusCmd represents the status command
-var statusCmd = &cobra.Command{
-	Use:   "status",
-	Short: "checks status of the delegation task",
-	Long: `Use this command to check status of the task which was created when delegation requested.
-"ya360_admin:mail_read_shared_mailbox_inventory" and "ya360_admin:mail_write_shared_mailbox_inventory"
-permissions are required (see Y360 help topics).`,
+var changeCmd = &cobra.Command{
+	Use:   "change",
+	Short: "Changes an existing shared mailbox",
+	Long: `Use this command to change an existing shared mailbox.
+"ya360_admin:mail_write_shared_mailbox_inventory" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Println("user mail status called")
+		log.Print("mailbox change called")
 
 		if token == "" {
 			t, err := helper.GetToken()
@@ -45,9 +40,10 @@ permissions are required (see Y360 help topics).`,
 			orgId = t
 		}
 
-		var url = fmt.Sprintf("%s/admin/v1/org/%d/mail/delegated/tasks/%s", helper.BaseUrl, orgId, taskId)
+		var url = fmt.Sprintf("%s/admin/v1/org/%d/mailboxes/shared/%s", helper.BaseUrl, orgId, mailboxId)
+		var payload = []byte(fmt.Sprintf(`{"name":"%s", "description":"%s"}`, name, description))
 
-		resp, err := helper.MakeRequest(url, "GET", token, nil)
+		resp, err := helper.MakeRequest(url, "PUT", token, payload)
 		if err != nil {
 			log.Fatalln("Unable to make API request:", err)
 		}
@@ -60,25 +56,27 @@ permissions are required (see Y360 help topics).`,
 			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
-		var data model.TaskStatusResponse
+		var data model.Resource
 		if err := json.Unmarshal(resp.Body, &data); err != nil {
 			log.Fatalln("Unable to evaluate data:", err)
 		}
 
 		t := table.NewWriter()
 		t.SetOutputMirror(os.Stdout)
-		t.AppendRow(table.Row{"Status", data.Status})
+		t.AppendRow(table.Row{"Resource Id", data.ResourceId})
+		t.AppendRow(table.Row{"Status", "OK"})
 		t.AppendSeparator()
 		t.Style().Options.SeparateRows = true
 		t.Render()
-
 	},
 }
 
 func init() {
-	statusCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
-	statusCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
-	statusCmd.Flags().StringVar(&taskId, "taskId", "", "task id")
+	changeCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	changeCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	changeCmd.Flags().StringVar(&name, "name", "", "shared mailbox name")
+	changeCmd.Flags().StringVar(&description, "description", "", "shared mailbox description")
+	changeCmd.Flags().StringVar(&mailboxId, "id", "", "shared mailbox id")
 
-	statusCmd.MarkFlagRequired("taskId")
+	addCmd.MarkFlagRequired("id")
 }

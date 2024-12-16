@@ -16,7 +16,7 @@ var (
 // AliasCmd represents the alias command
 var ContactCmd = &cobra.Command{
 	Use:   "contact",
-	Short: "manage user contacts",
+	Short: "Manage user contacts",
 	Long: `Use this command to manage user contacts (e-mail, phone, skype, etc.).
 Cannot be executed directly, please use one of the available sub-commands.`,
 	//	Run: func(cmd *cobra.Command, args []string) {

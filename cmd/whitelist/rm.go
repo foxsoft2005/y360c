@@ -16,7 +16,7 @@ import (
 // lsCmd represents the ls command
 var rmCmd = &cobra.Command{
 	Use:   "rm",
-	Short: "removes the list of the allowed IPs and/or CIDRs",
+	Short: "Removes the list of the allowed IPs and/or CIDRs",
 	Long: `Use this command to remove the list of the allowed IP addresses and/or CIDRs.
 "ya360_admin:mail_write_antispam_settings" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

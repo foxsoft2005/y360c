@@ -12,7 +12,7 @@ import (
 
 var InitCmd = &cobra.Command{
 	Use:   "init",
-	Short: "initialize the application",
+	Short: "Initialize the application",
 	Long: `Use this command to create / check the app configuration.
 The config file will be automatically created if not found.`,
 	Run: func(cmd *cobra.Command, args []string) {

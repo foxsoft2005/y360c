@@ -15,7 +15,7 @@ var (
 
 var WhitelistCmd = &cobra.Command{
 	Use:   "whitelist",
-	Short: "manage Y360 anti-spam settings",
+	Short: "Manage Y360 anti-spam settings",
 	Long: `The command provides access to Y360 anti-spam settings.
 Cannot be executed directly, use one of the available sub-commands.`,
 	//	Run: func(cmd *cobra.Command, args []string) {

@@ -20,7 +20,7 @@ var (
 
 var UserCmd = &cobra.Command{
 	Use:   "user",
-	Short: "manage Y360 users",
+	Short: "Manage Y360 users",
 	Long: `The command provides access to Y360 user management.
 Cannot be executed directly, use one of the available sub-commands.`,
 	//	Run: func(cmd *cobra.Command, args []string) {

@@ -17,7 +17,7 @@ var (
 // DomainCmd represents the domain command
 var DomainCmd = &cobra.Command{
 	Use:   "domain",
-	Short: "manage Y360 domains",
+	Short: "Manage Y360 domains",
 	Long: `The command provides access to Y360 domains.
 Cannot be executed directly, use one of the available sub-commands.`,
 	//	Run: func(cmd *cobra.Command, args []string) {

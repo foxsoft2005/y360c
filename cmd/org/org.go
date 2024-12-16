@@ -16,7 +16,7 @@ var (
 // orgCmd represents the org command
 var OrgCmd = &cobra.Command{
 	Use:   "org",
-	Short: "manage Y360 organizations",
+	Short: "Manage Y360 organizations",
 	Long: `The command provides access to Y360 organizations.
 Cannot be executed directly, use one of the available sub-commands.`,
 	//	Run: func(cmd *cobra.Command, args []string) {

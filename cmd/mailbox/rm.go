@@ -1,28 +1,26 @@
 /*
 Copyright © 2024 Kirill Chernetsky <foxsoft2005@gmail.com>
 */
-package alias
+
+package mailbox
 
 import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/foxsoft2005/y360c/helper"
 	"github.com/foxsoft2005/y360c/model"
-	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/spf13/cobra"
 )
 
-// rmCmd represents the rm command
 var rmCmd = &cobra.Command{
 	Use:   "rm",
-	Short: "Removes an alias of the user mailbox",
-	Long: `Use this command to remove an alias for the user mailbox.
-"directory:write_departments" permission is required (see Y360 help topics).`,
+	Short: "Removes an shared mailbox",
+	Long: `Use this command to remove an existing shared mailbox.
+"ya360_admin:mail_write_shared_mailbox_inventory" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Println("dept alias rm called")
+		log.Print("mailbox rm called")
 
 		if token == "" {
 			t, err := helper.GetToken()
@@ -40,7 +38,7 @@ var rmCmd = &cobra.Command{
 			orgId = t
 		}
 
-		var url = fmt.Sprintf("%s/directory/v1/org/%d/departments/%d/aliases/%s", helper.BaseUrl, orgId, deptId, alias)
+		var url = fmt.Sprintf("%s/admin/v1/org/%d/mailboxes/shared/%s", helper.BaseUrl, orgId, mailboxId)
 
 		resp, err := helper.MakeRequest(url, "DELETE", token, nil)
 		if err != nil {
@@ -55,26 +53,14 @@ var rmCmd = &cobra.Command{
 			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
-		var data model.RmAliasResponse
-		if err := json.Unmarshal(resp.Body, &data); err != nil {
-			log.Fatalln("Unable to evaluate data:", err)
-		}
-
-		t := table.NewWriter()
-		t.SetOutputMirror(os.Stdout)
-		t.AppendHeader(table.Row{"Alias", "Removed"})
-		t.AppendRow(table.Row{data.Alias, data.Removed})
-		t.AppendSeparator()
-		t.Render()
+		log.Println("Successfully deleted")
 	},
 }
 
 func init() {
 	rmCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
 	rmCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
-	rmCmd.Flags().IntVar(&deptId, "id", 0, "department id")
-	rmCmd.Flags().StringVar(&alias, "alias", "", "alias to be deleted")
+	rmCmd.Flags().StringVar(&mailboxId, "id", "", "shared mailbox id")
 
 	rmCmd.MarkFlagRequired("id")
-	rmCmd.MarkFlagRequired("alias")
 }

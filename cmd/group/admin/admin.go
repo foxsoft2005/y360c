@@ -17,7 +17,7 @@ var (
 // GroupCmd represents the group command
 var AdminCmd = &cobra.Command{
 	Use:   "admin",
-	Short: "manage Y360 group admins",
+	Short: "Manage Y360 group admins",
 	Long: `The command provides access to admins of Y360 groups.
 Cannot be executed directly, please use one if the available sub-commands.`,
 	//	Run: func(cmd *cobra.Command, args []string) {

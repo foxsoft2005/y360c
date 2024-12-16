@@ -1,7 +1,7 @@
 /*
 Copyright © 2024 Kirill Chernetsky <foxsoft2005@gmail.com>
 */
-package mail
+package mailbox
 
 import (
 	"encoding/json"
@@ -17,17 +17,17 @@ import (
 )
 
 var (
-	describeActor bool
+	describeResource bool
 )
 
-// sharedWithCmd represents the sharedWith command
-var sharedWithCmd = &cobra.Command{
-	Use:   "sharedWith",
-	Short: "gets all resources that have access to mailbox",
-	Long: `Use this command to get all resources (users, groups) that have access to selected mailbox.
+// hasAccessCmd represents the hasAccess command
+var hasAccessCmd = &cobra.Command{
+	Use:   "hasAccess",
+	Short: "Gets mailboxes that user has access to",
+	Long: `Use this command to get mailboxes that selected user has access to.
 "ya360_admin:mail_read_shared_mailbox_inventory" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Println("user mail sharedWith called")
+		log.Println("user mail hasAccess called")
 
 		if token == "" {
 			t, err := helper.GetToken()
@@ -45,7 +45,7 @@ var sharedWithCmd = &cobra.Command{
 			orgId = t
 		}
 
-		var url = fmt.Sprintf("%s/admin/v1/org/%d/mail/delegated/%s/actors", helper.BaseUrl, orgId, userId)
+		var url = fmt.Sprintf("%s/admin/v1/org/%d/mailboxes/resources/%s", helper.BaseUrl, orgId, userId)
 
 		resp, err := helper.MakeRequest(url, "GET", token, nil)
 		if err != nil {
@@ -60,37 +60,41 @@ var sharedWithCmd = &cobra.Command{
 			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
-		var data model.ActorList
+		var data model.ResourceList
 		if err := json.Unmarshal(resp.Body, &data); err != nil {
 			log.Fatalln("Unable to evaluate data:", err)
 		}
 
 		t := table.NewWriter()
 		t.SetOutputMirror(os.Stdout)
-		if describeActor {
-			t.AppendHeader(table.Row{"Id", "Name", "Email", "Rights"})
+		if describeResource {
+			t.AppendHeader(table.Row{"Id", "Email", "Type", "Roles"})
 			for _, e := range data.Items {
-				user, _ := helper.GetUserById(orgId, token, e.ActorId)
-				t.AppendRow(table.Row{e.ActorId, fmt.Sprintf("%s %s", user.Name.First, user.Name.Last), strings.Join(e.Items, ",")})
+				if e.ResourceType == "delegated" {
+					user, _ := helper.GetUserById(orgId, token, e.ResourceId)
+					t.AppendRow(table.Row{e.ResourceId, user.Email, e.ResourceType, strings.Join(e.Items, ",")})
+				} else {
+					mailbox, _ := helper.GetMailboxById(orgId, token, e.ResourceId)
+					t.AppendRow(table.Row{e.ResourceId, mailbox.Email, e.ResourceType, strings.Join(e.Items, ",")})
+				}
 			}
 		} else {
-			t.AppendHeader(table.Row{"Id", "Rights"})
+			t.AppendHeader(table.Row{"Id", "Type", "Roles"})
 			for _, e := range data.Items {
-				t.AppendRow(table.Row{e.ActorId, strings.Join(e.Items, ",")})
+				t.AppendRow(table.Row{e.ResourceId, e.ResourceType, strings.Join(e.Items, ",")})
 			}
 		}
 		t.AppendSeparator()
 		t.Style().Options.SeparateRows = true
 		t.Render()
-
 	},
 }
 
 func init() {
-	sharedWithCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
-	sharedWithCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
-	sharedWithCmd.Flags().StringVar(&userId, "id", "", "user id")
-	sharedWithCmd.Flags().BoolVar(&describeActor, "describe", false, "show extended info")
+	hasAccessCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	hasAccessCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	hasAccessCmd.Flags().StringVar(&userId, "id", "", "user id")
+	hasAccessCmd.Flags().BoolVar(&describeResource, "describe", false, "show extended info")
 
-	sharedWithCmd.MarkFlagRequired("id")
+	hasAccessCmd.MarkFlagRequired("id")
 }

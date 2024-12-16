@@ -32,7 +32,7 @@ func MakeRequest(url string, method string, token string, payload []byte) (*ApiR
 		return nil, err
 	}
 
-	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", token))
+	req.Header.Add("Authorization", fmt.Sprintf("OAuth %s", token))
 	if payload != nil {
 		req.Header.Add("Content-Type", "application/json; charset=UTF-8")
 	}
@@ -70,6 +70,43 @@ func GetOrgId() (int, error) {
 	}
 
 	return orgId, nil
+}
+
+func GetMailboxById(orgId int, token string, mailboxId string) (*model.MailboxInfo, error) {
+	if mailboxId == "" {
+		return nil, errors.New("mailbox id must be specified")
+	}
+
+	if token == "" {
+		return nil, errors.New("token must be specified")
+	}
+
+	if orgId == 0 {
+		return nil, errors.New("organization id must be specified")
+	}
+
+	var url = fmt.Sprintf("%s/admin/v1/org/%d/mailboxes/shared/%s", BaseUrl, orgId, mailboxId)
+
+	resp, err := MakeRequest(url, "GET", token, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.HttpCode != 200 {
+		var error model.ErrorResponse
+		if err := json.Unmarshal(resp.Body, &error); err != nil {
+			return nil, err
+		}
+
+		return nil, fmt.Errorf("http %d: [%d] %s", resp.HttpCode, error.Code, error.Message)
+	}
+
+	var mailbox model.MailboxInfo
+	if err := json.Unmarshal(resp.Body, &mailbox); err != nil {
+		return nil, err
+	}
+
+	return &mailbox, nil
 }
 
 func GetUserById(orgId int, token string, userId string) (*model.User, error) {

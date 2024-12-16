@@ -1,7 +1,7 @@
 /*
 Copyright © 2024 Kirill Chernetsky <foxsoft2005@gmail.com>
 */
-package mfa
+package mailbox
 
 import (
 	"encoding/json"
@@ -15,14 +15,18 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	taskId string
+)
+
 // statusCmd represents the status command
 var statusCmd = &cobra.Command{
 	Use:   "status",
-	Short: "Shows a status of 2fa for the user",
-	Long: `Use this command to show a status of two-factor auth (2fa) for the selected user.
-"directory:read_users" permission is required (see Y360 help topics).`,
+	Short: "Checks status of the delegation task",
+	Long: `Use this command to check status of the task which was created when delegation requested.
+"ya360_admin:mail_write_shared_mailbox_inventory" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Println("user mfa status called")
+		log.Println("user mail status called")
 
 		if token == "" {
 			t, err := helper.GetToken()
@@ -40,7 +44,7 @@ var statusCmd = &cobra.Command{
 			orgId = t
 		}
 
-		var url = fmt.Sprintf("%s/directory/v1/org/%d/users/%s/2fa", helper.BaseUrl, orgId, userId)
+		var url = fmt.Sprintf("%s/admin/v1/org/%d/mailboxes/tasks/%s", helper.BaseUrl, orgId, taskId)
 
 		resp, err := helper.MakeRequest(url, "GET", token, nil)
 		if err != nil {
@@ -55,15 +59,14 @@ var statusCmd = &cobra.Command{
 			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
-		var data model.UserMfaSetup
+		var data model.TaskStatusResponse
 		if err := json.Unmarshal(resp.Body, &data); err != nil {
 			log.Fatalln("Unable to evaluate data:", err)
 		}
 
 		t := table.NewWriter()
 		t.SetOutputMirror(os.Stdout)
-		t.AppendRow(table.Row{"User Id", data.UserId})
-		t.AppendRow(table.Row{"Has 2fa", data.Has2fa})
+		t.AppendRow(table.Row{"Status", data.Status})
 		t.AppendSeparator()
 		t.Style().Options.SeparateRows = true
 		t.Render()
@@ -73,7 +76,7 @@ var statusCmd = &cobra.Command{
 func init() {
 	statusCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
 	statusCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
-	statusCmd.Flags().StringVar(&userId, "id", "", "user id")
+	statusCmd.Flags().StringVar(&taskId, "taskId", "", "task id")
 
-	statusCmd.MarkFlagRequired("id")
+	statusCmd.MarkFlagRequired("taskId")
 }

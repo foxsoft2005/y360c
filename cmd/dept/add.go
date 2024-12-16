@@ -19,7 +19,7 @@ import (
 // membersCmd represents the members command
 var addCmd = &cobra.Command{
 	Use:   "add",
-	Short: "creates a new department",
+	Short: "Creates a new department",
 	Long: `Use this command to create a new department.
 "directory:write_departments" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

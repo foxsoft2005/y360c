@@ -19,7 +19,7 @@ import (
 // membersCmd represents the members command
 var changeCmd = &cobra.Command{
 	Use:   "change",
-	Short: "changes the existing department",
+	Short: "Changes the existing department",
 	Long: `Use this command to change the existing department.
 "directory:write_departments" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

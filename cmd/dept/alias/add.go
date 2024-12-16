@@ -19,7 +19,7 @@ import (
 // addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:   "add",
-	Short: "adds an alias for the department",
+	Short: "Adds an alias for the department",
 	Long: `Use this command to add an alias for the department.
 "directory:write_departments" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

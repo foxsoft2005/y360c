@@ -17,7 +17,7 @@ var (
 // AliasCmd represents the alias command
 var AliasCmd = &cobra.Command{
 	Use:   "alias",
-	Short: "manage user mailbox aliases",
+	Short: "Manage user mailbox aliases",
 	Long: `Use this command to manage user mailbox aliases.
 Cannot be executed directly, please use one of the available sub-commands.`,
 	//	Run: func(cmd *cobra.Command, args []string) {

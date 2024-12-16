@@ -1,10 +1,12 @@
 /*
 Copyright © 2024 Kirill Chernetsky <foxsoft2005@gmail.com>
 */
-package group
+
+package mailbox
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -15,20 +17,42 @@ import (
 	"github.com/spf13/cobra"
 )
 
+type mailboxType string
+
+const sharedMailbox mailboxType = "shared"
+
+func (e *mailboxType) String() string {
+	return string(*e)
+}
+
+func (e *mailboxType) Set(v string) error {
+	switch v {
+	case "shared", "delegated":
+		*e = mailboxType(v)
+		return nil
+	default:
+		return errors.New(`must be one of "shared", or "delegated"`)
+	}
+}
+
+func (e *mailboxType) Type() string {
+	return "mailboxType"
+}
+
 var (
-	maxRec int
-	asRaw  bool
+	maxRec      int
+	requestType mailboxType
+	asRaw       bool
 )
 
-// lsCmd represents the ls command
 var lsCmd = &cobra.Command{
 	Use:   "ls",
-	Short: "Gets a list of the groups",
-	Long: `Use this command to get a list of Y360 groups.
-"directory:read_groups" permission is required (see Y360 help topics).`,
+	Short: "Gets a list of the shared or delegated mailboxes",
+	Long: `Use this command to retrieve a list of shared or delegated mailboxes.
+"ya360_admin:mail_read_shared_mailbox_inventory" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if !asRaw {
-			log.Println("group ls called")
+			log.Print("mailbox ls called")
 		}
 
 		if token == "" {
@@ -47,7 +71,7 @@ var lsCmd = &cobra.Command{
 			orgId = t
 		}
 
-		var url = fmt.Sprintf("%s/directory/v1/org/%d/groups?perPage=%d", helper.BaseUrl, orgId, maxRec)
+		var url = fmt.Sprintf("%s/admin/v1/org/%d/mailboxes/%s?perPage=%d", helper.BaseUrl, orgId, requestType, maxRec)
 
 		resp, err := helper.MakeRequest(url, "GET", token, nil)
 		if err != nil {
@@ -62,30 +86,34 @@ var lsCmd = &cobra.Command{
 			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
 		}
 
-		var data model.GroupList
+		var data model.MailboxList
 		if err := json.Unmarshal(resp.Body, &data); err != nil {
 			log.Fatalln("Unable to evaluate data:", err)
 		}
 
 		if asRaw {
-			buff, _ := json.MarshalIndent(data.Groups, "", "     ")
+			buff, _ := json.MarshalIndent(data.Items, "", "     ")
 			fmt.Print(string(buff))
 		} else {
 			t := table.NewWriter()
 			t.SetOutputMirror(os.Stdout)
-			t.AppendHeader(table.Row{"id", "type", "name", "email", "label", "author id", "members count"})
-			for _, e := range data.Groups {
-				t.AppendRow(table.Row{e.Id, e.Type, e.Name, e.Email, e.Label, e.AuthorId, e.MembersCount})
+			t.AppendHeader(table.Row{"resource", "count"})
+			for _, e := range data.Items {
+				t.AppendRow(table.Row{e.ResourceId, e.Count})
 			}
 			t.AppendSeparator()
 			t.Render()
 		}
+
 	},
 }
 
 func init() {
+	requestType = sharedMailbox
+
 	lsCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
 	lsCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
-	lsCmd.Flags().IntVar(&maxRec, "max", 100, "max records to retrieve")
+	lsCmd.Flags().IntVar(&maxRec, "max", 10, "max records to retrieve")
+	lsCmd.Flags().Var(&requestType, "type", "type of the mailbox (shared or delegated)")
 	lsCmd.Flags().BoolVar(&asRaw, "raw", false, "export as raw data")
 }

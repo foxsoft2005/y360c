@@ -17,7 +17,7 @@ import (
 // lsCmd represents the ls command
 var lsCmd = &cobra.Command{
 	Use:   "ls",
-	Short: "gets the user contact information",
+	Short: "Gets the user contact information",
 	Long: `Use this command to get the user contact information.
 "directory:read_users" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

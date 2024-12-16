@@ -21,7 +21,7 @@ var (
 
 var listCmd = &cobra.Command{
 	Use:   "ls",
-	Short: "gets a list of the organizations",
+	Short: "Gets a list of the organizations",
 	Long: `Use this command to retrieve a list of Y360 organizations.
 "directory:read_organization" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

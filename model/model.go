@@ -303,7 +303,7 @@ type ContactInfoList struct {
 }
 
 type MailAccessSettings struct {
-	Items []string `json:"rights"`
+	Items []string `json:"roles"`
 }
 
 type MailAccessResponse struct {
@@ -315,8 +315,9 @@ type TaskStatusResponse struct {
 }
 
 type Resource struct {
-	ResourceId string   `json:"resourceId"`
-	Items      []string `json:"rights"`
+	ResourceId   string   `json:"resourceId"`
+	ResourceType string   `json:"type"`
+	Items        []string `json:"roles"`
 }
 
 type ResourceList struct {
@@ -325,9 +326,30 @@ type ResourceList struct {
 
 type Actor struct {
 	ActorId string   `json:"actorId"`
-	Items   []string `json:"rights"`
+	Items   []string `json:"roles"`
 }
 
 type ActorList struct {
 	Items []Actor `json:"actors"`
+}
+
+type MailboxListItem struct {
+	ResourceId string `json:"resourceId"`
+	Count      int    `json:"count"`
+}
+
+type MailboxList struct {
+	Items   []MailboxListItem `json:"resources"`
+	Page    int               `json:"page"`
+	PerPage int               `json:"perPage"`
+	Total   int               `json:"total"`
+}
+
+type MailboxInfo struct {
+	Id          string `json:"id"`
+	Email       string `json:"email"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	CreatedAt   string `json:"createdAt"`
+	UpdatedAt   string `json:"updatedAt"`
 }

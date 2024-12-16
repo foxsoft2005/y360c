@@ -16,7 +16,7 @@ import (
 // resetCmd represents the reset command
 var resetCmd = &cobra.Command{
 	Use:   "reset",
-	Short: "resets a phone number used for 2fa",
+	Short: "Resets a phone number used for 2fa",
 	Long: `Use this command to reset a phone number used for two-factor auth (2fa) by the user.
 "directory:write_users" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

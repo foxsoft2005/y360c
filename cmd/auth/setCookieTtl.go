@@ -20,7 +20,7 @@ var authTtl int
 // setCookieCmd represents the setCookie command
 var setCookieTtlCmd = &cobra.Command{
 	Use:   "setCookieTtl",
-	Short: "sets a TTL of the user session cookies",
+	Short: "Sets a TTL of the user session cookies",
 	Long: `Use this command to set a TTL of the user session cookies.
 "ya360_security:domain_sessions_write" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

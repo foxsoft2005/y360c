@@ -46,7 +46,7 @@ var (
 // addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:   "add",
-	Short: "adds a contact information",
+	Short: "Adds a contact information",
 	Long: `Use this command to add a contact information for the selected user.
 "directory:write_users" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

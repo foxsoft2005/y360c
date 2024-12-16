@@ -19,7 +19,7 @@ import (
 // rmCmd represents the rm command
 var resetCmd = &cobra.Command{
 	Use:   "reset",
-	Short: "resets a contact information",
+	Short: "Resets a contact information",
 	Long: `Use this command to remove ALL manually entered contact information for the selected user.
 "directory:write_users" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

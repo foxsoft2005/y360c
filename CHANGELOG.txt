@@ -1,3 +1,8 @@
+1.0.0-beta.35
+	- added "mailbox" command and related sub-commands (ls, add, change, rm etc.) to cover new Yandex360 functionallity (shared/delegated mailboxes)
+	- typos and other small fixes
+
+
 1.0.0-beta.33
 
     - added access delegation related sub-commands (user mail delegate) to cover new Yandex360 functionality

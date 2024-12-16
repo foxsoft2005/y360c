@@ -28,7 +28,7 @@ var (
 
 var listCmd = &cobra.Command{
 	Use:   "ls",
-	Short: "gets a list of the users",
+	Short: "Gets a list of the users",
 	Long: `Use this command to retrieve a list of the users of selected organization.
 "directory:read_users" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

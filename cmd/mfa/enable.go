@@ -47,7 +47,7 @@ var validation validationMethod
 // enableCmd represents the enable command
 var enableCmd = &cobra.Command{
 	Use:   "enable",
-	Short: "enables mandatory 2FA for domain users",
+	Short: "Enables mandatory 2FA for domain users",
 	Long: `Use this command to enable madatory two-factor authentication (2FA) for the selected organization.
 "ya360_security:domain_2fa_write" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

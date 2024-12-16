@@ -24,7 +24,7 @@ var (
 // updateCmd represents the update command
 var UpdateCmd = &cobra.Command{
 	Use:   "update",
-	Short: "updates y360c app",
+	Short: "Updates y360c app",
 	Long:  `Use this command to update y360c application to the actual version.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("checking the latest version...")

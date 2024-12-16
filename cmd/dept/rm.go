@@ -18,7 +18,7 @@ import (
 // membersCmd represents the members command
 var rmCmd = &cobra.Command{
 	Use:   "rm",
-	Short: "removes a department",
+	Short: "Removes a department",
 	Long: `Use this command to remove a department.
 "directory:write_departments" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

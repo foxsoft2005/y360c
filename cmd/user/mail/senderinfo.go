@@ -19,7 +19,7 @@ import (
 // senderinfoCmd represents the senderinfo command
 var senderinfoCmd = &cobra.Command{
 	Use:   "senderinfo",
-	Short: "shows a sender info for the user",
+	Short: "Shows a sender info for the user",
 	Long: `Use this command to show a sender info for the selected user.
 "ya360_admin:mail_read_user_settings" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
