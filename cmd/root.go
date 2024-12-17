@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 Kirill Chernetsky <foxsoft2005@gmail.com>
+Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 */
 package cmd
 
