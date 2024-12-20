@@ -40,8 +40,16 @@ var addCmd = &cobra.Command{
 			orgId = t
 		}
 
+		item := struct {
+			Id         string          `json:"id"`
+			MemberType groupMemberType `json:"memberType"`
+		}{
+			Id:         memberId,
+			MemberType: memberType,
+		}
+
 		var url = fmt.Sprintf("%s/directory/v1/org/%d/groups/%d/members", helper.BaseUrl, orgId, groupId)
-		var payload = []byte(fmt.Sprintf(`{"id":"%s", "type":"%s"}`, memberId, memberType))
+		payload, _ := json.Marshal(item)
 
 		resp, err := helper.MakeRequest(url, "POST", token, payload)
 		if err != nil {

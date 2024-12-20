@@ -25,12 +25,12 @@ var (
 var UpdateCmd = &cobra.Command{
 	Use:   "update",
 	Short: "Updates y360c app",
-	Long:  `Use this command to update y360c application to the actual version.`,
+	Long:  `Use this command to update y360c to the latest version.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("checking the latest version...")
 
 		wd, _ := os.Getwd()
-		filename := fmt.Sprintf("y360c-%s-x64.zip", strings.ToLower(runtime.GOOS))
+		filename := fmt.Sprintf("y360c-%s-%s.zip", strings.ToLower(runtime.GOOS), strings.ToLower(runtime.GOARCH))
 		url := fmt.Sprintf("https://github.com/foxsoft2005/y360c/releases/latest/download/%s", filename)
 
 		req, _ := http.NewRequest("GET", url, nil)
@@ -48,7 +48,7 @@ var UpdateCmd = &cobra.Command{
 			"downloading",
 		)
 		io.Copy(io.MultiWriter(f, bar), resp.Body)
-		fmt.Printf("update downloaded to %v, extract it manually", filepath.Join(wd, filename))
+		fmt.Printf("update downloaded to %v, extract it manually over the existing files", filepath.Join(wd, filename))
 	},
 }
 

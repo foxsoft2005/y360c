@@ -40,8 +40,16 @@ var changeCmd = &cobra.Command{
 			orgId = t
 		}
 
+		item := struct {
+			Name        string `json:"name"`
+			Description string `json:"description"`
+		}{
+			Name:        name,
+			Description: description,
+		}
+
 		var url = fmt.Sprintf("%s/admin/v1/org/%d/mailboxes/shared/%s", helper.BaseUrl, orgId, mailboxId)
-		var payload = []byte(fmt.Sprintf(`{"name":"%s", "description":"%s"}`, name, description))
+		payload, _ := json.Marshal(item)
 
 		resp, err := helper.MakeRequest(url, "PUT", token, payload)
 		if err != nil {
