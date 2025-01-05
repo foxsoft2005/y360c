@@ -41,8 +41,8 @@ var changeCmd = &cobra.Command{
 		}
 
 		item := struct {
-			Name        string `json:"name"`
-			Description string `json:"description"`
+			Name        string `json:"name,omitempty"`
+			Description string `json:"description,omitempty"`
 		}{
 			Name:        name,
 			Description: description,
@@ -87,4 +87,5 @@ func init() {
 	changeCmd.Flags().StringVar(&mailboxId, "id", "", "shared mailbox id")
 
 	addCmd.MarkFlagRequired("id")
+	addCmd.MarkFlagsOneRequired("name", "description")
 }

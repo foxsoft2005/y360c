@@ -42,12 +42,12 @@ var changeCmd = &cobra.Command{
 		}
 
 		item := struct {
-			Name        string `json:"name"`
-			Label       string `json:"label"`
-			Description string `json:"description"`
-			ParentId    int    `json:"parentId"`
-			ExternalId  string `json:"externalId"`
-			HeadId      string `json:"headId"`
+			Name        string `json:"name,omitempty"`
+			Label       string `json:"label,omitempty"`
+			Description string `json:"description,omitempty"`
+			ParentId    int    `json:"parentId,omitempty"`
+			ExternalId  string `json:"externalId,omitempty"`
+			HeadId      string `json:"headId,omitempty"`
 		}{
 			Name:        name,
 			Label:       label,
@@ -104,9 +104,10 @@ func init() {
 	changeCmd.Flags().StringVar(&name, "name", "", "department name")
 	changeCmd.Flags().StringVar(&label, "label", "", "department label")
 	changeCmd.Flags().StringVar(&description, "description", "", "department description")
-	changeCmd.Flags().IntVar(&parentId, "parentId", 1, "parent department id")
+	changeCmd.Flags().IntVar(&parentId, "parentId", 0, "parent department id")
 	changeCmd.Flags().StringVar(&externalId, "externalId", "", "external department id")
 	changeCmd.Flags().StringVar(&headId, "headId", "", "department head id")
 
 	addCmd.MarkFlagRequired("id")
+	addCmd.MarkFlagsOneRequired("name", "label", "description", "parentId", "externalId", "headId")
 }

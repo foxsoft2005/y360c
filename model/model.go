@@ -154,21 +154,21 @@ type ErrorResponse struct {
 }
 
 type Group struct {
-	AdminIds     []string `json:"adminIds"`
-	Aliases      []string `json:"aliases"`
-	AuthorId     string   `json:"authorId"`
-	CreatedAt    string   `json:"createdAt"`
-	Description  string   `json:"description"`
-	Email        string   `json:"email"`
-	ExternalId   string   `json:"externalId"`
+	AdminIds     []string `json:"adminIds,omitempty"`
+	Aliases      []string `json:"aliases,omitempty"`
+	AuthorId     string   `json:"authorId,omitempty"`
+	CreatedAt    string   `json:"createdAt,omitempty"`
+	Description  string   `json:"description,omitempty"`
+	Email        string   `json:"email,omitempty"`
+	ExternalId   string   `json:"externalId,omitempty"`
 	Id           int      `json:"id"`
-	Label        string   `json:"label"`
-	MemberOf     []int    `json:"memberOf"`
-	Members      []Member `json:"members"`
-	MembersCount int      `json:"membersCount"`
+	Label        string   `json:"label,omitempty"`
+	MemberOf     []int    `json:"memberOf,omitempty"`
+	Members      []Member `json:"members,omitempty"`
+	MembersCount int      `json:"membersCount,omitempty"`
 	Name         string   `json:"name"`
-	Removed      bool     `json:"removed"`
-	Type         string   `json:"type"`
+	Removed      bool     `json:"removed,omitempty"`
+	Type         string   `json:"type,omitempty"`
 }
 
 type Member struct {

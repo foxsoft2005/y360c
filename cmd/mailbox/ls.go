@@ -104,7 +104,6 @@ var lsCmd = &cobra.Command{
 			t.AppendSeparator()
 			t.Render()
 		}
-
 	},
 }
 

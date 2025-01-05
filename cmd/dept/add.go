@@ -43,11 +43,11 @@ var addCmd = &cobra.Command{
 
 		item := struct {
 			Name        string `json:"name"`
-			Label       string `json:"label"`
-			Description string `json:"description"`
+			Label       string `json:"label,omitempty"`
+			Description string `json:"description,omitempty"`
 			ParentId    int    `json:"parentId"`
-			ExternalId  string `json:"externalId"`
-			HeadId      string `json:"headId"`
+			ExternalId  string `json:"externalId,omitempty"`
+			HeadId      string `json:"headId,omitempty"`
 		}{
 			Name:        name,
 			Label:       label,

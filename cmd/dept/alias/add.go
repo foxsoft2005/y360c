@@ -76,7 +76,6 @@ var addCmd = &cobra.Command{
 		t.AppendSeparator()
 		t.Style().Options.SeparateRows = true
 		t.Render()
-
 	},
 }
 

@@ -136,4 +136,5 @@ func init() {
 
 	setaccessCmd.MarkFlagRequired("id")
 	setaccessCmd.MarkFlagRequired("toId")
+	setaccessCmd.MarkFlagsOneRequired("owner", "readonly", "sender", "onbehalf")
 }

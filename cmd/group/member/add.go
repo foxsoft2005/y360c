@@ -42,7 +42,7 @@ var addCmd = &cobra.Command{
 
 		item := struct {
 			Id         string          `json:"id"`
-			MemberType groupMemberType `json:"memberType"`
+			MemberType groupMemberType `json:"type"`
 		}{
 			Id:         memberId,
 			MemberType: memberType,
