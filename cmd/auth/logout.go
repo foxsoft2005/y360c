@@ -17,7 +17,7 @@ var userId string
 
 var logoutCmd = &cobra.Command{
 	Use:   "logout",
-	Short: "Logs out a user on all devices",
+	Short: "Log out a user on all devices",
 	Long: `Use this command to log out the selected user on all devices.
 "ya360_security:domain_sessions_write" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

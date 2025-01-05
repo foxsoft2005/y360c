@@ -19,7 +19,7 @@ import (
 // infoCmd represents the info command
 var infoCmd = &cobra.Command{
 	Use:   "info",
-	Short: "Gets department info",
+	Short: "Get department info",
 	Long: `Use this command to get department information by id.
 "directory:read_departments" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

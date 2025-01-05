@@ -47,7 +47,7 @@ var (
 
 var lsCmd = &cobra.Command{
 	Use:   "ls",
-	Short: "Gets a list of the shared or delegated mailboxes",
+	Short: "Get a list of the shared or delegated mailboxes",
 	Long: `Use this command to retrieve a list of shared or delegated mailboxes.
 "ya360_admin:mail_read_shared_mailbox_inventory" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

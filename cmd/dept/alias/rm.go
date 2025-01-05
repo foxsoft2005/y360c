@@ -18,7 +18,7 @@ import (
 // rmCmd represents the rm command
 var rmCmd = &cobra.Command{
 	Use:   "rm",
-	Short: "Removes an alias of the user mailbox",
+	Short: "Remove an alias of the user mailbox",
 	Long: `Use this command to remove an alias for the user mailbox.
 "directory:write_departments" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

@@ -23,7 +23,7 @@ var (
 // hasAccessCmd represents the hasAccess command
 var hasAccessCmd = &cobra.Command{
 	Use:   "hasAccess",
-	Short: "Gets mailboxes that user has access to",
+	Short: "Get mailboxes that user has access to",
 	Long: `Use this command to get mailboxes that selected user has access to.
 "ya360_admin:mail_read_shared_mailbox_inventory" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

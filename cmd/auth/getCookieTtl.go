@@ -17,8 +17,8 @@ import (
 
 var getCookieTtlCmd = &cobra.Command{
 	Use:   "getCookieTtl",
-	Short: "Gets a TTL of the user session cookies",
-	Long: `Use this command to get a TTL of the user session cookies.
+	Short: "Get a TTL of the user session cookies",
+	Long: `Use this command to get a TTL (seconds) of the user session cookies.
 "ya360_security:domain_sessions_read" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Print("auth getCookieTtl called")

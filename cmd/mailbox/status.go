@@ -22,7 +22,7 @@ var (
 // statusCmd represents the status command
 var statusCmd = &cobra.Command{
 	Use:   "status",
-	Short: "Checks status of the delegation task",
+	Short: "Check status of the delegation task",
 	Long: `Use this command to check status of the task which was created when delegation requested.
 "ya360_admin:mail_write_shared_mailbox_inventory" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

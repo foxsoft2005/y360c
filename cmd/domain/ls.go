@@ -17,7 +17,7 @@ import (
 
 var lsCmd = &cobra.Command{
 	Use:   "ls",
-	Short: "Gets a list of all Y360 domains",
+	Short: "Get a list of all Y360 domains",
 	Long: `Use this command to retrieve a list of all Y360 domains.
 "directory:read_domains" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

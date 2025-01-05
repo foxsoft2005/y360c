@@ -19,8 +19,8 @@ import (
 // membersCmd represents the members command
 var lsCmd = &cobra.Command{
 	Use:   "ls",
-	Short: "Gets a member list of the group",
-	Long: `Use this command to retrieve a member list of the selected group.
+	Short: "Get a members of the group",
+	Long: `Use this command to retrieve a members of the selected group.
 "directory:read_groups" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Println("group member ls called")

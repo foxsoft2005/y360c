@@ -16,7 +16,7 @@ import (
 
 var rmCmd = &cobra.Command{
 	Use:   "rm",
-	Short: "Removes an shared mailbox",
+	Short: "Remove a shared mailbox",
 	Long: `Use this command to remove an existing shared mailbox.
 "ya360_admin:mail_write_shared_mailbox_inventory" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

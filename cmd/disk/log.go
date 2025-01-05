@@ -21,7 +21,7 @@ var maxRec int
 // logCmd represents the log command
 var logCmd = &cobra.Command{
 	Use:   "log",
-	Short: "Gets a list of events in the organization's Disk audit log",
+	Short: "Get a list of events in the organization's Disk audit log",
 	Long: `Use this command to retrieve a list of events in the organization's Disk audit log.
 "ya360_security:audit_log_disk" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

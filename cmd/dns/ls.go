@@ -17,7 +17,7 @@ import (
 
 var lsCmd = &cobra.Command{
 	Use:   "ls",
-	Short: "Gets a list of all DNS records for the domain",
+	Short: "Get a list of all DNS records for the domain",
 	Long: `Use this command to retrieve a list of all DNS records which are set for the domain.
 "directory:manage_dns" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

@@ -17,7 +17,7 @@ var (
 // DnsCmd represents the dns command
 var DnsCmd = &cobra.Command{
 	Use:   "dns",
-	Short: "Manage DNS records of the domain",
+	Short: "Manage Y360 DNS records of the domain",
 	Long: `The command provides access to DNS records of the domain.
 Cannot be executed directly, use one of the available sub-commands.`,
 	//	Run: func(cmd *cobra.Command, args []string) {

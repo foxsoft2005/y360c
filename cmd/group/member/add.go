@@ -18,7 +18,7 @@ import (
 // membersCmd represents the members command
 var addCmd = &cobra.Command{
 	Use:   "add",
-	Short: "Adds a member to the group",
+	Short: "Add a member to the group",
 	Long: `Use this command to add a member to the selected group.
 "directory:write_groups" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

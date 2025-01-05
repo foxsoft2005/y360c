@@ -19,7 +19,7 @@ import (
 // lsCmd represents the ls command
 var lsCmd = &cobra.Command{
 	Use:   "ls",
-	Short: "Gets a list of the department aliases",
+	Short: "Get a list of the department aliases",
 	Long: `Use this command to get a list of the department aliases.
 "directory:read_departments" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

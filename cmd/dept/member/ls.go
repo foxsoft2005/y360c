@@ -19,7 +19,7 @@ import (
 // membersCmd represents the members command
 var lsCmd = &cobra.Command{
 	Use:   "ls",
-	Short: "Gets a member list of the department",
+	Short: "Get a member list of the department",
 	Long: `Use this command to retrieve a member list of the selected department.
 "directory:read_departments" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

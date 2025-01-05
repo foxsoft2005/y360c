@@ -50,7 +50,7 @@ var (
 // setaccessCmd represents the delegate command
 var setaccessCmd = &cobra.Command{
 	Use:   "setAccess",
-	Short: "Sets access to the mailbox to other user",
+	Short: "Set access to the mailbox to other user",
 	Long: `Use this command to set access to the mailbox to other user.
 "ya360_admin:mail_write_shared_mailbox_inventory" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

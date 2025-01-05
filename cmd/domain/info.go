@@ -18,7 +18,7 @@ import (
 
 var infoCmd = &cobra.Command{
 	Use:   "info",
-	Short: "Gets a Y360 domain",
+	Short: "Get a Y360 domain information",
 	Long: `Use this command to retrieve a Y360 domain by name.
 "directory:read_domains" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

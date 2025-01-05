@@ -18,7 +18,7 @@ import (
 // rulesCmd represents the rules command
 var rulesCmd = &cobra.Command{
 	Use:   "rules",
-	Short: "Shows mailbox rules for the user",
+	Short: "Show mailbox rules for the user",
 	Long: `Use this command to show mailbox rules (autoreplies, forwards) for the selected user.
 "ya360_admin:mail_read_user_settings" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

@@ -48,7 +48,7 @@ var (
 
 var lsCmd = &cobra.Command{
 	Use:   "ls",
-	Short: "Gets a list of the departments",
+	Short: "Get a list of the departments",
 	Long: `Use this command to retrieve a list of departments of selected organization.
 "directory:read_departments" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

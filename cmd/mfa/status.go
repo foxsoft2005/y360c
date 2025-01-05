@@ -18,8 +18,8 @@ import (
 // statusCmd represents the status command
 var statusCmd = &cobra.Command{
 	Use:   "status",
-	Short: "Gets a 2FA status for domain users",
-	Long: `Gets a two-factor authentication (2FA) status for domain users.
+	Short: "Get a 2FA status for domain users",
+	Long: `Get a two-factor authentication (2FA) status for domain users.
 "ya360_security:domain_2fa_write" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Print("mfa status called")

@@ -18,7 +18,7 @@ import (
 // statusCmd represents the status command
 var statusCmd = &cobra.Command{
 	Use:   "status",
-	Short: "Shows a status of 2fa for the user",
+	Short: "Show a status of 2fa for the user",
 	Long: `Use this command to show a status of two-factor auth (2fa) for the selected user.
 "directory:read_users" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {

@@ -18,8 +18,8 @@ import (
 
 var infoCmd = &cobra.Command{
 	Use:   "info",
-	Short: "Gets info about shared mailbox",
-	Long: `Use this command to retrieve information about shared mailbox.
+	Short: "Get info about the shared mailbox",
+	Long: `Use this command to retrieve information about the shared mailbox.
 "ya360_admin:mail_read_shared_mailbox_inventory" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Print("mailbox info called")
