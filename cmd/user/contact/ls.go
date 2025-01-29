@@ -72,7 +72,7 @@ var lsCmd = &cobra.Command{
 }
 
 func init() {
-	lsCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	lsCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	lsCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	lsCmd.Flags().StringVar(&userId, "id", "", "user id")
 

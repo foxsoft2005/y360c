@@ -22,12 +22,12 @@ var (
 
 // hasAccessCmd represents the hasAccess command
 var hasAccessCmd = &cobra.Command{
-	Use:   "hasAccess",
+	Use:   "has-access",
 	Short: "Get mailboxes that user has access to",
 	Long: `Use this command to get mailboxes that selected user has access to.
 "ya360_admin:mail_read_shared_mailbox_inventory" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Println("user mail hasAccess called")
+		log.Println("user mail has-access called")
 
 		if token == "" {
 			t, err := helper.GetToken()
@@ -52,12 +52,8 @@ var hasAccessCmd = &cobra.Command{
 			log.Fatalln("Unable to make API request:", err)
 		}
 
-		if resp.HttpCode != 200 {
-			var errorData model.ErrorResponse
-			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
-				log.Fatalln("Unable to evaluate data:", err)
-			}
-			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+		if err := helper.GetErrorText(resp); err != nil {
+			log.Fatalln(err)
 		}
 
 		var data model.ResourceList
@@ -91,7 +87,7 @@ var hasAccessCmd = &cobra.Command{
 }
 
 func init() {
-	hasAccessCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	hasAccessCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	hasAccessCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	hasAccessCmd.Flags().StringVar(&userId, "id", "", "user id")
 	hasAccessCmd.Flags().BoolVar(&describeResource, "describe", false, "show extended info")

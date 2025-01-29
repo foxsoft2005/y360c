@@ -22,12 +22,12 @@ var (
 
 // sharedWithCmd represents the sharedWith command
 var sharedWithCmd = &cobra.Command{
-	Use:   "sharedWith",
+	Use:   "shared-with",
 	Short: "Get all resources that have access to mailbox",
 	Long: `Use this command to get all resources (users, groups) that have access to selected mailbox.
 "ya360_admin:mail_read_shared_mailbox_inventory" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Println("user mail sharedWith called")
+		log.Println("user mail shared-with called")
 
 		if token == "" {
 			t, err := helper.GetToken()
@@ -52,12 +52,8 @@ var sharedWithCmd = &cobra.Command{
 			log.Fatalln("Unable to make API request:", err)
 		}
 
-		if resp.HttpCode != 200 {
-			var errorData model.ErrorResponse
-			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
-				log.Fatalln("Unable to evaluate data:", err)
-			}
-			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+		if err := helper.GetErrorText(resp); err != nil {
+			log.Fatalln(err)
 		}
 
 		var data model.ActorList
@@ -86,7 +82,7 @@ var sharedWithCmd = &cobra.Command{
 }
 
 func init() {
-	sharedWithCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	sharedWithCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	sharedWithCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	sharedWithCmd.Flags().StringVar(&mailboxId, "id", "", "mailbox id id")
 	sharedWithCmd.Flags().BoolVar(&describeActor, "describe", false, "show extended info")

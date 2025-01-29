@@ -41,11 +41,11 @@ var changeCmd = &cobra.Command{
 		}
 
 		item := struct {
-			Name        string `json:"name,omitempty"`
-			Description string `json:"description,omitempty"`
+			Name        *string `json:"name,omitempty"`
+			Description *string `json:"description,omitempty"`
 		}{
-			Name:        name,
-			Description: description,
+			Name:        helper.ToNullableString(name),
+			Description: helper.ToNullableString(description),
 		}
 
 		var url = fmt.Sprintf("%s/admin/v1/org/%d/mailboxes/shared/%s", helper.BaseUrl, orgId, mailboxId)
@@ -56,12 +56,8 @@ var changeCmd = &cobra.Command{
 			log.Fatalln("Unable to make API request:", err)
 		}
 
-		if resp.HttpCode != 200 {
-			var errorData model.ErrorResponse
-			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
-				log.Fatalln("Unable to evaluate data:", err)
-			}
-			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+		if err := helper.GetErrorText(resp); err != nil {
+			log.Fatalln(err)
 		}
 
 		var data model.Resource
@@ -80,12 +76,12 @@ var changeCmd = &cobra.Command{
 }
 
 func init() {
-	changeCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	changeCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	changeCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	changeCmd.Flags().StringVar(&name, "name", "", "shared mailbox name")
 	changeCmd.Flags().StringVar(&description, "description", "", "shared mailbox description")
 	changeCmd.Flags().StringVar(&mailboxId, "id", "", "shared mailbox id")
 
-	addCmd.MarkFlagRequired("id")
-	addCmd.MarkFlagsOneRequired("name", "description")
+	changeCmd.MarkFlagRequired("id")
+	changeCmd.MarkFlagsOneRequired("name", "description")
 }

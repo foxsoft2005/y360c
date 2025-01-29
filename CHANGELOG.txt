@@ -1,4 +1,19 @@
+1.0.0-beta.39
+
+    - bug fixes (mailbox cannot be delegated using the appropriate command due to app error)
+    - all "camelCased" flags were changed to "lower-cased" (i.e. "--orgId" became "--org-id", so y360c.json needs to be changed too)
+    - more refactoring and typos fixed
+
+
+1.0.0-beta.37
+
+    - set some user attrubutes by id (if possible - it depends on given Y360 configuration)
+    - deleting disabled(!) user by id (WARN: the user will be deleted including all related data: emails, files, messages, etc.)
+    - other minor improvements
+
+
 1.0.0-beta.35
+
 	- added "mailbox" command and related sub-commands (ls, add, change, rm etc.) to cover new Yandex360 functionallity (shared/delegated mailboxes)
 	- typos and other small fixes
 

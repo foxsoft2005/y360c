@@ -25,6 +25,6 @@ Cannot be executed directly, use one of the available sub-commands.`,
 
 func init() {
 	AuthCmd.AddCommand(logoutCmd)
-	AuthCmd.AddCommand(setCookieTtlCmd)
-	AuthCmd.AddCommand(getCookieTtlCmd)
+	AuthCmd.AddCommand(setTtlCmd)
+	AuthCmd.AddCommand(getTtlCmd)
 }

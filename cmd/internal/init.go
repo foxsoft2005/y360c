@@ -18,7 +18,7 @@ The config file will be automatically created if not found.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Printf("Config file is %s", viper.ConfigFileUsed())
 		log.Printf("Token: %s", viper.GetString("token"))
-		log.Printf("Organization id: %d", viper.GetInt("orgId"))
+		log.Printf("Organization id: %d", viper.GetInt("org-id"))
 	},
 }
 

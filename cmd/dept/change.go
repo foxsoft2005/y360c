@@ -42,19 +42,19 @@ var changeCmd = &cobra.Command{
 		}
 
 		item := struct {
-			Name        string `json:"name,omitempty"`
-			Label       string `json:"label,omitempty"`
-			Description string `json:"description,omitempty"`
-			ParentId    int    `json:"parentId,omitempty"`
-			ExternalId  string `json:"externalId,omitempty"`
-			HeadId      string `json:"headId,omitempty"`
+			Name        *string `json:"name,omitempty"`
+			Label       *string `json:"label,omitempty"`
+			Description *string `json:"description,omitempty"`
+			ParentId    int     `json:"parentId,omitempty"`
+			ExternalId  *string `json:"externalId,omitempty"`
+			HeadId      *string `json:"headId,omitempty"`
 		}{
-			Name:        name,
-			Label:       label,
-			Description: description,
+			Name:        helper.ToNullableString(name),
+			Label:       helper.ToNullableString(label),
+			Description: helper.ToNullableString(description),
 			ParentId:    parentId,
-			ExternalId:  externalId,
-			HeadId:      headId,
+			ExternalId:  helper.ToNullableString(externalId),
+			HeadId:      helper.ToNullableString(headId),
 		}
 
 		var url = fmt.Sprintf("%s/directory/v1/org/%d/departments/%d", helper.BaseUrl, orgId, deptId)
@@ -65,12 +65,8 @@ var changeCmd = &cobra.Command{
 			log.Fatalln("Unable to make API request:", err)
 		}
 
-		if resp.HttpCode != 200 {
-			var errorData model.ErrorResponse
-			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
-				log.Fatalln("Unable to evaluate data:", err)
-			}
-			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+		if err := helper.GetErrorText(resp); err != nil {
+			log.Fatalln(err)
 		}
 
 		var data model.Department
@@ -98,16 +94,16 @@ var changeCmd = &cobra.Command{
 }
 
 func init() {
-	changeCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	changeCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	changeCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	changeCmd.Flags().IntVar(&deptId, "id", 0, "department id")
 	changeCmd.Flags().StringVar(&name, "name", "", "department name")
 	changeCmd.Flags().StringVar(&label, "label", "", "department label")
 	changeCmd.Flags().StringVar(&description, "description", "", "department description")
-	changeCmd.Flags().IntVar(&parentId, "parentId", 0, "parent department id")
-	changeCmd.Flags().StringVar(&externalId, "externalId", "", "external department id")
-	changeCmd.Flags().StringVar(&headId, "headId", "", "department head id")
+	changeCmd.Flags().IntVar(&parentId, "parent-id", 1, "parent department id")
+	changeCmd.Flags().StringVar(&externalId, "external-id", "", "external department id")
+	changeCmd.Flags().StringVar(&headId, "head-id", "", "department head id")
 
-	addCmd.MarkFlagRequired("id")
-	addCmd.MarkFlagsOneRequired("name", "label", "description", "parentId", "externalId", "headId")
+	changeCmd.MarkFlagRequired("id")
+	changeCmd.MarkFlagsOneRequired("name", "label", "description", "parent-id", "external-id", "head-id")
 }

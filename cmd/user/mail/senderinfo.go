@@ -18,12 +18,12 @@ import (
 
 // senderinfoCmd represents the senderinfo command
 var senderinfoCmd = &cobra.Command{
-	Use:   "senderinfo",
+	Use:   "sender-info",
 	Short: "Show a sender info for the user",
 	Long: `Use this command to show a sender info for the selected user.
 "ya360_admin:mail_read_user_settings" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Println("user mail senderinfo called")
+		log.Println("user mail sender-info called")
 
 		if token == "" {
 			t, err := helper.GetToken()
@@ -48,12 +48,8 @@ var senderinfoCmd = &cobra.Command{
 			log.Fatalln("Unable to make API request:", err)
 		}
 
-		if resp.HttpCode != 200 {
-			var errorData model.ErrorResponse
-			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
-				log.Fatalln("Unable to evaluate data:", err)
-			}
-			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+		if err := helper.GetErrorText(resp); err != nil {
+			log.Fatalln(err)
 		}
 
 		var data model.UserSenderInfo
@@ -81,7 +77,7 @@ var senderinfoCmd = &cobra.Command{
 }
 
 func init() {
-	senderinfoCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	senderinfoCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	senderinfoCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	senderinfoCmd.Flags().StringVar(&userId, "id", "", "user id")
 

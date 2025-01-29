@@ -59,12 +59,8 @@ var listCmd = &cobra.Command{
 			log.Fatalln("Unable to make API request:", err)
 		}
 
-		if resp.HttpCode != 200 {
-			var errorData model.ErrorResponse
-			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
-				log.Fatalln("Unable to evaluate data:", err)
-			}
-			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+		if err := helper.GetErrorText(resp); err != nil {
+			log.Fatalln(err)
 		}
 
 		var data model.UserList
@@ -188,17 +184,17 @@ var listCmd = &cobra.Command{
 }
 
 func init() {
-	listCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	listCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	listCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	listCmd.Flags().IntVar(&maxRec, "max", 1000, "max records to retrieve")
 	listCmd.Flags().StringVar(&userId, "id", "", "find user by id")
 	listCmd.Flags().StringVar(&email, "email", "", "find user by email")
 	listCmd.Flags().StringVar(&userName, "name", "", "find user(s) by name")
 	listCmd.Flags().BoolVar(&asCsv, "csv", false, "export data to csv-file")
-	listCmd.Flags().IntVar(&deptId, "deptId", 0, "find user(s) by department id")
+	listCmd.Flags().IntVar(&deptId, "dept-id", 0, "find user(s) by department id")
 	listCmd.Flags().BoolVar(&asRaw, "raw", false, "export as raw data")
 
-	listCmd.MarkFlagsMutuallyExclusive("id", "email", "name", "deptId")
+	listCmd.MarkFlagsMutuallyExclusive("id", "email", "name", "dept-id")
 	listCmd.MarkFlagsMutuallyExclusive("csv", "raw")
 
 }

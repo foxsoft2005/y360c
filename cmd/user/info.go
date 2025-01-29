@@ -82,7 +82,7 @@ var infoCmd = &cobra.Command{
 }
 
 func init() {
-	infoCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	infoCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	infoCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	infoCmd.Flags().StringVar(&userId, "id", "", "user id")
 	infoCmd.Flags().BoolVar(&asRaw, "raw", false, "export as raw data")

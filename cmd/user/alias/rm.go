@@ -40,6 +40,10 @@ var rmCmd = &cobra.Command{
 			orgId = t
 		}
 
+		if !helper.Confirm("Do you REALLY want to DELETE the selected entity (y[es]|no)?") {
+			log.Fatal("Aborted, exiting")
+		}
+
 		var url = fmt.Sprintf("%s/directory/v1/org/%d/users/%s/aliases/%s", helper.BaseUrl, orgId, userId, alias)
 
 		resp, err := helper.MakeRequest(url, "DELETE", token, nil)
@@ -47,12 +51,8 @@ var rmCmd = &cobra.Command{
 			log.Fatalln("Unable to make API request:", err)
 		}
 
-		if resp.HttpCode != 200 {
-			var errorData model.ErrorResponse
-			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
-				log.Fatalln("Unable to evaluate data:", err)
-			}
-			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+		if err := helper.GetErrorText(resp); err != nil {
+			log.Fatalln(err)
 		}
 
 		var data model.RmAliasResponse
@@ -70,7 +70,7 @@ var rmCmd = &cobra.Command{
 }
 
 func init() {
-	rmCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	rmCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	rmCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	rmCmd.Flags().StringVar(&userId, "id", "", "user id")
 	rmCmd.Flags().StringVar(&alias, "alias", "", "alias to be deleted")

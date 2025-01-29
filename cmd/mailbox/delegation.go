@@ -17,8 +17,8 @@ import (
 )
 
 var (
-	enableDelegation  bool
-	disableDelegation bool
+	activateEnum helper.EnumYesNo
+	activate     bool
 )
 
 var delegationCmd = &cobra.Command{
@@ -51,7 +51,9 @@ var delegationCmd = &cobra.Command{
 			payload []byte
 		)
 
-		if enableDelegation {
+		activate = *helper.EnumYesNoToBool(activateEnum)
+
+		if activate {
 			url = fmt.Sprintf("%s/admin/v1/org/%d/mailboxes/delegated", helper.BaseUrl, orgId)
 			payload = []byte(fmt.Sprintf(`{"resourceId":"%s"}`, mailboxId))
 			method = "PUT"
@@ -66,40 +68,39 @@ var delegationCmd = &cobra.Command{
 			log.Fatalln("Unable to make API request:", err)
 		}
 
-		if resp.HttpCode != 200 {
-			var errorData model.ErrorResponse
-			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
-				log.Fatalln("Unable to evaluate data:", err)
-			}
-			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+		if err := helper.GetErrorText(resp); err != nil {
+			log.Fatalln(err)
 		}
 
-		if enableDelegation {
+		t := table.NewWriter()
+		t.SetOutputMirror(os.Stdout)
+
+		if activate {
 			var data model.Resource
 			if err := json.Unmarshal(resp.Body, &data); err != nil {
 				log.Fatalln("Unable to evaluate data:", err)
 			}
 
-			t := table.NewWriter()
-			t.SetOutputMirror(os.Stdout)
 			t.AppendRow(table.Row{"Resource Id", data.ResourceId})
-			t.AppendRow(table.Row{"Status", "OK"})
-			t.AppendSeparator()
-			t.Style().Options.SeparateRows = true
-			t.Render()
+			t.AppendRow(table.Row{"Status", "Enabled"})
+
 		} else {
-			log.Println("Successfully disabled")
+			t.AppendRow(table.Row{"Resource Id", mailboxId})
+			t.AppendRow(table.Row{"Status", "Disabled"})
 		}
+
+		t.AppendSeparator()
+		t.Style().Options.SeparateRows = true
+		t.Render()
 	},
 }
 
 func init() {
-	delegationCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	delegationCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	delegationCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	delegationCmd.Flags().StringVar(&mailboxId, "id", "", "shared mailbox id")
-	delegationCmd.Flags().BoolVar(&enableDelegation, "enable", false, "enable delegation")
-	delegationCmd.Flags().BoolVar(&disableDelegation, "disable", false, "disable delegation")
+	delegationCmd.Flags().Var(&activateEnum, "activate", "activate/deactivate delegation")
 
 	delegationCmd.MarkFlagRequired("id")
-	delegationCmd.MarkFlagsMutuallyExclusive("enable", "disable")
+	delegationCmd.MarkFlagRequired("activate")
 }

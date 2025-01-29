@@ -49,12 +49,8 @@ var addCmd = &cobra.Command{
 			log.Fatalln("Unable to make API request:", err)
 		}
 
-		if resp.HttpCode != 200 {
-			var errorData model.ErrorResponse
-			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
-				log.Fatalln("Unable to evaluate data:", err)
-			}
-			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+		if err := helper.GetErrorText(resp); err != nil {
+			log.Fatalln(err)
 		}
 
 		var data model.Group
@@ -84,12 +80,12 @@ var addCmd = &cobra.Command{
 }
 
 func init() {
-	addCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	addCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	addCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	addCmd.Flags().StringVar(&name, "name", "", "group name")
 	addCmd.Flags().StringVar(&label, "label", "", "group label")
 	addCmd.Flags().StringVar(&description, "description", "", "group description")
-	addCmd.Flags().StringVar(&externalId, "externalId", "", "external id")
+	addCmd.Flags().StringVar(&externalId, "external-id", "", "external id")
 	addCmd.Flags().StringArrayVar(&admins, "admin", nil, "group administrator ids")
 
 	addCmd.MarkFlagRequired("name")

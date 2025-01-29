@@ -4,12 +4,10 @@ Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 package auth
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 
 	"github.com/foxsoft2005/y360c/helper"
-	"github.com/foxsoft2005/y360c/model"
 	"github.com/spf13/cobra"
 )
 
@@ -39,6 +37,10 @@ var logoutCmd = &cobra.Command{
 			orgId = t
 		}
 
+		if !helper.Confirm("Do you REALLY want to log the user out on all devices (y[es]|no)?") {
+			log.Fatalln("Aborted, exiting")
+		}
+
 		var url = fmt.Sprintf("%s/security/v1/org/%d/domain_sessions/users/%s/logout", helper.BaseUrl, orgId, userId)
 
 		resp, err := helper.MakeRequest(url, "PUT", token, nil)
@@ -46,12 +48,8 @@ var logoutCmd = &cobra.Command{
 			log.Fatalln("Unable to make API request:", err)
 		}
 
-		if resp.HttpCode != 200 {
-			var errData model.ErrorResponse
-			if err := json.Unmarshal(resp.Body, &errData); err != nil {
-				log.Fatalln("Unable to evaluate error:", err)
-			}
-			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errData.Code, errData.Message)
+		if err := helper.GetErrorText(resp); err != nil {
+			log.Fatalln(err)
 		}
 
 		log.Printf("User %s was logged out successfully", userId)
@@ -59,9 +57,9 @@ var logoutCmd = &cobra.Command{
 }
 
 func init() {
-	logoutCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	logoutCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	logoutCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
-	logoutCmd.Flags().StringVar(&userId, "userId", "", "user id to log out")
+	logoutCmd.Flags().StringVar(&userId, "user-id", "", "user id to log out")
 
-	logoutCmd.MarkFlagRequired("userId")
+	logoutCmd.MarkFlagRequired("user-id")
 }

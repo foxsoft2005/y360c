@@ -55,12 +55,8 @@ var addCmd = &cobra.Command{
 			log.Fatalln("Unable to make API request:", err)
 		}
 
-		if resp.HttpCode != 200 {
-			var errorData model.ErrorResponse
-			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
-				log.Fatalln("Unable to evaluate data:", err)
-			}
-			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+		if err := helper.GetErrorText(resp); err != nil {
+			log.Fatalln(err)
 		}
 
 		var data model.User
@@ -81,7 +77,7 @@ var addCmd = &cobra.Command{
 }
 
 func init() {
-	addCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	addCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	addCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	addCmd.Flags().StringVar(&userId, "id", "", "user id")
 	addCmd.Flags().StringVar(&alias, "alias", "", "mailbox alias")

@@ -35,4 +35,6 @@ func init() {
 	UserCmd.AddCommand(alias.AliasCmd)
 	UserCmd.AddCommand(mail.MailCmd)
 	UserCmd.AddCommand(contact.ContactCmd)
+	UserCmd.AddCommand(setCmd)
+	UserCmd.AddCommand(rmCmd)
 }

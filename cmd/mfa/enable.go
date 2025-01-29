@@ -78,12 +78,8 @@ var enableCmd = &cobra.Command{
 			log.Fatalln("Unable to make API request:", err)
 		}
 
-		if resp.HttpCode != 200 {
-			var errorData model.ErrorResponse
-			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
-				log.Fatalln("Unable to evaluate data:", err)
-			}
-			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+		if err := helper.GetErrorText(resp); err != nil {
+			log.Fatalln(err)
 		}
 
 		var data model.MfaSetup
@@ -105,7 +101,7 @@ var enableCmd = &cobra.Command{
 func init() {
 	validation = smsMethod
 
-	enableCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	enableCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	enableCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	enableCmd.Flags().IntVar(&duration, "duration", 0, "period (sec.) to postpone MFA setup by user")
 	enableCmd.Flags().BoolVar(&logoutUsers, "logout", false, "logout all users on MFA activation")

@@ -75,7 +75,7 @@ var addCmd = &cobra.Command{
 			log.Fatalln("Unable to get user:", err)
 		}
 
-		// get all existing info
+		// getting all existing items
 		var entry model.ContactInfoList
 		for _, item := range user.Contacts {
 			if !item.Synthetic {
@@ -83,7 +83,7 @@ var addCmd = &cobra.Command{
 			}
 		}
 
-		// add new
+		// adding new
 		entry.Items = append(entry.Items, model.ContactInfo{Type: string(contactType), Value: contactValue, Label: contactLabel})
 
 		payload, _ := json.Marshal(entry)
@@ -92,12 +92,8 @@ var addCmd = &cobra.Command{
 			log.Fatalln("Unable to make API request:", err)
 		}
 
-		if resp.HttpCode != 200 {
-			var errorData model.ErrorResponse
-			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
-				log.Fatalln("Unable to evaluate data:", err)
-			}
-			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+		if err := helper.GetErrorText(resp); err != nil {
+			log.Fatalln(err)
 		}
 
 		var data model.User
@@ -133,7 +129,7 @@ var addCmd = &cobra.Command{
 }
 
 func init() {
-	addCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	addCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	addCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	addCmd.Flags().StringVar(&userId, "id", "", "user id")
 	addCmd.Flags().Var(&contactType, "type", "entry type (email, phone, phone_extension, etc.)")

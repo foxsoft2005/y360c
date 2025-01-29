@@ -4,13 +4,10 @@ Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 package mailbox
 
 import (
-	"encoding/json"
-	"fmt"
 	"log"
 	"os"
 
 	"github.com/foxsoft2005/y360c/helper"
-	"github.com/foxsoft2005/y360c/model"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/spf13/cobra"
 )
@@ -28,40 +25,9 @@ var statusCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Println("user mail status called")
 
-		if token == "" {
-			t, err := helper.GetToken()
-			if err != nil {
-				log.Fatalln("Incorrect settings:", err)
-			}
-			token = t
-		}
-
-		if orgId == 0 {
-			t, err := helper.GetOrgId()
-			if err != nil {
-				log.Fatalln("Incorrect settings:", err)
-			}
-			orgId = t
-		}
-
-		var url = fmt.Sprintf("%s/admin/v1/org/%d/mailboxes/tasks/%s", helper.BaseUrl, orgId, taskId)
-
-		resp, err := helper.MakeRequest(url, "GET", token, nil)
+		data, err := helper.CheckTaskById(orgId, token, taskId)
 		if err != nil {
-			log.Fatalln("Unable to make API request:", err)
-		}
-
-		if resp.HttpCode != 200 {
-			var errorData model.ErrorResponse
-			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
-				log.Fatalln("Unable to evaluate data:", err)
-			}
-			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
-		}
-
-		var data model.TaskStatusResponse
-		if err := json.Unmarshal(resp.Body, &data); err != nil {
-			log.Fatalln("Unable to evaluate data:", err)
+			log.Fatalln("Unable to get task:", err)
 		}
 
 		t := table.NewWriter()
@@ -74,9 +40,9 @@ var statusCmd = &cobra.Command{
 }
 
 func init() {
-	statusCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	statusCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	statusCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
-	statusCmd.Flags().StringVar(&taskId, "taskId", "", "task id")
+	statusCmd.Flags().StringVar(&taskId, "task-id", "", "task id")
 
-	statusCmd.MarkFlagRequired("taskId")
+	statusCmd.MarkFlagRequired("task-id")
 }

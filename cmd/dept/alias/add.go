@@ -80,7 +80,7 @@ var addCmd = &cobra.Command{
 }
 
 func init() {
-	addCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	addCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	addCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	addCmd.Flags().IntVar(&deptId, "id", 0, "department id")
 	addCmd.Flags().StringVar(&alias, "alias", "", "department alias")

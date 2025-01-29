@@ -1,15 +1,13 @@
 /*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
+Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 */
 package mfa
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 
 	"github.com/foxsoft2005/y360c/helper"
-	"github.com/foxsoft2005/y360c/model"
 	"github.com/spf13/cobra"
 )
 
@@ -38,6 +36,10 @@ var resetCmd = &cobra.Command{
 			orgId = t
 		}
 
+		if !helper.Confirm("Do you REALLY want to RESET 2fa settings for the user (y[es]|no)?") {
+			log.Fatalln("Aborted by the user")
+		}
+
 		var url = fmt.Sprintf("%s/directory/v1/org/%d/users/%s/2fa", helper.BaseUrl, orgId, userId)
 
 		resp, err := helper.MakeRequest(url, "DELETE", token, nil)
@@ -45,12 +47,8 @@ var resetCmd = &cobra.Command{
 			log.Fatalln("Unable to make API request:", err)
 		}
 
-		if resp.HttpCode != 200 {
-			var errData model.ErrorResponse
-			if err := json.Unmarshal(resp.Body, &errData); err != nil {
-				log.Fatalln("Unable to evaluate error:", err)
-			}
-			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errData.Code, errData.Message)
+		if err := helper.GetErrorText(resp); err != nil {
+			log.Fatalln(err)
 		}
 
 		log.Printf("2fa settings for the user %s were successfully cleared", userId)
@@ -58,7 +56,7 @@ var resetCmd = &cobra.Command{
 }
 
 func init() {
-	resetCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	resetCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	resetCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	resetCmd.Flags().StringVar(&userId, "id", "", "user id")
 

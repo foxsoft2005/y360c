@@ -15,13 +15,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var getCookieTtlCmd = &cobra.Command{
-	Use:   "getCookieTtl",
+var getTtlCmd = &cobra.Command{
+	Use:   "get-ttl",
 	Short: "Get a TTL of the user session cookies",
 	Long: `Use this command to get a TTL (seconds) of the user session cookies.
 "ya360_security:domain_sessions_read" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Print("auth getCookieTtl called")
+		log.Print("auth get-ttl called")
 
 		if token == "" {
 			t, err := helper.GetToken()
@@ -46,12 +46,8 @@ var getCookieTtlCmd = &cobra.Command{
 			log.Fatalln("Unable to make API request:", err)
 		}
 
-		if resp.HttpCode != 200 {
-			var errorData model.ErrorResponse
-			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
-				log.Fatalln("Unable to evaluate data:", err)
-			}
-			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+		if err := helper.GetErrorText(resp); err != nil {
+			log.Fatalln(err)
 		}
 
 		var data model.CookieTTL
@@ -69,6 +65,6 @@ var getCookieTtlCmd = &cobra.Command{
 }
 
 func init() {
-	getCookieTtlCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
-	getCookieTtlCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	getTtlCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
+	getTtlCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 }

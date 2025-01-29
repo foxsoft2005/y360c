@@ -124,7 +124,7 @@ type User struct {
 	Nickname     string        `json:"nickname"`
 	Position     string        `json:"position"`
 	Timezone     string        `json:"timezone"`
-	UpdatedAt    string        `json:"updatetAt"`
+	UpdatedAt    string        `json:"updatedAt"`
 }
 
 type UserList struct {
@@ -148,9 +148,7 @@ type UserMfaSetup struct {
 type ErrorResponse struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
-	Details []struct {
-		Type string `json:"@type"`
-	} `json:"details"`
+	Details []any  `json:"details"`
 }
 
 type Group struct {
@@ -352,4 +350,9 @@ type MailboxInfo struct {
 	Description string `json:"description"`
 	CreatedAt   string `json:"createdAt"`
 	UpdatedAt   string `json:"updatedAt"`
+}
+
+type UserDeletionResponse struct {
+	Deleted bool   `json:"deleted"`
+	UserId  string `json:"userId"`
 }

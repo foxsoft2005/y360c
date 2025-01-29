@@ -40,6 +40,10 @@ var rmCmd = &cobra.Command{
 			orgId = t
 		}
 
+		if !helper.Confirm("Do you REALLY want to DELETE the selected entity (y[es]|no)?") {
+			log.Fatal("Aborted, exiting")
+		}
+
 		var url = fmt.Sprintf("%s/directory/v1/org/%d/groups/%d/members/%s/%s", helper.BaseUrl, orgId, groupId, memberType, memberId)
 
 		resp, err := helper.MakeRequest(url, "DELETE", token, nil)
@@ -47,12 +51,8 @@ var rmCmd = &cobra.Command{
 			log.Fatalln("Unable to make API request:", err)
 		}
 
-		if resp.HttpCode != 200 {
-			var errorData model.ErrorResponse
-			if err := json.Unmarshal(resp.Body, &errorData); err != nil {
-				log.Fatalln("Unable to evaluate data:", err)
-			}
-			log.Fatalf("http %d: [%d] %s", resp.HttpCode, errorData.Code, errorData.Message)
+		if err := helper.GetErrorText(resp); err != nil {
+			log.Fatalln(err)
 		}
 
 		var data model.GroupMemberResponse
@@ -74,13 +74,13 @@ var rmCmd = &cobra.Command{
 func init() {
 	memberType = userMember
 
-	rmCmd.Flags().IntVarP(&orgId, "orgId", "o", 0, "organization id")
+	rmCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	rmCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	rmCmd.Flags().IntVar(&groupId, "id", 0, "group id")
-	rmCmd.Flags().Var(&memberType, "memberType", "member type to be deleted")
-	rmCmd.Flags().StringVar(&memberId, "memberId", "", "member id to be deleted")
+	rmCmd.Flags().Var(&memberType, "member-type", "member type to be deleted")
+	rmCmd.Flags().StringVar(&memberId, "member-id", "", "member id to be deleted")
 
 	rmCmd.MarkFlagRequired("id")
-	rmCmd.MarkFlagRequired("memberType")
-	rmCmd.MarkFlagRequired("memberId")
+	rmCmd.MarkFlagRequired("member-type")
+	rmCmd.MarkFlagRequired("member-id")
 }

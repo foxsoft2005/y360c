@@ -1,7 +1,7 @@
 /*
 Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 */
-package alias
+package user
 
 import (
 	"encoding/json"
@@ -15,14 +15,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// rmCmd represents the rm command
+var force bool
+
 var rmCmd = &cobra.Command{
 	Use:   "rm",
-	Short: "Remove an alias of the user mailbox",
-	Long: `Use this command to remove an alias for the user mailbox.
-"directory:write_departments" permission is required (see Y360 help topics).`,
+	Short: "Remove the user",
+	Long: `Use this command to completely (all incl. emails, files, messages, etc.) remove the selected user.
+"directory:write_users" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Println("dept alias rm called")
+		log.Print("user rm is called")
 
 		if token == "" {
 			t, err := helper.GetToken()
@@ -40,11 +41,22 @@ var rmCmd = &cobra.Command{
 			orgId = t
 		}
 
-		if !helper.Confirm("Do you REALLY want to DELETE the selected entity (y[es]|no)?") {
-			log.Fatal("Aborted, exiting")
+		if !force {
+			if !helper.Confirm("Do you REALLY want to DELETE the selected entity (y[es]|no)?") {
+				log.Fatal("Aborted by the user")
+			}
 		}
 
-		var url = fmt.Sprintf("%s/directory/v1/org/%d/departments/%d/aliases/%s", helper.BaseUrl, orgId, deptId, alias)
+		user, err := helper.GetUserById(orgId, token, userId)
+		if err != nil {
+			log.Fatalln("Unable to get user:", err)
+		}
+
+		if user.IsEnabled {
+			log.Fatalf("User %s (%s) is enabled and cannot be deleted", user.Id, user.Email)
+		}
+
+		var url = fmt.Sprintf("%s/directory/v1/org/%d/users/%s", helper.BaseUrl, orgId, userId)
 
 		resp, err := helper.MakeRequest(url, "DELETE", token, nil)
 		if err != nil {
@@ -55,16 +67,17 @@ var rmCmd = &cobra.Command{
 			log.Fatalln(err)
 		}
 
-		var data model.RmAliasResponse
+		var data model.UserDeletionResponse
 		if err := json.Unmarshal(resp.Body, &data); err != nil {
 			log.Fatalln("Unable to evaluate data:", err)
 		}
 
 		t := table.NewWriter()
 		t.SetOutputMirror(os.Stdout)
-		t.AppendHeader(table.Row{"Alias", "Removed"})
-		t.AppendRow(table.Row{data.Alias, data.Removed})
+		t.AppendRow(table.Row{"User Id", data.UserId})
+		t.AppendRow(table.Row{"Deleted", data.Deleted})
 		t.AppendSeparator()
+		t.Style().Options.SeparateRows = true
 		t.Render()
 	},
 }
@@ -72,9 +85,8 @@ var rmCmd = &cobra.Command{
 func init() {
 	rmCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	rmCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
-	rmCmd.Flags().IntVar(&deptId, "id", 0, "department id")
-	rmCmd.Flags().StringVar(&alias, "alias", "", "alias to be deleted")
+	rmCmd.Flags().StringVar(&userId, "id", "", "user id to remove")
+	rmCmd.Flags().BoolVar(&force, "force", false, "force deletion")
 
 	rmCmd.MarkFlagRequired("id")
-	rmCmd.MarkFlagRequired("alias")
 }
