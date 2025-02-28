@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/foxsoft2005/y360c/helper"
 	"github.com/foxsoft2005/y360c/model"
@@ -45,6 +46,7 @@ var (
 	mailboxImap          bool
 	mailboxSender        bool
 	mailboxLimitedSender bool
+	clear                bool
 	checkStatus          bool
 )
 
@@ -78,19 +80,21 @@ var setaccessCmd = &cobra.Command{
 		var method = "POST"
 		var entry model.MailAccessSettings
 
-		if mailboxOwner {
-			entry.Items = append(entry.Items, "shared_mailbox_owner")
-		} else {
-			if mailboxImap {
-				entry.Items = append(entry.Items, "shared_mailbox_imap_admin")
-			}
+		if !clear {
+			if mailboxOwner {
+				entry.Items = append(entry.Items, "shared_mailbox_owner")
+			} else {
+				if mailboxImap {
+					entry.Items = append(entry.Items, "shared_mailbox_imap_admin")
+				}
 
-			if mailboxSender {
-				entry.Items = append(entry.Items, "shared_mailbox_sender")
-			}
+				if mailboxSender {
+					entry.Items = append(entry.Items, "shared_mailbox_sender")
+				}
 
-			if mailboxLimitedSender {
-				entry.Items = append(entry.Items, "shared_mailbox_half_sender")
+				if mailboxLimitedSender {
+					entry.Items = append(entry.Items, "shared_mailbox_half_sender")
+				}
 			}
 		}
 
@@ -119,6 +123,7 @@ var setaccessCmd = &cobra.Command{
 		if checkStatus {
 			log.Printf("Checking status for task %s", data.TaskId)
 
+			time.Sleep(2 * time.Second)
 			task, err := helper.CheckTaskById(orgId, token, data.TaskId)
 			if err != nil {
 				log.Fatalln("Unable to check task:", err)
@@ -148,8 +153,18 @@ func init() {
 	setaccessCmd.Flags().BoolVar(&mailboxLimitedSender, "on-behalf", false, "access to send messages (send on behalf only) via SMTP")
 	setaccessCmd.Flags().Var(&notify, "notify", "notification type (all, delegates or none)")
 	setaccessCmd.Flags().BoolVar(&checkStatus, "check-status", false, "automatically check task status if possible")
+	setaccessCmd.Flags().BoolVar(&clear, "clear", false, "clear access options for the selected user if any")
 
 	setaccessCmd.MarkFlagRequired("id")
 	setaccessCmd.MarkFlagRequired("to-id")
-	setaccessCmd.MarkFlagsOneRequired("owner", "reader", "sender", "on-behalf")
+	setaccessCmd.MarkFlagsOneRequired("owner", "reader", "sender", "on-behalf", "clear")
+
+	setaccessCmd.MarkFlagsMutuallyExclusive("owner", "reader")
+	setaccessCmd.MarkFlagsMutuallyExclusive("owner", "sender")
+	setaccessCmd.MarkFlagsMutuallyExclusive("owner", "on-behalf")
+
+	setaccessCmd.MarkFlagsMutuallyExclusive("clear", "owner")
+	setaccessCmd.MarkFlagsMutuallyExclusive("clear", "sender")
+	setaccessCmd.MarkFlagsMutuallyExclusive("clear", "reader")
+	setaccessCmd.MarkFlagsMutuallyExclusive("clear", "on-behalf")
 }

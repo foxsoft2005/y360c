@@ -25,6 +25,22 @@ var statusCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Println("user mail status called")
 
+		if token == "" {
+			t, err := helper.GetToken()
+			if err != nil {
+				log.Fatalln("Incorrect settings:", err)
+			}
+			token = t
+		}
+
+		if orgId == 0 {
+			t, err := helper.GetOrgId()
+			if err != nil {
+				log.Fatalln("Incorrect settings:", err)
+			}
+			orgId = t
+		}
+
 		data, err := helper.CheckTaskById(orgId, token, taskId)
 		if err != nil {
 			log.Fatalln("Unable to get task:", err)
