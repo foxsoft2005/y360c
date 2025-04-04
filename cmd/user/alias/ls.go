@@ -4,11 +4,12 @@ Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 package alias
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/goccy/go-json"
 
 	"github.com/foxsoft2005/y360c/helper"
 	"github.com/foxsoft2005/y360c/model"
@@ -39,6 +40,19 @@ var lsCmd = &cobra.Command{
 				log.Fatalln("Incorrect settings:", err)
 			}
 			orgId = t
+		}
+
+		if userEmail != "" {
+			us, err := helper.GetUserByEmail(orgId, token, userEmail)
+			if err != nil {
+				log.Fatalln("Failed to get user by email", err)
+			}
+
+			if us == nil {
+				log.Fatalf("User (mailbox) %s does not found", userEmail)
+			}
+
+			userId = us.Id
 		}
 
 		var url = fmt.Sprintf("%s/directory/v1/org/%d/users/%s", helper.BaseUrl, orgId, userId)
@@ -72,6 +86,8 @@ func init() {
 	lsCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	lsCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	lsCmd.Flags().StringVar(&userId, "id", "", "user id")
+	lsCmd.Flags().StringVar(&userEmail, "email", "", "user email address")
 
-	lsCmd.MarkFlagRequired("id")
+	lsCmd.MarkFlagsOneRequired("id", "email")
+	lsCmd.MarkFlagsMutuallyExclusive("id", "email")
 }

@@ -4,11 +4,12 @@ Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 package alias
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/goccy/go-json"
 
 	"github.com/foxsoft2005/y360c/helper"
 	"github.com/foxsoft2005/y360c/model"
@@ -39,6 +40,19 @@ var addCmd = &cobra.Command{
 				log.Fatalln("Incorrect settings:", err)
 			}
 			orgId = t
+		}
+
+		if userEmail != "" {
+			us, err := helper.GetUserByEmail(orgId, token, userEmail)
+			if err != nil {
+				log.Fatalln("Failed to get user by email", err)
+			}
+
+			if us == nil {
+				log.Fatalf("User (mailbox) %s does not found", userEmail)
+			}
+
+			userId = us.Id
 		}
 
 		item := struct {
@@ -80,8 +94,11 @@ func init() {
 	addCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	addCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	addCmd.Flags().StringVar(&userId, "id", "", "user id")
+	addCmd.Flags().StringVar(&userEmail, "email", "", "user email address")
 	addCmd.Flags().StringVar(&alias, "alias", "", "mailbox alias")
 
-	addCmd.MarkFlagRequired("id")
+	addCmd.MarkFlagsOneRequired("id", "email")
+	addCmd.MarkFlagsMutuallyExclusive("id", "email")
+
 	addCmd.MarkFlagRequired("alias")
 }

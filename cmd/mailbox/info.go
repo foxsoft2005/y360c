@@ -5,10 +5,11 @@ Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 package mailbox
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/goccy/go-json"
 
 	"github.com/foxsoft2005/y360c/helper"
 	"github.com/foxsoft2005/y360c/model"
@@ -38,6 +39,19 @@ var infoCmd = &cobra.Command{
 				log.Fatalln("Incorrect settings:", err)
 			}
 			orgId = t
+		}
+
+		if mailboxName != "" {
+			us, err := helper.GetUserByEmail(orgId, token, mailboxName)
+			if err != nil {
+				log.Fatalln("Failed to get user by email", err)
+			}
+
+			if us == nil {
+				log.Fatalf("User (mailbox) %s does not found", mailboxName)
+			}
+
+			mailboxId = us.Id
 		}
 
 		var url = fmt.Sprintf("%s/admin/v1/org/%d/mailboxes/shared/%s", helper.BaseUrl, orgId, mailboxId)
@@ -75,6 +89,8 @@ func init() {
 	infoCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	infoCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	infoCmd.Flags().StringVar(&mailboxId, "id", "", "shared mailbox id")
+	infoCmd.Flags().StringVar(&mailboxName, "email", "", "mailbox (or user) email address")
 
-	infoCmd.MarkFlagRequired("id")
+	infoCmd.MarkFlagsOneRequired("id", "email")
+	infoCmd.MarkFlagsMutuallyExclusive("id", "email")
 }

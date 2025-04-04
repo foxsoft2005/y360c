@@ -5,10 +5,11 @@ Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 package mailbox
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/goccy/go-json"
 
 	"github.com/foxsoft2005/y360c/helper"
 	"github.com/foxsoft2005/y360c/model"
@@ -38,6 +39,19 @@ var changeCmd = &cobra.Command{
 				log.Fatalln("Incorrect settings:", err)
 			}
 			orgId = t
+		}
+
+		if mailboxName != "" {
+			us, err := helper.GetUserByEmail(orgId, token, mailboxName)
+			if err != nil {
+				log.Fatalln("Failed to get user by email", err)
+			}
+
+			if us == nil {
+				log.Fatalf("User (mailbox) %s does not found", mailboxName)
+			}
+
+			mailboxId = us.Id
 		}
 
 		item := struct {
@@ -80,8 +94,12 @@ func init() {
 	changeCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	changeCmd.Flags().StringVar(&name, "name", "", "shared mailbox name")
 	changeCmd.Flags().StringVar(&description, "description", "", "shared mailbox description")
-	changeCmd.Flags().StringVar(&mailboxId, "id", "", "shared mailbox id")
 
-	changeCmd.MarkFlagRequired("id")
+	changeCmd.Flags().StringVar(&mailboxId, "id", "", "shared mailbox id")
+	changeCmd.Flags().StringVar(&mailboxName, "email", "", "mailbox (or user) email address")
+
+	changeCmd.MarkFlagsOneRequired("id", "email")
+	changeCmd.MarkFlagsMutuallyExclusive("id", "email")
+
 	changeCmd.MarkFlagsOneRequired("name", "description")
 }

@@ -4,11 +4,12 @@ Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 package mailbox
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/goccy/go-json"
 
 	"github.com/foxsoft2005/y360c/helper"
 	"github.com/foxsoft2005/y360c/model"
@@ -27,7 +28,7 @@ var hasAccessCmd = &cobra.Command{
 	Long: `Use this command to get mailboxes that selected user has access to.
 "ya360_admin:mail_read_shared_mailbox_inventory" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Println("user mail has-access called")
+		log.Println("mailbox has-access called")
 
 		if token == "" {
 			t, err := helper.GetToken()
@@ -45,7 +46,16 @@ var hasAccessCmd = &cobra.Command{
 			orgId = t
 		}
 
-		var url = fmt.Sprintf("%s/admin/v1/org/%d/mailboxes/resources/%s", helper.BaseUrl, orgId, userId)
+		if mailboxName != "" {
+			us, err := helper.GetUserByEmail(orgId, token, mailboxName)
+			if err != nil {
+				log.Fatalln("Failed to get user by email", err)
+			}
+
+			mailboxId = us.Id
+		}
+
+		var url = fmt.Sprintf("%s/admin/v1/org/%d/mailboxes/resources/%s", helper.BaseUrl, orgId, mailboxId)
 
 		resp, err := helper.MakeRequest(url, "GET", token, nil)
 		if err != nil {
@@ -89,8 +99,11 @@ var hasAccessCmd = &cobra.Command{
 func init() {
 	hasAccessCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	hasAccessCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
-	hasAccessCmd.Flags().StringVar(&userId, "id", "", "user id")
+	hasAccessCmd.Flags().StringVar(&mailboxId, "id", "", "user id")
+	hasAccessCmd.Flags().StringVar(&mailboxName, "email", "", "mailbox (or user) email address")
+
 	hasAccessCmd.Flags().BoolVar(&describeResource, "describe", false, "show extended info")
 
-	hasAccessCmd.MarkFlagRequired("id")
+	hasAccessCmd.MarkFlagsOneRequired("id", "email")
+	hasAccessCmd.MarkFlagsMutuallyExclusive("id", "email")
 }

@@ -14,7 +14,7 @@ var (
 	mailboxId   string
 	name        string
 	description string
-	userId      string
+	mailboxName string
 )
 
 var MailboxCmd = &cobra.Command{

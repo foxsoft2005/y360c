@@ -8,9 +8,10 @@ import (
 )
 
 var (
-	orgId  int
-	token  string
-	userId string
+	orgId     int
+	token     string
+	userId    string
+	userEmail string
 )
 
 // MfaCmd represents the 2fa command

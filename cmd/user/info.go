@@ -4,13 +4,15 @@ Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 package user
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"strings"
 
+	"github.com/goccy/go-json"
+
 	"github.com/foxsoft2005/y360c/helper"
+	"github.com/foxsoft2005/y360c/model"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/spf13/cobra"
 )
@@ -42,9 +44,29 @@ var infoCmd = &cobra.Command{
 			orgId = t
 		}
 
-		data, err := helper.GetUserById(orgId, token, userId)
-		if err != nil {
-			log.Fatalln("Unable to get user:", err)
+		var data model.User
+		if userEmail != "" {
+			data1, err := helper.GetUserByEmail(orgId, token, userEmail)
+			if err != nil {
+				log.Fatalln("Failed to get user by email", err)
+			}
+
+			if data1 == nil {
+				log.Fatalf("User (mailbox) %s does not found", userEmail)
+			}
+
+			data = *data1
+		} else {
+			data2, err := helper.GetUserById(orgId, token, userId)
+			if err != nil {
+				log.Fatalln("Unable to get user:", err)
+			}
+
+			if data2 == nil {
+				log.Fatalf("User (mailbox) %s does not found", userId)
+			}
+
+			data = *data2
 		}
 
 		if asRaw {
@@ -84,8 +106,12 @@ var infoCmd = &cobra.Command{
 func init() {
 	infoCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	infoCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+
 	infoCmd.Flags().StringVar(&userId, "id", "", "user id")
+	infoCmd.Flags().StringVar(&userEmail, "email", "", "user email address")
+
 	infoCmd.Flags().BoolVar(&asRaw, "raw", false, "export as raw data")
 
-	infoCmd.MarkFlagsOneRequired("id")
+	infoCmd.MarkFlagsOneRequired("id", "email")
+	infoCmd.MarkFlagsMutuallyExclusive("id", "email")
 }

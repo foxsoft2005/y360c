@@ -5,10 +5,11 @@ Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 package mailbox
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/goccy/go-json"
 
 	"github.com/foxsoft2005/y360c/helper"
 	"github.com/foxsoft2005/y360c/model"
@@ -45,6 +46,19 @@ var delegationCmd = &cobra.Command{
 			orgId = t
 		}
 
+		if mailboxName != "" {
+			us, err := helper.GetUserByEmail(orgId, token, mailboxName)
+			if err != nil {
+				log.Fatalln("Failed to get user by email", err)
+			}
+
+			if us == nil {
+				log.Fatalf("User (mailbox) %s does not found", mailboxName)
+			}
+
+			mailboxId = us.Id
+		}
+
 		var (
 			url     string
 			method  string
@@ -55,7 +69,7 @@ var delegationCmd = &cobra.Command{
 
 		if activate {
 			url = fmt.Sprintf("%s/admin/v1/org/%d/mailboxes/delegated", helper.BaseUrl, orgId)
-			payload = []byte(fmt.Sprintf(`{"resourceId":"%s"}`, mailboxId))
+			payload = fmt.Appendf(nil, `{"resourceId":"%s"}`, mailboxId)
 			method = "PUT"
 		} else {
 			url = fmt.Sprintf("%s/admin/v1/org/%d/mailboxes/delegated/%s", helper.BaseUrl, orgId, mailboxId)
@@ -98,9 +112,14 @@ var delegationCmd = &cobra.Command{
 func init() {
 	delegationCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	delegationCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+
 	delegationCmd.Flags().StringVar(&mailboxId, "id", "", "shared mailbox id")
+	delegationCmd.Flags().StringVar(&mailboxName, "email", "", "mailbox (or user) email address")
+
 	delegationCmd.Flags().Var(&activateEnum, "activate", "activate/deactivate delegation")
 
-	delegationCmd.MarkFlagRequired("id")
+	delegationCmd.MarkFlagsOneRequired("id", "email")
+	delegationCmd.MarkFlagsMutuallyExclusive("id", "email")
+
 	delegationCmd.MarkFlagRequired("activate")
 }

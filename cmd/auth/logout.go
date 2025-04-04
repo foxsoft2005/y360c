@@ -11,7 +11,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var userId string
+var (
+	userId    string
+	userEmail string
+)
 
 var logoutCmd = &cobra.Command{
 	Use:   "logout",
@@ -37,8 +40,21 @@ var logoutCmd = &cobra.Command{
 			orgId = t
 		}
 
-		if !helper.Confirm("Do you REALLY want to log the user out on all devices (y[es]|no)?") {
-			log.Fatalln("Aborted, exiting")
+		if !helper.Confirm("Do you REALLY want to log the user out on ALL devices (y[es]|no)?") {
+			log.Fatalln("Aborted by the user")
+		}
+
+		if userEmail != "" {
+			us, err := helper.GetUserByEmail(orgId, token, userEmail)
+			if err != nil {
+				log.Fatalln("Failed to get user by email", err)
+			}
+
+			if us == nil {
+				log.Fatalf("User (mailbox) %s does not found", userEmail)
+			}
+
+			userId = us.Id
 		}
 
 		var url = fmt.Sprintf("%s/security/v1/org/%d/domain_sessions/users/%s/logout", helper.BaseUrl, orgId, userId)
@@ -59,7 +75,10 @@ var logoutCmd = &cobra.Command{
 func init() {
 	logoutCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	logoutCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
-	logoutCmd.Flags().StringVar(&userId, "user-id", "", "user id to log out")
 
-	logoutCmd.MarkFlagRequired("user-id")
+	logoutCmd.Flags().StringVar(&userId, "id", "", "id of the user to log out")
+	logoutCmd.Flags().StringVar(&userEmail, "email", "", "email of the user to log out ")
+
+	logoutCmd.MarkFlagsOneRequired("id", "email")
+	logoutCmd.MarkFlagsMutuallyExclusive("id", "email")
 }

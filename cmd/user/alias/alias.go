@@ -8,10 +8,11 @@ import (
 )
 
 var (
-	orgId  int
-	token  string
-	userId string
-	alias  string
+	orgId     int
+	token     string
+	userId    string
+	userEmail string
+	alias     string
 )
 
 // AliasCmd represents the alias command

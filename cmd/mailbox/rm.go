@@ -37,7 +37,20 @@ var rmCmd = &cobra.Command{
 		}
 
 		if !helper.Confirm("Do you REALLY want to DELETE the selected entity (y[es]|no)?") {
-			log.Fatal("Aborted, exiting")
+			log.Fatal("Aborted by the user")
+		}
+
+		if mailboxName != "" {
+			us, err := helper.GetUserByEmail(orgId, token, mailboxName)
+			if err != nil {
+				log.Fatalln("Failed to get user by email", err)
+			}
+
+			if us == nil {
+				log.Fatalf("User (mailbox) %s does not found", mailboxName)
+			}
+
+			mailboxId = us.Id
 		}
 
 		var url = fmt.Sprintf("%s/admin/v1/org/%d/mailboxes/shared/%s", helper.BaseUrl, orgId, mailboxId)
@@ -59,6 +72,8 @@ func init() {
 	rmCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	rmCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	rmCmd.Flags().StringVar(&mailboxId, "id", "", "shared mailbox id")
+	rmCmd.Flags().StringVar(&mailboxName, "email", "", "mailbox (or user) email address")
 
-	rmCmd.MarkFlagRequired("id")
+	rmCmd.MarkFlagsOneRequired("id", "email")
+	rmCmd.MarkFlagsMutuallyExclusive("id", "email")
 }

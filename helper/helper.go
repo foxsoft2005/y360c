@@ -6,14 +6,16 @@ package helper
 
 import (
 	"bytes"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
+	"slices"
 	"strings"
 	"time"
+
+	"github.com/goccy/go-json"
 
 	"github.com/foxsoft2005/y360c/model"
 	"github.com/spf13/viper"
@@ -220,6 +222,44 @@ func GetUserById(orgId int, token string, userId string) (*model.User, error) {
 	}
 
 	return &user, nil
+}
+
+func GetUserByEmail(orgId int, token string, email string) (*model.User, error) {
+	if email == "" {
+		return nil, errors.New("email must be specified")
+	}
+
+	if token == "" {
+		return nil, errors.New("token must be specified")
+	}
+
+	if orgId == 0 {
+		return nil, errors.New("organization id must be specified")
+	}
+
+	var url = fmt.Sprintf("%s/directory/v1/org/%d/users?perPage=%d", BaseUrl, orgId, 1000)
+
+	resp, err := MakeRequest(url, "GET", token, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := GetErrorText(resp); err != nil {
+		return nil, err
+	}
+
+	var data model.UserList
+	if err := json.Unmarshal(resp.Body, &data); err != nil {
+		return nil, err
+	}
+
+	ix := slices.IndexFunc(data.Users, func(u model.User) bool { return strings.EqualFold(u.Email, email) })
+
+	if ix >= 0 {
+		return &data.Users[ix], nil
+	}
+
+	return nil, nil
 }
 
 func CheckTaskById(orgId int, token string, taskId string) (*model.TaskStatusResponse, error) {

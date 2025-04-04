@@ -4,12 +4,13 @@ Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 package contact
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/goccy/go-json"
 
 	"github.com/foxsoft2005/y360c/helper"
 	"github.com/foxsoft2005/y360c/model"
@@ -66,6 +67,19 @@ var addCmd = &cobra.Command{
 				log.Fatalln("Incorrect settings:", err)
 			}
 			orgId = t
+		}
+
+		if userEmail != "" {
+			us, err := helper.GetUserByEmail(orgId, token, userEmail)
+			if err != nil {
+				log.Fatalln("Failed to get user by email", err)
+			}
+
+			if us == nil {
+				log.Fatalf("User (mailbox) %s does not found", userEmail)
+			}
+
+			userId = us.Id
 		}
 
 		var url = fmt.Sprintf("%s/directory/v1/org/%d/users/%s/contacts", helper.BaseUrl, orgId, userId)
@@ -131,12 +145,17 @@ var addCmd = &cobra.Command{
 func init() {
 	addCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	addCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+
 	addCmd.Flags().StringVar(&userId, "id", "", "user id")
+	addCmd.Flags().StringVar(&userEmail, "email", "", "user email address")
+
 	addCmd.Flags().Var(&contactType, "type", "entry type (email, phone, phone_extension, etc.)")
 	addCmd.Flags().StringVar(&contactValue, "value", "", "entry value")
 	addCmd.Flags().StringVar(&contactLabel, "label", "", "entry label")
 
-	addCmd.MarkFlagRequired("id")
+	addCmd.MarkFlagsOneRequired("id", "email")
+	addCmd.MarkFlagsMutuallyExclusive("id", "email")
+
 	addCmd.MarkFlagRequired("type")
 	addCmd.MarkFlagRequired("value")
 }

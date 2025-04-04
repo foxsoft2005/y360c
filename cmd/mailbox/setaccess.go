@@ -4,12 +4,13 @@ Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 package mailbox
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
 	"os"
 	"time"
+
+	"github.com/goccy/go-json"
 
 	"github.com/foxsoft2005/y360c/helper"
 	"github.com/foxsoft2005/y360c/model"
@@ -40,6 +41,7 @@ func (e *notificationType) Type() string {
 }
 
 var (
+	toEmail              string
 	toId                 string
 	notify               notificationType
 	mailboxOwner         bool
@@ -73,6 +75,32 @@ var setaccessCmd = &cobra.Command{
 				log.Fatalln("Incorrect settings:", err)
 			}
 			orgId = t
+		}
+
+		if mailboxName != "" {
+			us, err := helper.GetUserByEmail(orgId, token, mailboxName)
+			if err != nil {
+				log.Fatalln("Failed to get user by email", err)
+			}
+
+			if us == nil {
+				log.Fatalf("User (mailbox) %s does not found", mailboxName)
+			}
+
+			mailboxId = us.Id
+		}
+
+		if toEmail != "" {
+			us, err := helper.GetUserByEmail(orgId, token, toEmail)
+			if err != nil {
+				log.Fatalln("Failed to get user by email", err)
+			}
+
+			if us == nil {
+				log.Fatalf("User (mailbox) %s does not found", toEmail)
+			}
+
+			toId = us.Id
 		}
 
 		var url = fmt.Sprintf("%s/admin/v1/org/%d/mailboxes/set/%s?actorId=%s&notify=%s", helper.BaseUrl, orgId, mailboxId, toId, notify)
@@ -146,7 +174,9 @@ func init() {
 	setaccessCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	setaccessCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	setaccessCmd.Flags().StringVar(&mailboxId, "id", "", "mailbox (or user) id")
+	setaccessCmd.Flags().StringVar(&mailboxName, "email", "", "mailbox (or user) email address")
 	setaccessCmd.Flags().StringVar(&toId, "to-id", "", "user id to whom access is delegated")
+	setaccessCmd.Flags().StringVar(&toEmail, "to-email", "", "user email address to whom access is delegated")
 	setaccessCmd.Flags().BoolVar(&mailboxOwner, "owner", false, "full access to the mailbox (includes all other access types)")
 	setaccessCmd.Flags().BoolVar(&mailboxImap, "reader", false, "access to read messages via IMAP")
 	setaccessCmd.Flags().BoolVar(&mailboxSender, "sender", false, "access to send messages (send as & send on behalf) via SMTP")
@@ -155,9 +185,13 @@ func init() {
 	setaccessCmd.Flags().BoolVar(&checkStatus, "check-status", false, "automatically check task status if possible")
 	setaccessCmd.Flags().BoolVar(&clear, "clear", false, "clear access options for the selected user if any")
 
-	setaccessCmd.MarkFlagRequired("id")
-	setaccessCmd.MarkFlagRequired("to-id")
+	setaccessCmd.MarkFlagsOneRequired("id", "email")
+	setaccessCmd.MarkFlagsOneRequired("to-id", "to-email")
+
 	setaccessCmd.MarkFlagsOneRequired("owner", "reader", "sender", "on-behalf", "clear")
+
+	setaccessCmd.MarkFlagsMutuallyExclusive("id", "email")
+	setaccessCmd.MarkFlagsMutuallyExclusive("to-id", "to-email")
 
 	setaccessCmd.MarkFlagsMutuallyExclusive("owner", "reader")
 	setaccessCmd.MarkFlagsMutuallyExclusive("owner", "sender")

@@ -1,3 +1,10 @@
+1.0.0-beta.43
+
+    - added new flag --email (can be used instead of --id) to "auth", "mailbox" and "user" commands (and sub-commands) (example: "user info --email xxx@yyy.zz")
+	- "go-json" (https://github.com/goccy/go-json) is now used to speed up json encoding/decoding (instead of bundled "encoding/json")
+    - typos and refactoring
+
+
 1.0.0-beta.41
 
     - added new flag to "mailbox set-access" command (mailbox set-access --id xx --to-id yy --clear)

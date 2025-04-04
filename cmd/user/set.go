@@ -4,11 +4,12 @@ Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 package user
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"time"
+
+	"github.com/goccy/go-json"
 
 	"github.com/foxsoft2005/y360c/helper"
 	"github.com/foxsoft2005/y360c/model"
@@ -72,6 +73,19 @@ var setCmd = &cobra.Command{
 			IsAdmin:     helper.EnumYesNoToBool(isAdmin),
 		}
 
+		if userEmail != "" {
+			us, err := helper.GetUserByEmail(orgId, token, userEmail)
+			if err != nil {
+				log.Fatalln("Failed to get user by email", err)
+			}
+
+			if us == nil {
+				log.Fatalf("User (mailbox) %s does not found", userEmail)
+			}
+
+			userId = us.Id
+		}
+
 		var url = fmt.Sprintf("%s/directory/v1/org/%d/users/%s", helper.BaseUrl, orgId, userId)
 		payload, _ := json.Marshal(item)
 
@@ -108,6 +122,7 @@ func init() {
 	setCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	setCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	setCmd.Flags().StringVar(&userId, "id", "", "user id")
+	setCmd.Flags().StringVar(&userEmail, "email", "", "user email address")
 
 	setCmd.Flags().StringVar(&about, "about", "", "about an user")
 	setCmd.Flags().StringVar(&birthday, "birthday", "", "user bithday (YYYY-MM-DD)")
@@ -116,6 +131,8 @@ func init() {
 	setCmd.Flags().StringVar(&position, "position", "", "user position")
 	setCmd.Flags().Var(&isAdmin, "is-admin", "user has admin permissions (yes or no)")
 
-	setCmd.MarkFlagRequired("id")
+	setCmd.MarkFlagsOneRequired("id", "email")
+	setCmd.MarkFlagsMutuallyExclusive("id", "email")
+
 	setCmd.MarkFlagsOneRequired("about", "birthday", "display-name", "external-id", "position", "is-admin")
 }

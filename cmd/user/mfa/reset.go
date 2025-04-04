@@ -40,6 +40,19 @@ var resetCmd = &cobra.Command{
 			log.Fatalln("Aborted by the user")
 		}
 
+		if userEmail != "" {
+			us, err := helper.GetUserByEmail(orgId, token, userEmail)
+			if err != nil {
+				log.Fatalln("Failed to get user by email", err)
+			}
+
+			if us == nil {
+				log.Fatalf("User (mailbox) %s does not found", userEmail)
+			}
+
+			userId = us.Id
+		}
+
 		var url = fmt.Sprintf("%s/directory/v1/org/%d/users/%s/2fa", helper.BaseUrl, orgId, userId)
 
 		resp, err := helper.MakeRequest(url, "DELETE", token, nil)
@@ -59,6 +72,8 @@ func init() {
 	resetCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	resetCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	resetCmd.Flags().StringVar(&userId, "id", "", "user id")
+	resetCmd.Flags().StringVar(&userEmail, "email", "", "user email address")
 
-	resetCmd.MarkFlagRequired("id")
+	resetCmd.MarkFlagsOneRequired("id", "email")
+	resetCmd.MarkFlagsMutuallyExclusive("id", "email")
 }

@@ -12,10 +12,11 @@ import (
 )
 
 var (
-	orgId  int
-	token  string
-	userId string
-	asRaw  bool
+	orgId     int
+	token     string
+	userId    string
+	userEmail string
+	asRaw     bool
 )
 
 var UserCmd = &cobra.Command{

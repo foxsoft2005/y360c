@@ -36,7 +36,7 @@ var UpdateCmd = &cobra.Command{
 		req, _ := http.NewRequest("GET", url, nil)
 		resp, err := http.DefaultClient.Do(req)
 		if err != nil {
-			log.Fatalln("unable to get update:", err)
+			log.Fatalln("failed to get update:", err)
 		}
 		defer resp.Body.Close()
 

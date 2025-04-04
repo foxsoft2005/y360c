@@ -4,11 +4,12 @@ Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 package disk
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"time"
+
+	"github.com/goccy/go-json"
 
 	"github.com/foxsoft2005/y360c/helper"
 	"github.com/foxsoft2005/y360c/model"

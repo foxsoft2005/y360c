@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/foxsoft2005/y360c/helper"
+	"github.com/foxsoft2005/y360c/model"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/spf13/cobra"
 )
@@ -39,9 +40,29 @@ var lsCmd = &cobra.Command{
 			orgId = t
 		}
 
-		data, err := helper.GetUserById(orgId, token, userId)
-		if err != nil {
-			log.Fatalln("Unable to get user:", err)
+		var data model.User
+		if userEmail != "" {
+			data1, err := helper.GetUserByEmail(orgId, token, userEmail)
+			if err != nil {
+				log.Fatalln("Failed to get user by email", err)
+			}
+
+			if data1 == nil {
+				log.Fatalf("User (mailbox) %s does not found", userEmail)
+			}
+
+			data = *data1
+		} else {
+			data2, err := helper.GetUserById(orgId, token, userId)
+			if err != nil {
+				log.Fatalln("Unable to get user:", err)
+			}
+
+			if data2 == nil {
+				log.Fatalf("User (mailbox) %s does not found", userId)
+			}
+
+			data = *data2
 		}
 
 		t := table.NewWriter()
@@ -74,7 +95,10 @@ var lsCmd = &cobra.Command{
 func init() {
 	lsCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	lsCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
-	lsCmd.Flags().StringVar(&userId, "id", "", "user id")
 
-	lsCmd.MarkFlagRequired("id")
+	lsCmd.Flags().StringVar(&userId, "id", "", "user id")
+	lsCmd.Flags().StringVar(&userEmail, "email", "", "user email address")
+
+	lsCmd.MarkFlagsOneRequired("id", "email")
+	lsCmd.MarkFlagsMutuallyExclusive("id", "email")
 }

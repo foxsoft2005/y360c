@@ -4,11 +4,12 @@ Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 package contact
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/goccy/go-json"
 
 	"github.com/foxsoft2005/y360c/helper"
 	"github.com/foxsoft2005/y360c/model"
@@ -39,6 +40,23 @@ var resetCmd = &cobra.Command{
 				log.Fatalln("Incorrect settings:", err)
 			}
 			orgId = t
+		}
+
+		if !helper.Confirm("Do you REALLY want to DELETE all manually entered contact information (y[es]|no)?") {
+			log.Fatal("Aborted by the user")
+		}
+
+		if userEmail != "" {
+			us, err := helper.GetUserByEmail(orgId, token, userEmail)
+			if err != nil {
+				log.Fatalln("Failed to get user by email", err)
+			}
+
+			if us == nil {
+				log.Fatalf("User (mailbox) %s does not found", userEmail)
+			}
+
+			userId = us.Id
 		}
 
 		var url = fmt.Sprintf("%s/directory/v1/org/%d/users/%s/contacts", helper.BaseUrl, orgId, userId)
@@ -87,7 +105,10 @@ var resetCmd = &cobra.Command{
 func init() {
 	resetCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	resetCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
-	resetCmd.Flags().StringVar(&userId, "id", "", "user id")
 
-	resetCmd.MarkFlagRequired("id")
+	resetCmd.Flags().StringVar(&userId, "id", "", "user id")
+	resetCmd.Flags().StringVar(&userEmail, "email", "", "user email address")
+
+	resetCmd.MarkFlagsOneRequired("id", "email")
+	resetCmd.MarkFlagsMutuallyExclusive("id", "email")
 }

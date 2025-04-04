@@ -4,10 +4,11 @@ Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 package user
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/goccy/go-json"
 
 	"github.com/foxsoft2005/y360c/helper"
 	"github.com/foxsoft2005/y360c/model"
@@ -45,6 +46,19 @@ var rmCmd = &cobra.Command{
 			if !helper.Confirm("Do you REALLY want to DELETE the selected entity (y[es]|no)?") {
 				log.Fatal("Aborted by the user")
 			}
+		}
+
+		if userEmail != "" {
+			us, err := helper.GetUserByEmail(orgId, token, userEmail)
+			if err != nil {
+				log.Fatalln("Failed to get user by email", err)
+			}
+
+			if us == nil {
+				log.Fatalf("User (mailbox) %s does not found", userEmail)
+			}
+
+			userId = us.Id
 		}
 
 		user, err := helper.GetUserById(orgId, token, userId)
@@ -86,7 +100,10 @@ func init() {
 	rmCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	rmCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	rmCmd.Flags().StringVar(&userId, "id", "", "user id to remove")
+	rmCmd.Flags().StringVar(&userEmail, "email", "", "user email address")
+
 	rmCmd.Flags().BoolVar(&force, "force", false, "force deletion")
 
-	rmCmd.MarkFlagRequired("id")
+	rmCmd.MarkFlagsOneRequired("id", "email")
+	rmCmd.MarkFlagsMutuallyExclusive("id", "email")
 }

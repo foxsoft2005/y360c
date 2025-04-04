@@ -4,10 +4,11 @@ Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 package mfa
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/goccy/go-json"
 
 	"github.com/foxsoft2005/y360c/helper"
 	"github.com/foxsoft2005/y360c/model"
@@ -40,6 +41,19 @@ var statusCmd = &cobra.Command{
 			orgId = t
 		}
 
+		if userEmail != "" {
+			us, err := helper.GetUserByEmail(orgId, token, userEmail)
+			if err != nil {
+				log.Fatalln("Failed to get user by email", err)
+			}
+
+			if us == nil {
+				log.Fatalf("User (mailbox) %s does not found", userEmail)
+			}
+
+			userId = us.Id
+		}
+
 		var url = fmt.Sprintf("%s/directory/v1/org/%d/users/%s/2fa", helper.BaseUrl, orgId, userId)
 
 		resp, err := helper.MakeRequest(url, "GET", token, nil)
@@ -70,6 +84,8 @@ func init() {
 	statusCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	statusCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	statusCmd.Flags().StringVar(&userId, "id", "", "user id")
+	statusCmd.Flags().StringVar(&userEmail, "email", "", "user email address")
 
-	statusCmd.MarkFlagRequired("id")
+	statusCmd.MarkFlagsOneRequired("id", "email")
+	statusCmd.MarkFlagsMutuallyExclusive("id", "email")
 }
