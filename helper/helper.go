@@ -136,7 +136,11 @@ func GetErrorText(response *ApiResponse) error {
 
 	var errorData model.ErrorResponse
 	if err := json.Unmarshal(response.Body, &errorData); err != nil {
-		return fmt.Errorf("unable to parse error data (but status is %d): %s", response.HttpCode, err)
+		return fmt.Errorf("unable to parse error (http status: %d): %s", response.HttpCode, err)
+	}
+
+	if response.HttpCode == 403 {
+		return fmt.Errorf("http %d: access denied, check persmissions", response.HttpCode)
 	}
 
 	return fmt.Errorf("http %d: [%d] %s", response.HttpCode, errorData.Code, errorData.Message)

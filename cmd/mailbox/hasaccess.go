@@ -52,6 +52,10 @@ var hasAccessCmd = &cobra.Command{
 				log.Fatalln("Failed to get user by email", err)
 			}
 
+			if us == nil {
+				log.Fatalf("User (mailbox) %s does not found", mailboxName)
+			}
+
 			mailboxId = us.Id
 		}
 
