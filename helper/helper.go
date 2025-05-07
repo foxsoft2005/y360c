@@ -140,7 +140,7 @@ func GetErrorText(response *ApiResponse) error {
 	}
 
 	if response.HttpCode == 403 {
-		return fmt.Errorf("http %d: access denied, check persmissions", response.HttpCode)
+		return fmt.Errorf("http %d: access denied, check permissions", response.HttpCode)
 	}
 
 	return fmt.Errorf("http %d: [%d] %s", response.HttpCode, errorData.Code, errorData.Message)
