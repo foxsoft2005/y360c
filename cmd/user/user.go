@@ -6,8 +6,8 @@ package user
 import (
 	"github.com/foxsoft2005/y360c/cmd/user/alias"
 	"github.com/foxsoft2005/y360c/cmd/user/contact"
-	"github.com/foxsoft2005/y360c/cmd/user/mail"
 	"github.com/foxsoft2005/y360c/cmd/user/mfa"
+	"github.com/foxsoft2005/y360c/cmd/user/rule"
 	"github.com/spf13/cobra"
 )
 
@@ -34,8 +34,9 @@ func init() {
 	UserCmd.AddCommand(infoCmd)
 	UserCmd.AddCommand(mfa.MfaCmd)
 	UserCmd.AddCommand(alias.AliasCmd)
-	UserCmd.AddCommand(mail.MailCmd)
+	UserCmd.AddCommand(rule.RuleCmd)
 	UserCmd.AddCommand(contact.ContactCmd)
 	UserCmd.AddCommand(setCmd)
 	UserCmd.AddCommand(rmCmd)
+	UserCmd.AddCommand(senderinfoCmd)
 }

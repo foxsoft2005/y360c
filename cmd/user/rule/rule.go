@@ -1,7 +1,7 @@
 /*
 Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 */
-package mail
+package rule
 
 import (
 	"github.com/spf13/cobra"
@@ -11,13 +11,14 @@ var (
 	orgId  int
 	token  string
 	userId string
+	ruleId string
 )
 
-// MailCmd represents the mail command
-var MailCmd = &cobra.Command{
-	Use:   "mail",
-	Short: "Manage mail settings for the user",
-	Long: `The command provides access to mail settings (sender info, mail rules etc) for the selected user.
+// RuleCmd represents the rule command
+var RuleCmd = &cobra.Command{
+	Use:   "rule",
+	Short: "Manage mailbox rules for the user",
+	Long: `The command provides access to mailbox rules (forwards and autoreplies) for the selected user.
 Cannot be executed directly, please use one of the available sub-commands.`,
 	//	Run: func(cmd *cobra.Command, args []string) {
 	//		fmt.Println("user mail called")
@@ -25,6 +26,5 @@ Cannot be executed directly, please use one of the available sub-commands.`,
 }
 
 func init() {
-	MailCmd.AddCommand(rulesCmd)
-	MailCmd.AddCommand(senderinfoCmd)
+	RuleCmd.AddCommand(lsCmd)
 }

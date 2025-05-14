@@ -1,7 +1,7 @@
 /*
 Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 */
-package mail
+package user
 
 import (
 	"fmt"
@@ -24,7 +24,7 @@ var senderinfoCmd = &cobra.Command{
 	Long: `Use this command to show a sender info for the selected user.
 "ya360_admin:mail_read_user_settings" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Println("user mail sender-info called")
+		log.Println("user sender-info called")
 
 		if token == "" {
 			t, err := helper.GetToken()
@@ -83,5 +83,4 @@ func init() {
 	senderinfoCmd.Flags().StringVar(&userId, "id", "", "user id")
 
 	senderinfoCmd.MarkFlagRequired("id")
-
 }

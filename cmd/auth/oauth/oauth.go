@@ -1,10 +1,9 @@
 /*
 Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 */
-package auth
+package oauth
 
 import (
-	"github.com/foxsoft2005/y360c/cmd/auth/oauth"
 	"github.com/spf13/cobra"
 )
 
@@ -14,10 +13,10 @@ var (
 )
 
 // command definition
-var AuthCmd = &cobra.Command{
-	Use:   "auth",
-	Short: "Manage Y360 auth settings",
-	Long: `The command provides access to Y360 auth settings.
+var OauthCmd = &cobra.Command{
+	Use:   "oauth",
+	Short: "Manage Y360 OAuth settings",
+	Long: `The command provides access to Y360 OAuth settings.
 Cannot be executed directly, use one of the available sub-commands.`,
 	//	Run: func(cmd *cobra.Command, args []string) {
 	//		fmt.Println("auth called")
@@ -25,8 +24,5 @@ Cannot be executed directly, use one of the available sub-commands.`,
 }
 
 func init() {
-	AuthCmd.AddCommand(logoutCmd)
-	AuthCmd.AddCommand(setTtlCmd)
-	AuthCmd.AddCommand(getTtlCmd)
-	AuthCmd.AddCommand(oauth.OauthCmd)
+	OauthCmd.AddCommand(statusCmd)
 }

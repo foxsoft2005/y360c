@@ -356,3 +356,7 @@ type UserDeletionResponse struct {
 	Deleted bool   `json:"deleted"`
 	UserId  string `json:"userId"`
 }
+
+type OAuthStatusRespose struct {
+	Restricted bool `json:"restricted"`
+}

@@ -1,3 +1,11 @@
+1.0.0-beta.45
+
+    - added new subcommand for "auth" to check OAuth settings ("auth oauth status" to check or "auth oauth status --enable[--disable]" to enable/disable OAuth for the external services)
+    - "user mail rules" (shows the list of the mailbox rules for the user) is now renamed to "user rule ls"
+    - "user rule rm" is now added to make possible to delete mailbox rule
+    - bugfix
+
+
 1.0.0-beta.43
 
     - added new flag --email (can be used instead of --id) to "auth", "mailbox" and "user" commands (and sub-commands) (example: "user info --email xxx@yyy.zz")

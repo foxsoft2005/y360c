@@ -1,7 +1,7 @@
 /*
 Copyright © 2024 Kirill Chernetstky aka foxsoft2005
 */
-package mail
+package rule
 
 import (
 	"fmt"
@@ -16,14 +16,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// rulesCmd represents the rules command
-var rulesCmd = &cobra.Command{
-	Use:   "rules",
-	Short: "Show mailbox rules for the user",
+var lsCmd = &cobra.Command{
+	Use:   "ls",
+	Short: "Shows the list of mailbox rules for the user",
 	Long: `Use this command to show mailbox rules (autoreplies, forwards) for the selected user.
 "ya360_admin:mail_read_user_settings" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Println("user mail rules called")
+		log.Println("user rule ls called")
 
 		if token == "" {
 			t, err := helper.GetToken()
@@ -80,10 +79,9 @@ var rulesCmd = &cobra.Command{
 }
 
 func init() {
-	rulesCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
-	rulesCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
-	rulesCmd.Flags().StringVar(&userId, "id", "", "user id")
+	lsCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
+	lsCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	lsCmd.Flags().StringVar(&userId, "id", "", "user id")
 
-	rulesCmd.MarkFlagRequired("id")
-
+	lsCmd.MarkFlagRequired("id")
 }
