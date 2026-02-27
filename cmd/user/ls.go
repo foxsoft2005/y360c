@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 Kirill Chernetstky aka foxsoft2005
+Copyright © 2024 Kirill Chernetsky aka foxsoft2005
 */
 package user
 
@@ -144,7 +144,7 @@ var listCmd = &cobra.Command{
 							e.Gender,
 							e.Birthday,
 							e.Email,
-							e.AvararId,
+							e.AvatarId,
 							e.Position,
 							e.DepartmentId,
 							e.Timezone,

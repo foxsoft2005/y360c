@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 Kirill Chernetstky aka foxsoft2005
+Copyright © 2024 Kirill Chernetsky aka foxsoft2005
 */
 package mfa
 
@@ -73,7 +73,8 @@ var statusCmd = &cobra.Command{
 		t := table.NewWriter()
 		t.SetOutputMirror(os.Stdout)
 		t.AppendRow(table.Row{"User Id", data.UserId})
-		t.AppendRow(table.Row{"Has 2fa", data.Has2fa})
+		t.AppendRow(table.Row{"Has 2FA", data.Has2fa})
+		t.AppendRow(table.Row{"Has Phone", data.HasSecurityPhone})
 		t.AppendSeparator()
 		t.Style().Options.SeparateRows = true
 		t.Render()

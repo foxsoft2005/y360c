@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 Kirill Chernetstky aka foxsoft2005
+Copyright © 2024 Kirill Chernetsky aka foxsoft2005
 */
 package org
 
@@ -62,7 +62,7 @@ var listCmd = &cobra.Command{
 			t.SetOutputMirror(os.Stdout)
 			t.AppendHeader(table.Row{"id", "name", "phone", "fax", "email", "subscription"})
 			for _, e := range data.Organizations {
-				t.AppendRow(table.Row{e.Id, e.Name, e.Phone, e.Fax, e.Email, e.SubsciptionPlan})
+				t.AppendRow(table.Row{e.Id, e.Name, e.Phone, e.Fax, e.Email, e.SubscriptionPlan})
 			}
 			t.AppendSeparator()
 			t.Render()

@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 Kirill Chernetstky aka foxsoft2005
+Copyright © 2024 Kirill Chernetsky aka foxsoft2005
 */
 package oauth
 
@@ -67,7 +67,7 @@ var statusCmd = &cobra.Command{
 		}
 
 		if !activate && !deactivate {
-			var data model.OAuthStatusRespose
+			var data model.OAuthStatusResponse
 
 			if err := json.Unmarshal(resp.Body, &data); err != nil {
 				log.Fatalln("Unable to evaluate data:", err)

@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 Kirill Chernetstky aka foxsoft2005
+Copyright © 2024 Kirill Chernetsky aka foxsoft2005
 */
 
 package helper
@@ -22,7 +22,7 @@ import (
 )
 
 const (
-	BaseUrl = "https://api360.yandex.net" // Must be without trailing slash
+	BaseUrl = "https://cloud-api.yandex.net" // Must be without trailing slash
 )
 
 // Enums "fancy" implementation
@@ -119,7 +119,9 @@ func MakeRequest(url string, method string, token string, payload []byte) (*ApiR
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		_ = Body.Close()
+	}(resp.Body)
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {

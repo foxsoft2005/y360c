@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 Kirill Chernetstky aka foxsoft2005
+Copyright © 2024 Kirill Chernetsky aka foxsoft2005
 */
 package model
 
@@ -72,13 +72,13 @@ type MfaActivation struct {
 }
 
 type Organization struct {
-	Email           string `json:"email"`
-	Fax             string `json:"fax"`
-	Id              int    `json:"id"`
-	Name            string `json:"name"`
-	Phone           string `json:"phone"`
-	Language        string `json:"language"`
-	SubsciptionPlan string `json:"subscriptionPlan"`
+	Email            string `json:"email"`
+	Fax              string `json:"fax"`
+	Id               int    `json:"id"`
+	Name             string `json:"name"`
+	Phone            string `json:"phone"`
+	Language         string `json:"language"`
+	SubscriptionPlan string `json:"subscriptionPlan"`
 }
 
 type OrganizationList struct {
@@ -104,7 +104,7 @@ type UserName struct {
 type User struct {
 	About        string        `json:"about"`
 	Aliases      []string      `json:"aliases"`
-	AvararId     string        `json:"avatarId"`
+	AvatarId     string        `json:"avatarId"`
 	Birthday     string        `json:"birthday"`
 	Contacts     []ContactInfo `json:"contacts"`
 	CreatedAt    string        `json:"createdAt"`
@@ -141,8 +141,9 @@ type RmAliasResponse struct {
 }
 
 type UserMfaSetup struct {
-	UserId string `json:"userId"`
-	Has2fa bool   `json:"has2fa"`
+	UserId           string `json:"userId"`
+	Has2fa           bool   `json:"has2fa"`
+	HasSecurityPhone bool   `json:"hasSecurityPhone"`
 }
 
 type ErrorResponse struct {
@@ -239,7 +240,7 @@ type DnsRecord struct {
 	Flag       int    `json:"flag"`
 	Name       string `json:"name"`
 	Port       int    `json:"port"`
-	Preferense int    `json:"preference"`
+	Preference int    `json:"preference"`
 	Priority   int    `json:"priority"`
 	RecordId   int    `json:"recordId"`
 	Tag        string `json:"tag"`
@@ -357,6 +358,6 @@ type UserDeletionResponse struct {
 	UserId  string `json:"userId"`
 }
 
-type OAuthStatusRespose struct {
+type OAuthStatusResponse struct {
 	Restricted bool `json:"restricted"`
 }
