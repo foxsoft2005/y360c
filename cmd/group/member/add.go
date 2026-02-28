@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package member
 
 import (
@@ -86,7 +85,16 @@ func init() {
 	addCmd.Flags().Var(&memberType, "member-type", "member (user, group or department) to be added")
 	addCmd.Flags().StringVar(&memberId, "member-id", "", "member id to be added")
 
-	addCmd.MarkFlagRequired("id")
-	addCmd.MarkFlagRequired("member-type")
-	addCmd.MarkFlagRequired("member-id")
+	err := addCmd.MarkFlagRequired("id")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
+	err = addCmd.MarkFlagRequired("member-type")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
+	err = addCmd.MarkFlagRequired("member-id")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

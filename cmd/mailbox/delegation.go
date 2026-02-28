@@ -1,6 +1,4 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
 
 package mailbox
 
@@ -121,5 +119,8 @@ func init() {
 	delegationCmd.MarkFlagsOneRequired("id", "email")
 	delegationCmd.MarkFlagsMutuallyExclusive("id", "email")
 
-	delegationCmd.MarkFlagRequired("activate")
+	err := delegationCmd.MarkFlagRequired("activate")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package whitelist
 
 import (
@@ -77,5 +76,8 @@ func init() {
 	addCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	addCmd.Flags().StringArrayVar(&allowed, "allowed", nil, `allowed IP-address ("77.88.21.249") or CIDR ("77.88.54.0/23")`)
 
-	addCmd.MarkFlagRequired("allowed")
+	err := addCmd.MarkFlagRequired("allowed")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

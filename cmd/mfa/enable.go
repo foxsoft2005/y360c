@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package mfa
 
 import (
@@ -49,7 +48,7 @@ var validation validationMethod
 var enableCmd = &cobra.Command{
 	Use:   "enable",
 	Short: "Enable mandatory 2FA for domain users",
-	Long: `Use this command to enable madatory two-factor authentication (2FA) for the selected organization.
+	Long: `Use this command to enable mandatory two-factor authentication (2FA) for the selected organization.
 "ya360_security:domain_2fa_write" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Print("mfa enable called")
@@ -108,5 +107,8 @@ func init() {
 	enableCmd.Flags().BoolVar(&logoutUsers, "logout", false, "logout all users on MFA activation")
 	enableCmd.Flags().Var(&validation, "validate", "validation method (sms, phone)")
 
-	enableCmd.MarkFlagRequired("duration")
+	err := enableCmd.MarkFlagRequired("duration")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

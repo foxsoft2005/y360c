@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package dept
 
 import (
@@ -83,5 +82,8 @@ func init() {
 	infoCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	infoCmd.Flags().IntVar(&deptId, "id", 0, "department id")
 
-	infoCmd.MarkFlagRequired("id")
+	err := infoCmd.MarkFlagRequired("id")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

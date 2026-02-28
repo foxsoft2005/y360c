@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package mfa
 
 import (
@@ -14,8 +13,8 @@ import (
 // resetCmd represents the reset command
 var resetCmd = &cobra.Command{
 	Use:   "reset",
-	Short: "Reset a phone number used for 2fa",
-	Long: `Use this command to reset a phone number used for two-factor auth (2fa) by the user.
+	Short: "Reset 2fa settings",
+	Long: `Use this command to reset two-factor auth (2fa) settings for the user.
 "directory:write_users" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Println("user mfa reset called")

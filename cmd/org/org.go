@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package org
 
 import (
@@ -13,8 +12,8 @@ var (
 	maxRec int
 )
 
-// orgCmd represents the org command
-var OrgCmd = &cobra.Command{
+// Cmd represents the org command
+var Cmd = &cobra.Command{
 	Use:   "org",
 	Short: "Manage Y360 organizations",
 	Long: `The command provides access to Y360 organizations.
@@ -25,5 +24,5 @@ Cannot be executed directly, use one of the available sub-commands.`,
 }
 
 func init() {
-	OrgCmd.AddCommand(listCmd)
+	Cmd.AddCommand(listCmd)
 }

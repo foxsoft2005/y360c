@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package admin
 
 import (
@@ -86,6 +85,12 @@ func init() {
 	addCmd.Flags().IntVar(&groupId, "id", 0, "group id")
 	addCmd.Flags().StringArrayVar(&admins, "admin", nil, "administrator ids (repeatable flag)")
 
-	addCmd.MarkFlagRequired("id")
-	addCmd.MarkFlagRequired("admin")
+	err := addCmd.MarkFlagRequired("id")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
+	err = addCmd.MarkFlagRequired("admin")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

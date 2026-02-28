@@ -4,6 +4,7 @@ Copyright © 2024 Kirill Chernetsky aka foxsoft2005
 package cmd
 
 import (
+	"errors"
 	"log"
 	"os"
 
@@ -28,7 +29,7 @@ var rootCmd = &cobra.Command{
 	Use:     "y360c",
 	Short:   "Yandex360 cli",
 	Long:    `This app allows you to use the Yandex360 API via cli with some useful features.`,
-	Version: "1.0.0-beta.45",
+	Version: "1.0.0-beta.47",
 }
 
 func Execute() {
@@ -41,19 +42,19 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	rootCmd.AddCommand(auth.AuthCmd)
-	rootCmd.AddCommand(mfa.MfaCmd)
-	rootCmd.AddCommand(org.OrgCmd)
+	rootCmd.AddCommand(auth.Cmd)
+	rootCmd.AddCommand(mfa.Cmd)
+	rootCmd.AddCommand(org.Cmd)
 	rootCmd.AddCommand(dept.DeptCmd)
-	rootCmd.AddCommand(user.UserCmd)
-	rootCmd.AddCommand(disk.DiskCmd)
-	rootCmd.AddCommand(whitelist.WhitelistCmd)
+	rootCmd.AddCommand(user.Cmd)
+	rootCmd.AddCommand(disk.Cmd)
+	rootCmd.AddCommand(whitelist.Cmd)
 	rootCmd.AddCommand(internal.InitCmd)
 	rootCmd.AddCommand(group.GroupCmd)
-	rootCmd.AddCommand(dns.DnsCmd)
-	rootCmd.AddCommand(domain.DomainCmd)
-	rootCmd.AddCommand(internal.UpdateCmd)
-	rootCmd.AddCommand(mailbox.MailboxCmd)
+	rootCmd.AddCommand(dns.Cmd)
+	rootCmd.AddCommand(domain.Cmd)
+	rootCmd.AddCommand(internal.Cmd)
+	rootCmd.AddCommand(mailbox.Cmd)
 }
 
 func initConfig() {
@@ -65,14 +66,19 @@ func initConfig() {
 	viper.SetConfigName("y360c")
 
 	if err := viper.ReadInConfig(); err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+		var configFileNotFoundError viper.ConfigFileNotFoundError
+		if errors.As(err, &configFileNotFoundError) {
 			viper.SetDefault("orgId", 0)
 			viper.SetDefault("token", "")
 
-			viper.SafeWriteConfig()
-			viper.ReadInConfig()
-		} else {
-			log.Println("Unable to parse config:", err)
+			err := viper.SafeWriteConfig()
+			if err != nil {
+				log.Fatalln("Error writing config:", err)
+			}
+			err = viper.ReadInConfig()
+			if err != nil {
+				log.Fatalln("Error reading config:", err)
+			}
 		}
 	}
 }

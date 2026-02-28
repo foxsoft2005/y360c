@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package auth
 
 import (
@@ -14,7 +13,7 @@ var (
 )
 
 // command definition
-var AuthCmd = &cobra.Command{
+var Cmd = &cobra.Command{
 	Use:   "auth",
 	Short: "Manage Y360 auth settings",
 	Long: `The command provides access to Y360 auth settings.
@@ -25,8 +24,8 @@ Cannot be executed directly, use one of the available sub-commands.`,
 }
 
 func init() {
-	AuthCmd.AddCommand(logoutCmd)
-	AuthCmd.AddCommand(setTtlCmd)
-	AuthCmd.AddCommand(getTtlCmd)
-	AuthCmd.AddCommand(oauth.OauthCmd)
+	Cmd.AddCommand(logoutCmd)
+	Cmd.AddCommand(setTtlCmd)
+	Cmd.AddCommand(getTtlCmd)
+	Cmd.AddCommand(oauth.OauthCmd)
 }

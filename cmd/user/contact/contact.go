@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package contact
 
 import (
@@ -14,8 +13,8 @@ var (
 	userEmail string
 )
 
-// AliasCmd represents the alias command
-var ContactCmd = &cobra.Command{
+// Cmd represents the alias command
+var Cmd = &cobra.Command{
 	Use:   "contact",
 	Short: "Manage user contacts",
 	Long: `Use this command to manage user contacts (e-mail, phone, skype, etc.).
@@ -26,7 +25,7 @@ Cannot be executed directly, please use one of the available sub-commands.`,
 }
 
 func init() {
-	ContactCmd.AddCommand(addCmd)
-	ContactCmd.AddCommand(resetCmd)
-	ContactCmd.AddCommand(lsCmd)
+	Cmd.AddCommand(addCmd)
+	Cmd.AddCommand(resetCmd)
+	Cmd.AddCommand(lsCmd)
 }

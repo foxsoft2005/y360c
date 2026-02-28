@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package org
 
 import (
@@ -75,5 +74,4 @@ func init() {
 	listCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	listCmd.Flags().IntVarP(&maxRec, "max", "m", 100, "max records to retrieve")
 	listCmd.Flags().BoolVar(&asRaw, "raw", false, "export as raw data")
-
 }

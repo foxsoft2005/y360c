@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package alias
 
 import (
@@ -86,6 +85,12 @@ func init() {
 	addCmd.Flags().IntVar(&deptId, "id", 0, "department id")
 	addCmd.Flags().StringVar(&alias, "alias", "", "department alias")
 
-	addCmd.MarkFlagRequired("id")
-	addCmd.MarkFlagRequired("alias")
+	err := addCmd.MarkFlagRequired("id")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
+	err = addCmd.MarkFlagRequired("alias")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

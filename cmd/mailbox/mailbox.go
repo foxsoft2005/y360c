@@ -1,6 +1,4 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
 
 package mailbox
 
@@ -17,7 +15,7 @@ var (
 	mailboxName string
 )
 
-var MailboxCmd = &cobra.Command{
+var Cmd = &cobra.Command{
 	Use:   "mailbox",
 	Short: "Manage Y360 shared and delegated mailboxes",
 	Long: `The command provides access to Y360 shared and delegated mailboxes.
@@ -28,14 +26,14 @@ Cannot be executed directly, use one of the available sub-commands.`,
 }
 
 func init() {
-	MailboxCmd.AddCommand(lsCmd)
-	MailboxCmd.AddCommand(infoCmd)
-	MailboxCmd.AddCommand(addCmd)
-	MailboxCmd.AddCommand(rmCmd)
-	MailboxCmd.AddCommand(delegationCmd)
-	MailboxCmd.AddCommand(hasAccessCmd)
-	MailboxCmd.AddCommand(setaccessCmd)
-	MailboxCmd.AddCommand(sharedWithCmd)
-	MailboxCmd.AddCommand(statusCmd)
-	MailboxCmd.AddCommand(changeCmd)
+	Cmd.AddCommand(lsCmd)
+	Cmd.AddCommand(infoCmd)
+	Cmd.AddCommand(addCmd)
+	Cmd.AddCommand(rmCmd)
+	Cmd.AddCommand(delegationCmd)
+	Cmd.AddCommand(hasAccessCmd)
+	Cmd.AddCommand(accessCmd)
+	Cmd.AddCommand(sharedWithCmd)
+	Cmd.AddCommand(statusCmd)
+	Cmd.AddCommand(changeCmd)
 }

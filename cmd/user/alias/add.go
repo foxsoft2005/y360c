@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package alias
 
 import (
@@ -100,5 +99,8 @@ func init() {
 	addCmd.MarkFlagsOneRequired("id", "email")
 	addCmd.MarkFlagsMutuallyExclusive("id", "email")
 
-	addCmd.MarkFlagRequired("alias")
+	err := addCmd.MarkFlagRequired("alias")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

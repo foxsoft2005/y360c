@@ -1,6 +1,4 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
 
 package mailbox
 
@@ -89,7 +87,16 @@ func init() {
 	addCmd.Flags().StringVar(&description, "description", "", "shared mailbox description")
 	addCmd.Flags().StringVar(&email, "email", "", "shared mailbox email address")
 
-	addCmd.MarkFlagRequired("name")
-	addCmd.MarkFlagRequired("description")
-	addCmd.MarkFlagRequired("email")
+	err := addCmd.MarkFlagRequired("name")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
+	err = addCmd.MarkFlagRequired("description")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
+	err = addCmd.MarkFlagRequired("email")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

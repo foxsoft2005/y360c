@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package rule
 
 import (
@@ -14,8 +13,8 @@ var (
 	ruleId string
 )
 
-// RuleCmd represents the rule command
-var RuleCmd = &cobra.Command{
+// Cmd represents the rule command
+var Cmd = &cobra.Command{
 	Use:   "rule",
 	Short: "Manage mailbox rules for the user",
 	Long: `The command provides access to mailbox rules (forwards and autoreplies) for the selected user.
@@ -26,5 +25,5 @@ Cannot be executed directly, please use one of the available sub-commands.`,
 }
 
 func init() {
-	RuleCmd.AddCommand(lsCmd)
+	Cmd.AddCommand(lsCmd)
 }

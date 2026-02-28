@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package dns
 
 import (
@@ -15,7 +14,7 @@ var (
 )
 
 // DnsCmd represents the dns command
-var DnsCmd = &cobra.Command{
+var Cmd = &cobra.Command{
 	Use:   "dns",
 	Short: "Manage Y360 DNS records of the domain",
 	Long: `The command provides access to DNS records of the domain.
@@ -26,5 +25,5 @@ Cannot be executed directly, use one of the available sub-commands.`,
 }
 
 func init() {
-	DnsCmd.AddCommand(lsCmd)
+	Cmd.AddCommand(lsCmd)
 }

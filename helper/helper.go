@@ -1,6 +1,4 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
 
 package helper
 
@@ -22,7 +20,8 @@ import (
 )
 
 const (
-	BaseUrl = "https://cloud-api.yandex.net" // Must be without trailing slash
+	BaseUrl   = "https://api360.yandex.net" // Must be without trailing slash
+	BaseUrlV2 = "https://cloud-api.yandex.net"
 )
 
 // Enums "fancy" implementation
@@ -301,7 +300,6 @@ func CheckTaskById(orgId int, token string, taskId string) (*model.TaskStatusRes
 }
 
 func Confirm(message string) bool {
-
 	var input string
 
 	log.Print(message)

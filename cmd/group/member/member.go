@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package member
 
 import (
@@ -39,8 +38,8 @@ var (
 	memberType groupMemberType
 )
 
-// GroupCmd represents the group command
-var MemberCmd = &cobra.Command{
+// Cmd represents the group command
+var Cmd = &cobra.Command{
 	Use:   "member",
 	Short: "Manage Y360 user groups",
 	Long: `The command provides access to Y360 groups.
@@ -51,7 +50,7 @@ Cannot be executed directly, please use one if the available sub-commands.`,
 }
 
 func init() {
-	MemberCmd.AddCommand(lsCmd)
-	MemberCmd.AddCommand(rmCmd)
-	MemberCmd.AddCommand(addCmd)
+	Cmd.AddCommand(lsCmd)
+	Cmd.AddCommand(rmCmd)
+	Cmd.AddCommand(addCmd)
 }

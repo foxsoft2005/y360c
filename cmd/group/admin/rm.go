@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package admin
 
 import (
@@ -43,7 +42,7 @@ var rmCmd = &cobra.Command{
 		}
 
 		if !helper.Confirm("Do you REALLY want to DELETE the selected entity (y[es]|no)?") {
-			log.Fatal("Aborted, exiting")
+			log.Fatalln("Aborted, exiting")
 		}
 
 		var url = fmt.Sprintf("%s/directory/v1/org/%d/groups/%d/admins", helper.BaseUrl, orgId, groupId)
@@ -88,5 +87,8 @@ func init() {
 	rmCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	rmCmd.Flags().IntVar(&groupId, "id", 0, "group id")
 
-	rmCmd.MarkFlagRequired("id")
+	err := rmCmd.MarkFlagRequired("id")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

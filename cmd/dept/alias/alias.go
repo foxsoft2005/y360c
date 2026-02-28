@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package alias
 
 import (
@@ -15,7 +14,7 @@ var (
 )
 
 // AliasCmd represents the alias command
-var AliasCmd = &cobra.Command{
+var Cmd = &cobra.Command{
 	Use:   "alias",
 	Short: "Manage user mailbox aliases",
 	Long: `Use this command to manage user mailbox aliases.
@@ -26,7 +25,7 @@ Cannot be executed directly, please use one of the available sub-commands.`,
 }
 
 func init() {
-	AliasCmd.AddCommand(addCmd)
-	AliasCmd.AddCommand(rmCmd)
-	AliasCmd.AddCommand(lsCmd)
+	Cmd.AddCommand(addCmd)
+	Cmd.AddCommand(rmCmd)
+	Cmd.AddCommand(lsCmd)
 }

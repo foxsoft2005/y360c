@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package mfa
 
 import (
@@ -12,8 +11,8 @@ var (
 	token string
 )
 
-// mfaCmd represents the mfa command
-var MfaCmd = &cobra.Command{
+// Cmd represents the mfa command
+var Cmd = &cobra.Command{
 	Use:   "mfa",
 	Short: "Manage Y360 2FA settings",
 	Long: `The command provides access to Y360 two-factor auth (2FA) settings.
@@ -24,7 +23,7 @@ Cannot be executed directly, use one of the available sub-commands.`,
 }
 
 func init() {
-	MfaCmd.AddCommand(statusCmd)
-	MfaCmd.AddCommand(enableCmd)
-	MfaCmd.AddCommand(disableCmd)
+	Cmd.AddCommand(statusCmd)
+	Cmd.AddCommand(enableCmd)
+	Cmd.AddCommand(disableCmd)
 }

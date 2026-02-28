@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package whitelist
 
 import (
@@ -13,7 +12,7 @@ var (
 	allowed []string
 )
 
-var WhitelistCmd = &cobra.Command{
+var Cmd = &cobra.Command{
 	Use:   "whitelist",
 	Short: "Manage Y360 anti-spam settings",
 	Long: `The command provides access to Y360 anti-spam settings.
@@ -24,7 +23,7 @@ Cannot be executed directly, use one of the available sub-commands.`,
 }
 
 func init() {
-	WhitelistCmd.AddCommand(lsCmd)
-	WhitelistCmd.AddCommand(addCmd)
-	WhitelistCmd.AddCommand(rmCmd)
+	Cmd.AddCommand(lsCmd)
+	Cmd.AddCommand(addCmd)
+	Cmd.AddCommand(rmCmd)
 }

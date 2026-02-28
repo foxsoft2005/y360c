@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package mailbox
 
 import (
@@ -48,12 +47,12 @@ var (
 	mailboxImap          bool
 	mailboxSender        bool
 	mailboxLimitedSender bool
-	clear                bool
+	clearAccess          bool
 	checkStatus          bool
 )
 
-// setaccessCmd represents the delegate command
-var setaccessCmd = &cobra.Command{
+// accessCmd represents the delegate command
+var accessCmd = &cobra.Command{
 	Use:   "set-access",
 	Short: "Set access to the mailbox to other user",
 	Long: `Use this command to set access to the mailbox to other user.
@@ -108,7 +107,7 @@ var setaccessCmd = &cobra.Command{
 		var method = "POST"
 		var entry model.MailAccessSettings
 
-		if !clear {
+		if !clearAccess {
 			if mailboxOwner {
 				entry.Items = append(entry.Items, "shared_mailbox_owner")
 			} else {
@@ -171,34 +170,34 @@ var setaccessCmd = &cobra.Command{
 func init() {
 	notify = notifyAll
 
-	setaccessCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
-	setaccessCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
-	setaccessCmd.Flags().StringVar(&mailboxId, "id", "", "mailbox (or user) id")
-	setaccessCmd.Flags().StringVar(&mailboxName, "email", "", "mailbox (or user) email address")
-	setaccessCmd.Flags().StringVar(&toId, "to-id", "", "user id to whom access is delegated")
-	setaccessCmd.Flags().StringVar(&toEmail, "to-email", "", "user email address to whom access is delegated")
-	setaccessCmd.Flags().BoolVar(&mailboxOwner, "owner", false, "full access to the mailbox (includes all other access types)")
-	setaccessCmd.Flags().BoolVar(&mailboxImap, "reader", false, "access to read messages via IMAP")
-	setaccessCmd.Flags().BoolVar(&mailboxSender, "sender", false, "access to send messages (send as & send on behalf) via SMTP")
-	setaccessCmd.Flags().BoolVar(&mailboxLimitedSender, "on-behalf", false, "access to send messages (send on behalf only) via SMTP")
-	setaccessCmd.Flags().Var(&notify, "notify", "notification type (all, delegates or none)")
-	setaccessCmd.Flags().BoolVar(&checkStatus, "check-status", false, "automatically check task status if possible")
-	setaccessCmd.Flags().BoolVar(&clear, "clear", false, "clear access options for the selected user if any")
+	accessCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
+	accessCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
+	accessCmd.Flags().StringVar(&mailboxId, "id", "", "mailbox (or user) id")
+	accessCmd.Flags().StringVar(&mailboxName, "email", "", "mailbox (or user) email address")
+	accessCmd.Flags().StringVar(&toId, "to-id", "", "user id to whom access is delegated")
+	accessCmd.Flags().StringVar(&toEmail, "to-email", "", "user email address to whom access is delegated")
+	accessCmd.Flags().BoolVar(&mailboxOwner, "owner", false, "full access to the mailbox (includes all other access types)")
+	accessCmd.Flags().BoolVar(&mailboxImap, "reader", false, "access to read messages via IMAP")
+	accessCmd.Flags().BoolVar(&mailboxSender, "sender", false, "access to send messages (send as & send on behalf) via SMTP")
+	accessCmd.Flags().BoolVar(&mailboxLimitedSender, "on-behalf", false, "access to send messages (send on behalf only) via SMTP")
+	accessCmd.Flags().Var(&notify, "notify", "notification type (all, delegates or none)")
+	accessCmd.Flags().BoolVar(&checkStatus, "check-status", false, "automatically check task status if possible")
+	accessCmd.Flags().BoolVar(&clearAccess, "clearAccess", false, "clearAccess access options for the selected user if any")
 
-	setaccessCmd.MarkFlagsOneRequired("id", "email")
-	setaccessCmd.MarkFlagsOneRequired("to-id", "to-email")
+	accessCmd.MarkFlagsOneRequired("id", "email")
+	accessCmd.MarkFlagsOneRequired("to-id", "to-email")
 
-	setaccessCmd.MarkFlagsOneRequired("owner", "reader", "sender", "on-behalf", "clear")
+	accessCmd.MarkFlagsOneRequired("owner", "reader", "sender", "on-behalf", "clearAccess")
 
-	setaccessCmd.MarkFlagsMutuallyExclusive("id", "email")
-	setaccessCmd.MarkFlagsMutuallyExclusive("to-id", "to-email")
+	accessCmd.MarkFlagsMutuallyExclusive("id", "email")
+	accessCmd.MarkFlagsMutuallyExclusive("to-id", "to-email")
 
-	setaccessCmd.MarkFlagsMutuallyExclusive("owner", "reader")
-	setaccessCmd.MarkFlagsMutuallyExclusive("owner", "sender")
-	setaccessCmd.MarkFlagsMutuallyExclusive("owner", "on-behalf")
+	accessCmd.MarkFlagsMutuallyExclusive("owner", "reader")
+	accessCmd.MarkFlagsMutuallyExclusive("owner", "sender")
+	accessCmd.MarkFlagsMutuallyExclusive("owner", "on-behalf")
 
-	setaccessCmd.MarkFlagsMutuallyExclusive("clear", "owner")
-	setaccessCmd.MarkFlagsMutuallyExclusive("clear", "sender")
-	setaccessCmd.MarkFlagsMutuallyExclusive("clear", "reader")
-	setaccessCmd.MarkFlagsMutuallyExclusive("clear", "on-behalf")
+	accessCmd.MarkFlagsMutuallyExclusive("clearAccess", "owner")
+	accessCmd.MarkFlagsMutuallyExclusive("clearAccess", "sender")
+	accessCmd.MarkFlagsMutuallyExclusive("clearAccess", "reader")
+	accessCmd.MarkFlagsMutuallyExclusive("clearAccess", "on-behalf")
 }

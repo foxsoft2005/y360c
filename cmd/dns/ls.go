@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package dns
 
 import (
@@ -75,5 +74,8 @@ func init() {
 	lsCmd.Flags().IntVar(&maxRec, "max", 50, "max records to retrieve")
 	lsCmd.Flags().StringVar(&domain, "domain", "", "domain name (example.com)")
 
-	lsCmd.MarkFlagRequired("domain")
+	err := lsCmd.MarkFlagRequired("domain")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

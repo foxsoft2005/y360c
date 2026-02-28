@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package dept
 
 import (
@@ -42,7 +41,7 @@ var rmCmd = &cobra.Command{
 		}
 
 		if !helper.Confirm("Do you REALLY want to DELETE the selected entity (y[es]|no)?") {
-			log.Fatal("Aborted, exiting")
+			log.Fatalln("Aborted, exiting")
 		}
 
 		var url = fmt.Sprintf("%s/directory/v1/org/%d/departments/%d", helper.BaseUrl, orgId, deptId)
@@ -76,5 +75,8 @@ func init() {
 	rmCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	rmCmd.Flags().IntVar(&deptId, "id", 0, "department id")
 
-	rmCmd.MarkFlagRequired("id")
+	err := rmCmd.MarkFlagRequired("id")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

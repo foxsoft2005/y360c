@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package user
 
 import (
@@ -169,7 +168,12 @@ var listCmd = &cobra.Command{
 				if err != nil {
 					log.Fatalln("Unable to create csv file:", err)
 				}
-				defer f.Close()
+				defer func(f *os.File) {
+					err := f.Close()
+					if err != nil {
+						log.Fatalln("Unable to close csv file:", err)
+					}
+				}(f)
 
 				_, err1 := f.WriteString(t.RenderCSV())
 				if err1 != nil {
@@ -197,5 +201,4 @@ func init() {
 
 	listCmd.MarkFlagsMutuallyExclusive("id", "email", "name", "dept-id")
 	listCmd.MarkFlagsMutuallyExclusive("csv", "raw")
-
 }

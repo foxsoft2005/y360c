@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package contact
 
 import (
@@ -156,6 +155,12 @@ func init() {
 	addCmd.MarkFlagsOneRequired("id", "email")
 	addCmd.MarkFlagsMutuallyExclusive("id", "email")
 
-	addCmd.MarkFlagRequired("type")
-	addCmd.MarkFlagRequired("value")
+	err := addCmd.MarkFlagRequired("type")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
+	err = addCmd.MarkFlagRequired("value")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

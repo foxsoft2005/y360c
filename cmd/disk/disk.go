@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package disk
 
 import (
@@ -12,7 +11,7 @@ var (
 	token string
 )
 
-var DiskCmd = &cobra.Command{
+var Cmd = &cobra.Command{
 	Use:   "disk",
 	Short: "Manage Y360 disk settings",
 	Long: `The command provides access to Y360 disk settings.
@@ -23,5 +22,5 @@ Cannot be executed directly, use one of the available sub-commands.`,
 }
 
 func init() {
-	DiskCmd.AddCommand(logCmd)
+	Cmd.AddCommand(logCmd)
 }

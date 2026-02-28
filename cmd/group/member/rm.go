@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package member
 
 import (
@@ -42,7 +41,7 @@ var rmCmd = &cobra.Command{
 		}
 
 		if !helper.Confirm("Do you REALLY want to DELETE the selected entity (y[es]|no)?") {
-			log.Fatal("Aborted, exiting")
+			log.Fatalln("Aborted, exiting")
 		}
 
 		var url = fmt.Sprintf("%s/directory/v1/org/%d/groups/%d/members/%s/%s", helper.BaseUrl, orgId, groupId, memberType, memberId)
@@ -81,7 +80,16 @@ func init() {
 	rmCmd.Flags().Var(&memberType, "member-type", "member type to be deleted")
 	rmCmd.Flags().StringVar(&memberId, "member-id", "", "member id to be deleted")
 
-	rmCmd.MarkFlagRequired("id")
-	rmCmd.MarkFlagRequired("member-type")
-	rmCmd.MarkFlagRequired("member-id")
+	err := rmCmd.MarkFlagRequired("id")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
+	err = rmCmd.MarkFlagRequired("member-type")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
+	err = rmCmd.MarkFlagRequired("member-id")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

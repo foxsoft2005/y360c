@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package mfa
 
 import (
@@ -71,5 +70,4 @@ var statusCmd = &cobra.Command{
 func init() {
 	statusCmd.Flags().IntVarP(&orgId, "org-id", "o", 0, "organization id")
 	statusCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
-
 }

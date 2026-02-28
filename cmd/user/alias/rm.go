@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package alias
 
 import (
@@ -42,7 +41,7 @@ var rmCmd = &cobra.Command{
 		}
 
 		if !helper.Confirm("Do you REALLY want to DELETE the selected entity (y[es]|no)?") {
-			log.Fatal("Aborted by the user")
+			log.Fatalln("Aborted by the user")
 		}
 
 		if userEmail != "" {
@@ -93,5 +92,8 @@ func init() {
 	rmCmd.MarkFlagsOneRequired("id", "email")
 	rmCmd.MarkFlagsMutuallyExclusive("id", "email")
 
-	rmCmd.MarkFlagRequired("alias")
+	err := rmCmd.MarkFlagRequired("alias")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

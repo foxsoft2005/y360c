@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package dept
 
 import (
@@ -38,6 +37,6 @@ func init() {
 	DeptCmd.AddCommand(addCmd)
 	DeptCmd.AddCommand(rmCmd)
 	DeptCmd.AddCommand(changeCmd)
-	DeptCmd.AddCommand(alias.AliasCmd)
-	DeptCmd.AddCommand(member.MemberCmd)
+	DeptCmd.AddCommand(alias.Cmd)
+	DeptCmd.AddCommand(member.Cmd)
 }

@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package group
 
 import (
@@ -36,6 +35,6 @@ func init() {
 	GroupCmd.AddCommand(lsCmd)
 	GroupCmd.AddCommand(addCmd)
 	GroupCmd.AddCommand(rmCmd)
-	GroupCmd.AddCommand(member.MemberCmd)
-	GroupCmd.AddCommand(admin.AdminCmd)
+	GroupCmd.AddCommand(member.Cmd)
+	GroupCmd.AddCommand(admin.Cmd)
 }

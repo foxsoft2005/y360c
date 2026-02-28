@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package domain
 
 import (
@@ -89,5 +88,8 @@ func init() {
 	infoCmd.Flags().IntVar(&maxRec, "max", 10, "max records to retrieve")
 	infoCmd.Flags().StringVar(&domain, "domain", "", "domain name (example.com)")
 
-	infoCmd.MarkFlagRequired("domain")
+	err := infoCmd.MarkFlagRequired("domain")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

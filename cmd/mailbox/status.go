@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package mailbox
 
 import (
@@ -60,5 +59,8 @@ func init() {
 	statusCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	statusCmd.Flags().StringVar(&taskId, "task-id", "", "task id")
 
-	statusCmd.MarkFlagRequired("task-id")
+	err := statusCmd.MarkFlagRequired("task-id")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

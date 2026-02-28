@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package auth
 
 import (
@@ -75,5 +74,8 @@ func init() {
 	setTtlCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	setTtlCmd.Flags().IntVar(&authTtl, "ttl", 0, "auth cookies termination timeout (sec.)")
 
-	setTtlCmd.MarkFlagRequired("ttl")
+	err := setTtlCmd.MarkFlagRequired("ttl")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

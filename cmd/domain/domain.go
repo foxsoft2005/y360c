@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package domain
 
 import (
@@ -14,8 +13,8 @@ var (
 	domain string
 )
 
-// DomainCmd represents the domain command
-var DomainCmd = &cobra.Command{
+// Cmd represents the domain command
+var Cmd = &cobra.Command{
 	Use:   "domain",
 	Short: "Manage Y360 domains",
 	Long: `The command provides access to Y360 domains.
@@ -26,6 +25,6 @@ Cannot be executed directly, use one of the available sub-commands.`,
 }
 
 func init() {
-	DomainCmd.AddCommand(lsCmd)
-	DomainCmd.AddCommand(infoCmd)
+	Cmd.AddCommand(lsCmd)
+	Cmd.AddCommand(infoCmd)
 }

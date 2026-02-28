@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package internal
 
 import (
@@ -21,8 +20,8 @@ var (
 	useBeta bool
 )
 
-// updateCmd represents the update command
-var UpdateCmd = &cobra.Command{
+// Cmd represents the update command
+var Cmd = &cobra.Command{
 	Use:   "update",
 	Short: "Update y360c app",
 	Long:  `Use this command to update y360c to the latest version.`,
@@ -38,20 +37,33 @@ var UpdateCmd = &cobra.Command{
 		if err != nil {
 			log.Fatalln("failed to get update:", err)
 		}
-		defer resp.Body.Close()
+		defer func(Body io.ReadCloser) {
+			err := Body.Close()
+			if err != nil {
+				log.Fatalln("failed to close body:", err)
+			}
+		}(resp.Body)
 
 		f, _ := os.OpenFile(filepath.Join(wd, filename), os.O_CREATE|os.O_WRONLY, 0644)
-		defer f.Close()
+		defer func(f *os.File) {
+			err := f.Close()
+			if err != nil {
+				log.Fatalln("failed to close file:", err)
+			}
+		}(f)
 
 		bar := progressbar.DefaultBytes(
 			resp.ContentLength,
 			"downloading",
 		)
-		io.Copy(io.MultiWriter(f, bar), resp.Body)
+		_, err = io.Copy(io.MultiWriter(f, bar), resp.Body)
+		if err != nil {
+			log.Fatalln("failed to download update:", err)
+		}
 		fmt.Printf("update downloaded to %v, extract it manually over the existing files", filepath.Join(wd, filename))
 	},
 }
 
 func init() {
-	UpdateCmd.Flags().BoolVarP(&useBeta, "beta", "b", false, "use beta version for update")
+	Cmd.Flags().BoolVarP(&useBeta, "beta", "b", false, "use beta version for update")
 }

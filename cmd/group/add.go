@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package group
 
 import (
@@ -89,5 +88,8 @@ func init() {
 	addCmd.Flags().StringVar(&externalId, "external-id", "", "external id")
 	addCmd.Flags().StringArrayVar(&admins, "admin", nil, "group administrator ids")
 
-	addCmd.MarkFlagRequired("name")
+	err := addCmd.MarkFlagRequired("name")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package contact
 
 import (
@@ -43,7 +42,7 @@ var resetCmd = &cobra.Command{
 		}
 
 		if !helper.Confirm("Do you REALLY want to DELETE all manually entered contact information (y[es]|no)?") {
-			log.Fatal("Aborted by the user")
+			log.Fatalln("Aborted by the user")
 		}
 
 		if userEmail != "" {

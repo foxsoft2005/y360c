@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package rule
 
 import (
@@ -14,7 +13,7 @@ import (
 var rmCmd = &cobra.Command{
 	Use:   "rm",
 	Short: "Removes mailbox rule by id",
-	Long: `Use this command to remove mailbox rule (autoreply or forward) for the selected user.
+	Long: `Use this command to remove mailbox rule (auto reply or forward) for the selected user.
 "ya360_admin:mail_write_user_settings" permission is required (see Y360 help topics).`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Println("user mail rules called")
@@ -60,6 +59,12 @@ func init() {
 	rmCmd.Flags().StringVar(&userId, "id", "", "user id")
 	rmCmd.Flags().StringVar(&ruleId, "rule-id", "", "rule id")
 
-	rmCmd.MarkFlagRequired("id")
-	rmCmd.MarkFlagRequired("rule-id")
+	err := rmCmd.MarkFlagRequired("id")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
+	err = rmCmd.MarkFlagRequired("rule-id")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

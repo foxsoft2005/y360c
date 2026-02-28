@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package dept
 
 import (
@@ -104,5 +103,8 @@ func init() {
 	addCmd.Flags().StringVar(&externalId, "external-id", "", "external department id")
 	addCmd.Flags().StringVar(&headId, "head-id", "", "department head id")
 
-	addCmd.MarkFlagRequired("name")
+	err := addCmd.MarkFlagRequired("name")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

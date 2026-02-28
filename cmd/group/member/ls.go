@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package member
 
 import (
@@ -92,5 +91,8 @@ func init() {
 	lsCmd.Flags().StringVarP(&token, "token", "t", "", "access token")
 	lsCmd.Flags().IntVar(&groupId, "id", 0, "group id")
 
-	lsCmd.MarkFlagRequired("id")
+	err := lsCmd.MarkFlagRequired("id")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

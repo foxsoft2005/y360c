@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package alias
 
 import (
@@ -42,7 +41,7 @@ var rmCmd = &cobra.Command{
 		}
 
 		if !helper.Confirm("Do you REALLY want to DELETE the selected entity (y[es]|no)?") {
-			log.Fatal("Aborted, exiting")
+			log.Fatalln("Aborted, exiting")
 		}
 
 		var url = fmt.Sprintf("%s/directory/v1/org/%d/departments/%d/aliases/%s", helper.BaseUrl, orgId, deptId, alias)
@@ -76,6 +75,12 @@ func init() {
 	rmCmd.Flags().IntVar(&deptId, "id", 0, "department id")
 	rmCmd.Flags().StringVar(&alias, "alias", "", "alias to be deleted")
 
-	rmCmd.MarkFlagRequired("id")
-	rmCmd.MarkFlagRequired("alias")
+	err := rmCmd.MarkFlagRequired("id")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
+	err = rmCmd.MarkFlagRequired("alias")
+	if err != nil {
+		log.Fatalln("Error marking flag as required:", err)
+	}
 }

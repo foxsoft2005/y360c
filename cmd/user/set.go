@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package user
 
 import (
@@ -125,7 +124,7 @@ func init() {
 	setCmd.Flags().StringVar(&userEmail, "email", "", "user email address")
 
 	setCmd.Flags().StringVar(&about, "about", "", "about an user")
-	setCmd.Flags().StringVar(&birthday, "birthday", "", "user bithday (YYYY-MM-DD)")
+	setCmd.Flags().StringVar(&birthday, "birthday", "", "user birthday (YYYY-MM-DD)")
 	setCmd.Flags().StringVar(&displayName, "display-name", "", "user display name")
 	setCmd.Flags().StringVar(&externalId, "external-id", "", "user external id")
 	setCmd.Flags().StringVar(&position, "position", "", "user position")

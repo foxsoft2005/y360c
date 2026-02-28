@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package routing
 
 import (
@@ -9,8 +8,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// MailroutingCmd represents the mailrouting command
-var MailroutingCmd = &cobra.Command{
+// Cmd represents the mailrouting command
+var Cmd = &cobra.Command{
 	Use:   "mailrouting",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples

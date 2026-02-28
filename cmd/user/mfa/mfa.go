@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Kirill Chernetsky aka foxsoft2005
-*/
+// Copyright © 2024-2026 Kirill Chernetsky aka foxsoft2005
+
 package mfa
 
 import (
@@ -14,8 +13,8 @@ var (
 	userEmail string
 )
 
-// MfaCmd represents the 2fa command
-var MfaCmd = &cobra.Command{
+// Cmd represents the 2fa command
+var Cmd = &cobra.Command{
 	Use:   "mfa",
 	Short: "Manage 2fa settings for the user",
 	Long: `The command provides access to two-factor auth (2fa) settings for the selected user.
@@ -26,6 +25,6 @@ Cannot be executed directly, please use one of the available sub-commands.`,
 }
 
 func init() {
-	MfaCmd.AddCommand(statusCmd)
-	MfaCmd.AddCommand(resetCmd)
+	Cmd.AddCommand(statusCmd)
+	Cmd.AddCommand(resetCmd)
 }
